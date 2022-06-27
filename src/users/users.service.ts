@@ -13,18 +13,34 @@ export class UsersService {
     private usersRepository: Repository<User>
   ) {}
 
-  async getByUsername(username: string): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ where:{ username: username }})
-    if (user){
+  async getByEmail(email: string): Promise<User | undefined> {
+    const user = await this.usersRepository.findOne({ where:{ email: email }})
+    if (!user){
+      throw new HttpException('User with this email does not exist', HttpStatus.NOT_FOUND);
+    }
+    return user
+  }
+
+  
+  async tryGetUser(email: string): Promise<User | undefined> {
+    const user = await this.usersRepository.findOne({ where:{ email: email }})
+    if (!user){
+      null;
+    } else {
       return user
     }
-    throw new HttpException('User with this username does not exist', HttpStatus.NOT_FOUND);
   }
 
   async createUser(userData: CreateUserDto) {
-    const password = encodePassword(userData.password);
-    const newUser = this.usersRepository.create({ ...userData, password});
-    await this.usersRepository.save(newUser);
-    return newUser;
+    const user = await this.tryGetUser(userData.email)
+    if (!user){
+      const password = encodePassword(userData.password);
+      const newUser = this.usersRepository.create({ ...userData, password});
+      await this.usersRepository.save(newUser);
+      return newUser;
+    
+    } else {
+      throw new HttpException('Username and email must be unique', HttpStatus.NOT_ACCEPTABLE)
+    }
   }
 }
