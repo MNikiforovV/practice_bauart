@@ -12,10 +12,10 @@ export class AuthService {
         private jwtService: JwtService
       ) {}
 
-  async validateUser(user: LoginUserDto): Promise<any> {
-    const userCheck = await this.usersService.getByEmail(user.email);
-    if (userCheck) {
-      const matched = comparePasswords(user.password, userCheck.password)
+  async validateUser(LoginUserDto: LoginUserDto): Promise<any> {
+    const user = await this.usersService.getByEmail(LoginUserDto.email);
+    if (user) {
+      const matched = comparePasswords(LoginUserDto.password, user.password)
       if (matched) {
         console.log('User Validation Success!')
         const { password, ...result } = user;
@@ -33,6 +33,6 @@ export class AuthService {
     const payload = { username: user.username, sub: user.userId };
     return {
       access_token: this.jwtService.sign(payload),
-    };-
+    };
   }
 }
