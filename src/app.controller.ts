@@ -8,12 +8,12 @@ import { UsersService } from './users/users.service';
 import LoginUserDto from './users/dto/loginUser.dto';
 
 
-@Controller()
+@Controller('auth/')
 export class AppController {
   constructor(private authService: AuthService, private userService: UsersService) {}
 
   //@UseGuards(LocalAuthGuard)
-  @Post('auth/login')
+  @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
   }
@@ -24,7 +24,7 @@ export class AppController {
     return req.user;
   }
 
-  @Post('auth/register')
+  @Post('register')
   async register(@Res() res, @Body() createUserDto: CreateUserDto) {
      const newUser = await this.userService.createUser(createUserDto);
      return res.status(HttpStatus.OK).json({
