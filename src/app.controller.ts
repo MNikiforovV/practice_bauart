@@ -12,10 +12,10 @@ import LoginUserDto from './users/dto/loginUser.dto';
 export class AppController {
   constructor(private authService: AuthService, private userService: UsersService) {}
 
-  //@UseGuards(LocalAuthGuard)
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto) {
-    return this.authService.login(loginUserDto);
+  async login(@Body() dto: LoginUserDto, @Request() req) {
+    return this.authService.login(req.user);
   }
 
   @UseGuards(JwtAuthGuard)

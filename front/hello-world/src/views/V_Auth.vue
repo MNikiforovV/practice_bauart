@@ -8,8 +8,8 @@
 
                         <div>
                             <div class="mb-3">
-                                <label for="username" class="form-label">Логин</label>
-                                <input type="text" class="form-control" id="username" placeholder="Ваш логин" v-model="form.username">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Ваш логин" v-model="form.email">
                             </div>
 
                             <div class="mb-3">
@@ -38,7 +38,7 @@
     data(){
         return{
             form: {
-                username: '',
+                email: '',
                 password: ''
             }
         }
