@@ -7,11 +7,14 @@
 
                         <div>
                             <div class="mb-3">
-                                <label for="login" class="form-label">Логин</label>
-                                <input type="login" class="form-control"
-                                    :class="$v.form.login.$error ? 'is-invalid' : ''" id="login" placeholder="Ваш логин"
-                                    v-model.trim="form.login">
-                                <p v-if="$v.form.login.$dirty && !$v.form.login.required" class="invalid-feedback">
+                                <label for="email" class="form-label">email</label>
+                                <input type="email" class="form-control"
+                                    :class="$v.form.email.$error ? 'is-invalid' : ''" id="email" placeholder="Ваш email"
+                                    v-model.trim="form.email">
+                                <p v-if="$v.form.email.$dirty && !$v.form.email.required" class="invalid-feedback">
+                                    Обязательное поле
+                                </p>
+                                  <p v-if="$v.form.email.$dirty && !$v.form.email.email" class="invalid-feedback">
                                     Обязательное поле
                                 </p>
                             </div>
@@ -20,10 +23,10 @@
                                 <input type="password" class="form-control"
                                     :class="$v.form.password.$error ? 'is-invalid' : ''" id="password"
                                     placeholder="Ваш пароль" v-model.trim="form.password">
-                                <p v-if="$v.form.login.$dirty && !$v.form.password.required" class="invalid-feedback">
+                                <p v-if="$v.form.email.$dirty && !$v.form.password.required" class="invalid-feedback">
                                     Обязательное поле
                                 </p>
-                                <p v-if="$v.form.login.$dirty && !$v.form.password.minLength" class="invalid-feedback">
+                                <p v-if="$v.form.email.$dirty && !$v.form.password.minLength" class="invalid-feedback">
                                     Минимальная длина пароля 4 символа
                                 </p>
                             </div>
@@ -47,14 +50,14 @@ import router from '@/router';
 import axios from 'axios';
 import { server } from '@/utils/helper'
 import { validationMixin } from 'vuelidate'
-import { required, minLength } from 'vuelidate/lib/validators'
+import { required, minLength, email } from 'vuelidate/lib/validators'
 
 export default {
     mixins: [validationMixin],
     data() {
         return {
             form: {
-                login: '',
+                email: '',
                 password: ''
             }
 
@@ -62,7 +65,7 @@ export default {
     },
     validations: {
         form: {
-            login: { required },
+            email: { required, email },
             password: { required, minLength: minLength(4) },
         }
     },
