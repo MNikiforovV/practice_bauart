@@ -8,7 +8,7 @@
             <label for="name" class="form-label">Имя</label>
             <input type="text" class="form-control" :class="$v.form.name.$error ? 'is-invalid' : ''" id="name"
               placeholder="Ваше имя" v-model.trim="form.name">
-            <p v-if="$v.form.login.$dirty && !$v.form.name.required" class="invalid-feedback">
+            <p v-if="$v.form.uername.$dirty && !$v.form.name.required" class="invalid-feedback">
               Обязательное поле
             </p>
           </div>
@@ -19,7 +19,7 @@
             <label for="surname" class="form-label">Фамилия</label>
             <input type="text" class="form-control" :class="$v.form.surname.$error ? 'is-invalid' : ''" id="surname"
               placeholder="Ваша фамилия" v-model.trim="form.surname">
-            <p v-if="$v.form.login.$dirty && !$v.form.surname.required" class="invalid-feedback">
+            <p v-if="$v.form.uername.$dirty && !$v.form.surname.required" class="invalid-feedback">
               Обязательное поле
             </p>
           </div>
@@ -28,10 +28,10 @@
             <label for="email" class="form-label">Электронная почта</label>
             <input type="email" class="form-control" :class="$v.form.email.$error ? 'is-invalid' : ''" id="email"
               placeholder="Ваша почта" v-model.trim="form.email">
-            <p v-if="$v.form.login.$dirty && !$v.form.email.required" class="invalid-feedback">
+            <p v-if="$v.form.uername.$dirty && !$v.form.email.required" class="invalid-feedback">
               Обязательное поле
             </p>
-            <p v-if="$v.form.login.$dirty && !$v.form.email.email" class="invalid-feedback">
+            <p v-if="$v.form.uername.$dirty && !$v.form.email.email" class="invalid-feedback">
               Неккоректный Email
             </p>
           </div>
@@ -41,13 +41,13 @@
 
 
           <div class="mb-3">
-            <label for="login" class="form-label">Логин</label>
-            <input type="login" class="form-control" :class="$v.form.login.$error ? 'is-invalid' : ''" id="login"
-              placeholder="Ваш логин" v-model.trim="form.login">
-            <p v-if="$v.form.login.$dirty && !$v.form.login.required" class="invalid-feedback">
+            <label for="uername" class="form-label">Логин</label>
+            <input type="uername" class="form-control" :class="$v.form.uername.$error ? 'is-invalid' : ''" id="uername"
+              placeholder="Ваш логин" v-model.trim="form.uername">
+            <p v-if="$v.form.uername.$dirty && !$v.form.uername.required" class="invalid-feedback">
               Обязательное поле
             </p>
-            <p v-if="$v.form.login.$dirty && !$v.form.login.minLength" class="invalid-feedback">
+            <p v-if="$v.form.uername.$dirty && !$v.form.uername.minLength" class="invalid-feedback">
               Минимальная длинна логина 4 символа
             </p>
 
@@ -57,10 +57,10 @@
             <label for="password" class="form-label">Пароль</label>
             <input type="password" class="form-control" :class="$v.form.password.$error ? 'is-invalid' : ''"
               id="password" placeholder="Ваш пароль" v-model.trim="form.password">
-            <p v-if="$v.form.login.$dirty && !$v.form.password.required" class="invalid-feedback">
+            <p v-if="$v.form.uername.$dirty && !$v.form.password.required" class="invalid-feedback">
               Обязательное поле
             </p>
-            <p v-if="$v.form.login.$dirty && !$v.form.password.minLength" class="invalid-feedback">
+            <p v-if="$v.form.uername.$dirty && !$v.form.password.minLength" class="invalid-feedback">
               Минимальная длинна логина 4 символа
             </p>
           </div>
@@ -69,7 +69,7 @@
             <label for="passwordConfirm" class="form-label">Подтверждение пароля</label>
             <input type="password" class="form-control" :class="$v.form.passwordConfirm.$error ? 'is-invalid' : ''"
               id="passwordConfirm" placeholder="Повторите Ваш пароль" v-model.trim="form.passwordConfirm">
-            <p v-if="$v.form.login.$dirty && !$v.form.passwordConfirm.required" class="invalid-feedback">
+            <p v-if="$v.form.uername.$dirty && !$v.form.passwordConfirm.required" class="invalid-feedback">
               Обязательное поле
             </p>
           </div>
@@ -98,7 +98,7 @@ export default {
         name: '',
         surname: '',
         email: '',
-        login: '',
+        uername: '',
         password: '',
         passwordConfirm: '',
         submitStatus: null
@@ -111,7 +111,7 @@ export default {
       name: { required },
       surname: { required },
       email: { required, email },
-      login: { required, minLength: minLength(4) },
+      uername: { required, minLength: minLength(4) },
       password: { required, minLength: minLength(4) },
       passwordConfirm: { required },
     }
