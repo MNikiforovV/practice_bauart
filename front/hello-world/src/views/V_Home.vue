@@ -7,7 +7,6 @@
 <script>
 /* eslint-disable */
 import axios from 'axios';
-console.log(axios.arguments);
 export default {
   name: "V_Home"
 };
