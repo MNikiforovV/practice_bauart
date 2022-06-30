@@ -6,9 +6,15 @@ import { DatabaseModule } from './database/database.module';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { AuthService } from './auth/auth.service';
+import { UsersService } from './users/users.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
+    DatabaseModule,
+    AuthModule,
+    UsersModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         POSTGRES_HOST: Joi.string().required(),
@@ -17,13 +23,13 @@ import { UsersModule } from './users/users.module';
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
         PORT: Joi.number(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRATION_TIME: Joi.string().required(),
       })
     }),
-    DatabaseModule,
-    AuthModule,
-    UsersModule,
+
   ],
   controllers:[AppController],
-  providers:[AppService, ]
+  providers:[AppService, AuthService, UsersService, JwtService]
 })
 export class AppModule {}

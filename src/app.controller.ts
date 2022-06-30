@@ -6,30 +6,14 @@ import User from './users/user.entity';
 import CreateUserDto from './users/dto/createUser.dto';
 import { UsersService } from './users/users.service';
 import LoginUserDto from './users/dto/loginUser.dto';
+import { Response } from 'express';
+import RequestWithUser from './auth/requestWithUser.interface';
 
 
 @Controller()
 export class AppController {
   constructor(private authService: AuthService, private userService: UsersService) {}
 
-  @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
-  async login(@Body() dto: LoginUserDto, @Request() req) {
-    return this.authService.login(req.user);
-  }
+  //хэллоу ворлд типа
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
-
-  @Post('auth/register')
-  async register(@Res() res, @Body() createUserDto: CreateUserDto) {
-     const newUser = await this.userService.createUser(createUserDto);
-     return res.status(HttpStatus.OK).json({
-      message: "User was created successfully!",
-      user: newUser
-  })
-  }
 }

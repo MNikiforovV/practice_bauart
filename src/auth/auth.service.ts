@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { comparePasswords } from 'src/utils/bcrypt';
 
@@ -7,11 +8,12 @@ import { comparePasswords } from 'src/utils/bcrypt';
 @Injectable()
 export class AuthService {
     constructor(
-        private usersService: UsersService,
-        private jwtService: JwtService
+        //private readonly configService: ConfigService,
+        private readonly usersService: UsersService,
+        private readonly jwtService: JwtService
       ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  public async validateUser(email: string, pass: string) {
     const userCheck = await this.usersService.getByEmail(email);
     if (userCheck) {
       const matched = comparePasswords(pass, userCheck.password)
@@ -38,8 +40,9 @@ export class AuthService {
 
   public getCookieWithJwtToken(userId: number) {
     const payload: TokenPayload = { userId };
-    const token = this.jwtService.sign(payload);
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age='60s'`;
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 
   public getCookieForLogOut() {

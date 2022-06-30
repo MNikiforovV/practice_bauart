@@ -4,11 +4,11 @@ import { AuthService } from '../auth/auth.service';
 import { UsersService } from './users.service';
 
 @Controller('user/')
-export class AppController {
+export class UserController {
   constructor(private authService: AuthService, private userService: UsersService) {}
   
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
+  @Get('/profile')
   getProfile(@Request() req) {
     return req.user;
   }

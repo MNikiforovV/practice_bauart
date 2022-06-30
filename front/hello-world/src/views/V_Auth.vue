@@ -74,7 +74,7 @@ export default {
             this.$v.form.$touch()
             if (!this.$v.form.$error) {
                 console.log("Валидация успешна")
-                axios.post(`${server.baseURL}/auth/login`, this.form)
+                axios.post(`${server.baseURL}/auth/login`, this.form, {withCredentials: true})
                     .then((res) => {
                         // this.$cookies.set('auth_token', res.data.access_token);
                         // localStorage.setItem('token', res.data.access_token);
