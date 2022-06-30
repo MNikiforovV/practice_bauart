@@ -76,6 +76,8 @@ export default {
                 console.log("Валидация успешна")
                 axios.post(`${server.baseURL}/auth/login`, this.form)
                     .then((res) => {
+                        // this.$cookies.set('auth_token', res.data.access_token);
+                        // localStorage.setItem('token', res.data.access_token);
                         console.log(res);
                         router.push({ name: "Home" })
                     })

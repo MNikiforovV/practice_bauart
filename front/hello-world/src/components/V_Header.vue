@@ -13,7 +13,7 @@
           <li class="nav-item">
             <router-link class="nav-link active" to="/auth"><h7>Авторизация</h7></router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="isLoggedIn">
             <router-link class="nav-link active" to="/"><h7>Выйти</h7></router-link>
           </li>
         </ul>
@@ -23,4 +23,19 @@
 </header>
   </div>
 </template> 
+
+<script>
+
+export default {
+    data() {
+        return {
+            isLoggedIn: !!this.$cookies.get('Authentication')
+
+        }
+    },
+    methods: { }
+}
+
+
+</script>
 
