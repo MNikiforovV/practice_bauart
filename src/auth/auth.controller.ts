@@ -33,4 +33,10 @@ export class AuthController {
     res.setHeader('Set-Cookie', this.authService.getCookieForLogOut());
     return res.sendStatus(200);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('isloggedin')
+  isLoggedIn() {
+    return true
+  }
 }
