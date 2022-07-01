@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { comparePasswords } from 'src/utils/bcrypt';
-
+import LoginUserDto from 'src/users/dto/loginUser.dto';
+import RequestWithUser from './requestWithUser.interface';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -19,30 +21,28 @@ export class AuthService {
       const matched = comparePasswords(pass, userCheck.password)
       if (matched) {
         console.log('User Validation Success!')
-        const { password, ...result } = userCheck;
-        return result;
+        return userCheck;
       } else {
-        console.log('Passwords do not match!')
-        return null;
+        throw new HttpException('Passwords do not match!', HttpStatus.UNAUTHORIZED);
       }
     }
-    console.log('User Validation Failed!')
-    return null;
+    throw new HttpException('User Validation Failed!', HttpStatus.UNAUTHORIZED);
   }
   
-  //вроде уже и не нужен
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async login(dto: LoginUserDto, res: Response) {
+    const user = await this.validateUser( dto.email, dto.password);
+    const cookie = this.getCookieWithJwtToken(user.id);
+    console.log(cookie)
+    res.setHeader('Set-Cookie', cookie);
+    user.password = undefined;
+    console.log(user)
+    return res.json(user);
   }
 
   public getCookieWithJwtToken(userId: number) {
     const payload: TokenPayload = { userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    const token = this.jwtService.sign(payload)
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age='600s'}`;
   }
 
   public getCookieForLogOut() {

@@ -28,18 +28,9 @@ export class UsersService {
       }
       return user;
     }
-  
-  async tryGetUser(email: string): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ where:{ email: email }})
-    if (!user){
-      null;
-    } else {
-      return user
-    }
-  }
 
   async createUser(userData: CreateUserDto) {
-    const user = await this.tryGetUser(userData.email)
+    const user = await this.getByEmail(userData.email)
     if (!user){
       const password = encodePassword(userData.password);
       const newUser = this.usersRepository.create({ ...userData, password});
