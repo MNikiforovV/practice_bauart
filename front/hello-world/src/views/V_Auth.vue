@@ -47,10 +47,12 @@
 
 <script>
 import router from '@/router';
-import axios from 'axios';
-import { server } from '@/utils/helper'
+// import axios from 'axios';
+// import { server } from '@/utils/helper'
 import { validationMixin } from 'vuelidate'
 import { required, minLength, email } from 'vuelidate/lib/validators'
+import instance from '../components/Instance.js'
+
 
 export default {
     mixins: [validationMixin],
@@ -70,22 +72,20 @@ export default {
         }
     },
     methods: {
-        checkForm() {
+        async checkForm() {
             this.$v.form.$touch()
             if (!this.$v.form.$error) {
                 console.log("Валидация успешна")
-                axios.post(`${server.baseURL}/auth/login`, this.form, {withCredentials: true})
-                    .then((res) => {
-                        // this.$cookies.set('auth_token', res.data.access_token);
-                        // localStorage.setItem('token', res.data.access_token);
-                        console.log(res);
-                        router.push({ name: "Home" })
-                    })
-                    .catch((error) => {
-                        console.log(error.response.status);
-                    }).finally(() => {
-                        //Perform action in always
-                    });
+                try {
+                    instance.post('auth/login', this.form)
+                    console.log(instance.data)
+                    router.push({ name: "Home" })
+
+                } catch (error) {
+                    console.log(error)
+                }
+                        
+            
             }
         }
     }
