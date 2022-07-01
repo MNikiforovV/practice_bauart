@@ -32,10 +32,10 @@ export class AuthService {
   async login(dto: LoginUserDto, res: Response) {
     const user = await this.validateUser( dto.email, dto.password);
     const cookie = this.getCookieWithJwtToken(user.id);
-    console.log(cookie)
+    // console.log(cookie)
     res.setHeader('Set-Cookie', cookie);
     user.password = undefined;
-    console.log(user)
+    // console.log(user)
     return res.json(user);
   }
 

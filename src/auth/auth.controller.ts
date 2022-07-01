@@ -23,7 +23,8 @@ export class AuthController {
 
   @Post('register')
   async register(@Res() res, @Body() createUserDto: CreateUserDto) {
-     return await this.userService.createUser(createUserDto);
+     const newUser = await this.userService.createUser(createUserDto);
+     return res.json(newUser)
   }
 
   @UseGuards(JwtAuthGuard)

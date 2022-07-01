@@ -9,7 +9,7 @@ export class UserController {
   
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
-  getProfile(@Request() req) {
-    return req.user;
+  getProfile(@Request() req, @Res() res) {
+    return res.json({name: req.user.name, surname: req.user.surname, email: req.user.email})
   }
 }
