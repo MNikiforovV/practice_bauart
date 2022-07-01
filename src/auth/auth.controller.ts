@@ -20,7 +20,6 @@ export class AuthController {
   async login(@Request() req: RequestWithUser, @Res() res: Response) {
     const {user} = req;
     const cookie = this.authService.getCookieWithJwtToken(user.id);
-    console.log(cookie)
     res.cookie('Set-Cookie', cookie, {
       maxAge: 60000,
       httpOnly:true
@@ -32,10 +31,7 @@ export class AuthController {
   @Post('register')
   async register(@Res() res, @Body() createUserDto: CreateUserDto) {
      const newUser = await this.userService.createUser(createUserDto);
-     return res.status(HttpStatus.OK).json({
-      message: "User was created successfully!",
-      user: newUser
-  })
+     return res.json(newUser)
   }
 
   @UseGuards(JwtAuthGuard)
