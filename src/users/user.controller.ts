@@ -3,9 +3,12 @@ import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { AuthService } from '../auth/auth.service';
 import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
+import RoleGuard from './roles/role.guard';
+import Role from './roles/role.enum';
 
 @Controller('user/')
-@ApiTags('user')
+// @UseGuards(RoleGuard(Role.Admin)) // Доступно только пользователю с ролью админа
+@ApiTags('user') 
 export class UserController {
   constructor(private authService: AuthService, private userService: UsersService) {}
   
