@@ -5,6 +5,8 @@ import V_Register from '../views/V_Register.vue';
 import V_Home from '../views/V_Home.vue';
 import V_Profile from '../views/V_Profile.vue';
 import instance from '../components/Instance.js';
+import store from '@/store';
+import { mapGetters } from 'vuex';
 
 Vue.use(VueRouter);
 
@@ -45,21 +47,19 @@ const router = new VueRouter({
 // const requireAuth = ['/profile', '/'] // авторизированный
 // const notRequireAuth = ['/auth', '/register'] // неавторизированный
 
-router.beforeEach(async (to, from, next) => {
-  let isAuth = false;
-  try {
-    await instance.get('auth/isloggedin');
-    isAuth = true;
-  } catch (error) {}
+router.beforeEach((to, from, next) => {
   
+  const isLoggedIn = localStorage.getItem('isLoggedIn') || false
+  console.log(isLoggedIn)
+  // const isLoggedIn = storeGetters.isAuthenticated;
   if (!to.meta.notRequireAuth) {
-    if (isAuth) {
+    if (isLoggedIn) {
       next();
     } else {
       next({ name: 'Auth' });
     }
   } else {
-    if (!isAuth) next();
+    if (!isLoggedIn) next();
     else {
       next({ name: 'Profile' });
     }

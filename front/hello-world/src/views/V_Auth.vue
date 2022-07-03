@@ -70,6 +70,7 @@ import router from '@/router';
 import { validationMixin } from 'vuelidate';
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import instance from '../components/Instance.js';
+import { mapActions } from 'vuex';
 
 export default {
   mixins: [validationMixin],
@@ -88,13 +89,13 @@ export default {
     },
   },
   methods: {
+    ...mapActions('user', ['loginUser']),
     async checkForm() {
       this.$v.form.$touch();
       if (!this.$v.form.$error) {
         console.log('Валидация успешна');
         try {
-          instance.post('auth/login', this.form);
-          console.log(instance.data);
+          await this.loginUser(this.form);
           router.push({ name: 'Home' });
         } catch (error) {
           console.log(error);
