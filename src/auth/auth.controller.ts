@@ -8,24 +8,19 @@ import CreateUserDto from '../users/dto/createUser.dto';
 import { UsersService } from '../users/users.service';
 import LoginUserDto from '../users/dto/loginUser.dto';
 import RequestWithUser from './requestWithUser.interface';
+import { ApiTags } from '@nestjs/swagger';
 
 
 @Controller('auth/')
+@ApiTags('auth')
 export class AuthController {
   constructor(private authService: AuthService, private userService: UsersService) {}
 
+  //@UseGuards(LocalAuthGuard)
   @HttpCode(200)
-  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req: RequestWithUser, @Res() res: Response) {
-    const {user} = req;
-    const cookie = this.authService.getCookieWithJwtToken(user.id);
-    res.cookie('Set-Cookie', cookie, {
-      maxAge: 60000,
-      httpOnly:true
-    });
-    user.password = undefined;
-    return res.json(req.user);
+  async login(@Body() dto: LoginUserDto, @Request() req: RequestWithUser, @Res() res: Response) {
+    return await this.authService.login(dto, res);
   }
 
   @Post('register')
@@ -39,5 +34,11 @@ export class AuthController {
   async logOut(@Req() req: RequestWithUser, @Res() res: Response) {
     res.setHeader('Set-Cookie', this.authService.getCookieForLogOut());
     return res.sendStatus(200);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('isloggedin')
+  isLoggedIn() {
+    return true
   }
 }
