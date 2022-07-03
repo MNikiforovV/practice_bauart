@@ -10,7 +10,7 @@ import { Response } from 'express';
 @Injectable()
 export class AuthService {
     constructor(
-        //private readonly configService: ConfigService,
+        private readonly configService: ConfigService,
         private readonly usersService: UsersService,
         private readonly jwtService: JwtService
       ) {}
@@ -42,7 +42,7 @@ export class AuthService {
   public getCookieWithJwtToken(userId: number) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload)
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age='600s'}`;
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}}`;
   }
 
   public getCookieForLogOut() {

@@ -8,14 +8,16 @@ import CreateUserDto from '../users/dto/createUser.dto';
 import { UsersService } from '../users/users.service';
 import LoginUserDto from '../users/dto/loginUser.dto';
 import RequestWithUser from './requestWithUser.interface';
+import { ApiTags } from '@nestjs/swagger';
 
 
 @Controller('auth/')
+@ApiTags('auth')
 export class AuthController {
   constructor(private authService: AuthService, private userService: UsersService) {}
 
-  @HttpCode(200)
   //@UseGuards(LocalAuthGuard)
+  @HttpCode(200)
   @Post('login')
   async login(@Body() dto: LoginUserDto, @Request() req: RequestWithUser, @Res() res: Response) {
     return await this.authService.login(dto, res);

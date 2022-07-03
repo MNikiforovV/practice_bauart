@@ -2,8 +2,10 @@ import { Controller, Get, Request, Post, UseGuards, Body, Res, Req, HttpStatus }
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { AuthService } from '../auth/auth.service';
 import { UsersService } from './users.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('user/')
+@ApiTags('user')
 export class UserController {
   constructor(private authService: AuthService, private userService: UsersService) {}
   
