@@ -7,6 +7,9 @@ import V_Profile from '../views/V_Profile.vue';
 import instance from '../components/Instance.js';
 import store from '@/store';
 import { mapGetters } from 'vuex';
+import PageNotFound from '@/components/PageNotFound.vue';
+
+
 
 Vue.use(VueRouter);
 
@@ -35,7 +38,15 @@ const routes = [
     name: 'Profile',
     component: V_Profile,
     props: true,
+  },{
+    path: '*',
+    name: 'PageNot',
+    component: PageNotFound,
+    props: true,
+    meta: { notRequireAuth: true },
+    
   },
+  
 ];
 
 const router = new VueRouter({
@@ -51,7 +62,6 @@ router.beforeEach((to, from, next) => {
   
   const isLoggedIn = localStorage.getItem('isLoggedIn') || false
   console.log(isLoggedIn)
-  // const isLoggedIn = storeGetters.isAuthenticated;
   if (!to.meta.notRequireAuth) {
     if (isLoggedIn) {
       next();

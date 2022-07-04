@@ -6,6 +6,7 @@ import VueCookies from 'vue-cookies';
 import store from './store'
 
 
+
 Vue.config.productionTip = false
 
 Vue.use(Vuelidate);

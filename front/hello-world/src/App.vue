@@ -13,26 +13,18 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Header from '@/components/V_Header.vue';
 
 export default {
   computed: {
-    // mapGetters(['allInfo'])
     ...mapState('user', ['info']),
   },
   methods: {
     ...mapActions('user', ['getInfo']),
   },
-
- 
   async mounted() {
-    // this.$store.dispatch('fetchUsers');
     await this.getInfo();
-
-    // await instance
-    //   .get('user/profile/')
-    //   .then((response) => (this.info = response.data));
   },
   components: {
     Header,
@@ -40,5 +32,7 @@ export default {
 };
 </script>
 <style>
-#app{margin-top: 70px;}
+#app {
+  margin-top: 70px;
+}
 </style>

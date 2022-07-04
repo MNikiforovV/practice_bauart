@@ -12,6 +12,11 @@
                   ><h6>Регистрация</h6></router-link
                 >
               </li>
+              <li class="nav-item" v-if="isLoggedIn">
+                <router-link class="nav-link active" to="/register"
+                  ><h6>Профиль</h6></router-link
+                >
+              </li>
               <li class="nav-item" v-if="!isLoggedIn">
                 <router-link class="nav-link active" to="/auth"
                   ><h6>Авторизация</h6></router-link

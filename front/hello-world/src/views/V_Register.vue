@@ -11,6 +11,9 @@
             <p v-if="$v.form.username.$dirty && !$v.form.name.required" class="invalid-feedback">
               Обязательное поле
             </p>
+            <p v-if="$v.form.username.$dirty && !$v.form.name.alpha" class="invalid-feedback">
+              Имя должно содержать только буквы
+            </p>
           </div>
 
 
@@ -21,6 +24,9 @@
               placeholder="Ваша фамилия" v-model.trim="form.surname">
             <p v-if="$v.form.username.$dirty && !$v.form.surname.required" class="invalid-feedback">
               Обязательное поле
+            </p>
+            <p v-if="$v.form.username.$dirty && !$v.form.surname.alpha" class="invalid-feedback">
+              Фамилия должна содержать только буквы
             </p>
           </div>
 
@@ -48,7 +54,7 @@
               Обязательное поле
             </p>
             <p v-if="$v.form.username.$dirty && !$v.form.username.minLength" class="invalid-feedback">
-              Минимальная длинна логина 4 символа
+              Минимальная длина логина 4 символа
             </p>
 
           </div>
@@ -61,7 +67,7 @@
               Обязательное поле
             </p>
             <p v-if="$v.form.username.$dirty && !$v.form.password.minLength" class="invalid-feedback">
-              Минимальная длинна логина 4 символа
+              Минимальная длина логина 4 символа
             </p>
           </div>
 
@@ -108,8 +114,8 @@ export default {
   },
   validations: {
     form: {
-      name: { required },
-      surname: { required },
+      name: { required, alpha: val => /^[а-яё]*$/i.test(val)},
+      surname: { required, alpha: val => /^[а-яё]*$/i.test(val) },
       email: { required, email },
       username: { required, minLength: minLength(4) },
       password: { required, minLength: minLength(4) },
