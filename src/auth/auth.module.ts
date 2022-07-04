@@ -11,6 +11,7 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import User from 'src/users/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtRefreshTokenStrategy } from './jwt/jwt-refresh.stertegy';
 
 @Module({
   imports: [
@@ -21,15 +22,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get('JWT_SECRET'),
+        secret: configService.get('JWT_ACCESS_TOKEN_SECRET'),
         signOptions: {
-          expiresIn: `${configService.get('JWT_EXPIRATION_TIME')}s`,
+          expiresIn: `${configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s`,
         },
       }),
     }),
     TypeOrmModule.forFeature([User])
   ],
   controllers:[AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, UsersService, ConfigService],
+  providers: [AuthService, LocalStrategy, JwtStrategy, UsersService, ConfigService, JwtRefreshTokenStrategy],
 })
 export class AuthModule {}
