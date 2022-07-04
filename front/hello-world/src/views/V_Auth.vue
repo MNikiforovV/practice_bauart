@@ -8,7 +8,7 @@
           <form @submit.prevent="checkForm">
             <div>
               <div class="mb-3">
-                <label for="email" class="form-label">email</label>
+                <label for="email" class="form-label">Адрес эл. почты</label>
                 <input
                   type="email"
                   class="form-control"
@@ -27,11 +27,12 @@
                   v-if="$v.form.email.$dirty && !$v.form.email.email"
                   class="invalid-feedback"
                 >
-                  Обязательное поле
+                  Неверный формат Email
                 </p>
+              
               </div>
               <div class="mb-3">
-                <label for="password" class="form-label">Пароль</label>
+                <label for="password" class="form-label">Введите пароль</label>
                 <input
                   type="password"
                   class="form-control"
@@ -52,6 +53,7 @@
                 >
                   Минимальная длина пароля 4 символа
                 </p>
+              
               </div>
 
               <button class="btn btn-primary">Авторизация</button>
@@ -70,6 +72,8 @@ import router from '@/router';
 import { validationMixin } from 'vuelidate';
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import instance from '../components/Instance.js';
+import { mapActions } from 'vuex';
+
 
 export default {
   mixins: [validationMixin],
@@ -83,21 +87,39 @@ export default {
   },
   validations: {
     form: {
-      email: { required, email },
-      password: { required, minLength: minLength(4) },
+      email: {
+        required,
+        email,
+        // validError: (val) => validErrorEmail.test(val),
+      },
+      password: {
+        required,
+        minLength: minLength(4),
+
+        //    validError: (val) => validErrorPass.test(val),
+      },
     },
   },
   methods: {
+    ...mapActions('user', ['loginUser']),
     async checkForm() {
+    //   var validErrorPass = false;
+    //   var validErrorEmail = false;
       this.$v.form.$touch();
       if (!this.$v.form.$error) {
         console.log('Валидация успешна');
         try {
-          instance.post('auth/login', this.form);
-          console.log(instance.data);
+          await this.loginUser(this.form);
           router.push({ name: 'Home' });
         } catch (error) {
-          console.log(error);
+          if (error == 401) {
+            // console.log(error);
+            // validErrorPass = true;
+            // console.log(validErrorPass);
+          } else if (error == 404) {
+            // validErrorEmail = true;
+            // console.log(validErrorEmail);
+          }
         }
       }
     },

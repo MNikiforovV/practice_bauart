@@ -5,6 +5,11 @@ import V_Register from '../views/V_Register.vue';
 import V_Home from '../views/V_Home.vue';
 import V_Profile from '../views/V_Profile.vue';
 import instance from '../components/Instance.js';
+import store from '@/store';
+import { mapGetters } from 'vuex';
+import PageNotFound from '@/components/PageNotFound.vue';
+
+
 
 Vue.use(VueRouter);
 
@@ -33,7 +38,15 @@ const routes = [
     name: 'Profile',
     component: V_Profile,
     props: true,
+  },{
+    path: '*',
+    name: 'PageNot',
+    component: PageNotFound,
+    props: true,
+    meta: { notRequireAuth: true },
+    
   },
+  
 ];
 
 const router = new VueRouter({
@@ -45,21 +58,18 @@ const router = new VueRouter({
 // const requireAuth = ['/profile', '/'] // авторизированный
 // const notRequireAuth = ['/auth', '/register'] // неавторизированный
 
-router.beforeEach(async (to, from, next) => {
-  let isAuth = false;
-  try {
-    await instance.get('auth/isloggedin');
-    isAuth = true;
-  } catch (error) {}
+router.beforeEach((to, from, next) => {
   
+  const isLoggedIn = localStorage.getItem('isLoggedIn') || false
+  console.log(isLoggedIn)
   if (!to.meta.notRequireAuth) {
-    if (isAuth) {
+    if (isLoggedIn) {
       next();
     } else {
       next({ name: 'Auth' });
     }
   } else {
-    if (!isAuth) next();
+    if (!isLoggedIn) next();
     else {
       next({ name: 'Profile' });
     }
