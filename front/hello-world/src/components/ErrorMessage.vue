@@ -1,47 +1,25 @@
 <template>
-  <div class="error-message">{{ errorMessage }}</div>
+  <div id="app">
+    <form> <label for="pass">Пароль</label> <input id="pass" :class='{ "error": $v.password.$error }' type="password"
+        v-model='password' @blur='$v.password.$touch()'> <span v-if="!$v.password.minLength && $v.password.$error"
+        class="error-msg"> Необходимо указать пароль не менее {{ $v.password.$params.minLength.min }} символов </span>
+      <label for="confirm_pass">Подтверждение пароля</label> <input id="confirm_pass"
+        :class='{ "error": $v.confirmPassword.$error }' type="password" v-model='confirmPassword'
+        @blur='$v.confirmPassword.$touch()'> 
+        <span v-if="!$v.confirmPassword.sameAs && $v.confirmPassword.$error"
+        class="error-msg"> Пароли не совпадают </span>
+    </form>
+  </div>
 </template>
-
-<script>
-export default {
-  props: {
-    error: String
-  },
-  computed: {
-    errorMessage() {
-      let errorMessage = "";
-      switch (this.error) {
-        case "emptyField":
-          errorMessage = "Поле обязательное для заполнения";
-          break;
-
-        case "passLimit":
-          errorMessage = "Длина пароля должна быть от 4 до 16 символов";
-          break;
-
-        case "emailError":
-          errorMessage = "Неверный формат эл. почты";
-          break;
-
-        case "nameError":
-          errorMessage = "Имя и Фамилия должны быть с большой буквы";
-          break;
-
-        case "nameNumberError":
-          errorMessage = "Имя и Фамилия не должны содержать цифр";
-          break;
-
-        case "passAcceptError":
-          errorMessage = "Пароли должны совпадать";
-          break;
-
-        case "passNumberError":
-          errorMessage = "В пароле должна быть цифра";
-          break;
-      }
-
-      return errorMessage;
-    }   
-  }
-};
-</script>
+ <script>import { minLength, sameAs } from 'vuelidate/lib/validators';
+ export default {
+   data: () => ({ password: '', confirmPassword: '', }),
+   validations: {
+     password: { minLength: minLength(6), },
+     confirmPassword: {
+       sameAs: sameAs('password'), // если переменная пришла из вне //
+       sameAs: sameAs(vue => vue.newObj.password)
+     },
+   },
+ };
+ </script>

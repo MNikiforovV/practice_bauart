@@ -48,8 +48,8 @@
 
           <div class="mb-3">
             <label for="username" class="form-label">Логин</label>
-            <input type="username" class="form-control" :class="$v.form.username.$error ? 'is-invalid' : ''" id="username"
-              placeholder="Ваш логин" v-model.trim="form.username">
+            <input type="username" class="form-control" :class="$v.form.username.$error ? 'is-invalid' : ''"
+              id="username" placeholder="Ваш логин" v-model.trim="form.username">
             <p v-if="$v.form.username.$dirty && !$v.form.username.required" class="invalid-feedback">
               Обязательное поле
             </p>
@@ -61,26 +61,29 @@
 
           <div class="mb-3">
             <label for="password" class="form-label">Пароль</label>
-            <input type="password" class="form-control" :class="$v.form.password.$error ? 'is-invalid' : ''"
-              id="password" placeholder="Ваш пароль" v-model.trim="form.password">
+            <input type="password" class="form-control"
+              :class="$v.form.password.$error ? 'is-invalid' : ''" id="password" placeholder="Ваш пароль"
+              v-model.trim="form.password">
             <p v-if="$v.form.username.$dirty && !$v.form.password.required" class="invalid-feedback">
               Обязательное поле
             </p>
             <p v-if="$v.form.username.$dirty && !$v.form.password.minLength" class="invalid-feedback">
               Минимальная длина логина 4 символа
             </p>
+
           </div>
 
           <div class="mb-3">
             <label for="passwordConfirm" class="form-label">Подтверждение пароля</label>
-            <input type="password" class="form-control" :class="$v.form.passwordConfirm.$error ? 'is-invalid' : ''"
-              id="passwordConfirm" placeholder="Повторите Ваш пароль" v-model.trim="form.passwordConfirm">
+            <input @blur='$v.confirmPassword.$touch()' type="password" class="form-control"
+              :class="$v.form.passwordConfirm.$error ? 'is-invalid' : ''" id="passwordConfirm"
+              placeholder="Повторите Ваш пароль" v-model.trim="form.passwordConfirm">
             <p v-if="$v.form.username.$dirty && !$v.form.passwordConfirm.required" class="invalid-feedback">
               Обязательное поле
             </p>
           </div>
 
-          <button onclick="submit" type="submit" class="btn btn-primary">Зарегестрироваться</button>
+          <button onclick="submit" type="submit" class="btn btn-primary">Зарегистрироваться</button>
 
         </form>
       </div>
@@ -141,13 +144,15 @@ export default {
           });
 
       }
+    },
+    validate() {
+      console.log(this.password === this.passwordConfirm)
     }
   }
 }
-
-
-
 </script>
 
 <style>
 </style>
+
+

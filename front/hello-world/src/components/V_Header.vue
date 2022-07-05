@@ -14,7 +14,11 @@
               </li>
               <li class="nav-item" v-if="isLoggedIn">
                 <router-link class="nav-link active" to="/register"
-                  ><h6>Профиль</h6></router-link
+                  ><h6>Личный кабинет</h6></router-link
+                >
+              </li><li class="nav-item" v-if="isLoggedIn">
+                <router-link class="nav-link active" to="/project"
+                  ><h6>Проекты</h6></router-link
                 >
               </li>
               <li class="nav-item" v-if="!isLoggedIn">

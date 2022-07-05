@@ -16,7 +16,7 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
 
-    @InjectRepository(Project)
+    @InjectRepository(Subscriber)
     private subscribersRepostory: Repository<Subscriber>
   ) {}
 
