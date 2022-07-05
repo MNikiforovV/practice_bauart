@@ -20,7 +20,7 @@ export default {
         const { data } = await instance.post('auth/login', form);
         commit('updateInfo', data);
         localStorage.setItem('isLoggedIn', true);
-    }
+    },
   },
   mutations: {
     updateInfo(state, info) {

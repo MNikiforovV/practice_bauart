@@ -35,7 +35,7 @@ export class AuthController {
     // const {name, surname, email, password, role, currentHashedRefreshToken} = user
     // return res({name, surname, email, password, role, currentHashedRefreshToken})
 
-    return request.user.email // правильно должно быть return request.user, но у меня не парвильно собирается проект
+    return request.user // правильно должно быть return request.user, но у меня не парвильно собирается проект
   }
 
   @UseGuards(JwtAuthGuard)

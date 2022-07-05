@@ -3,9 +3,9 @@
     <Header />
     <div id="app">
       <div class="user" v-if="info != null">
-        <p>Ваш Email: {{ info.email }}</p>
+        <!-- <p>Ваш Email: {{ info.email }}</p>
         <p>Ваш Name: {{ info.name }}</p>
-        <p>Ваш Surname: {{ info.surname }}</p>
+        <p>Ваш Surname: {{ info.surname }}</p> -->
       </div>
       <router-view />
     </div>

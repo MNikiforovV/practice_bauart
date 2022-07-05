@@ -1,26 +1,39 @@
 <template>
-  <div class="position-absolute top-50 start-50 translate-middle">
-    <h1>
-      <p class="text-center">Профиль</p>
-    </h1>
+  <div id="V_Profile">
+    <div>
+      <ul id="example-1">
+        <li v-for="item in items" :key="item.message">
+          <p>{{ item.message }}</p>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import router from '@/router/index.js';
-import instance from '../components/Instance.js';
+
+// !! жду бэк, чтобы проверить !!
+
+import { mapState, mapActions } from 'vuex';
 export default {
-  name: 'V_Profile',
-  methods: {},
-  mounted() {
-    try {
-      instance.get('auth/isloggedin');
-    } catch (error) {
-      console.log(error);
-      this.$router.push('/auth');
-    }
+   data() {
+    return {
+      items: [info],
+    };
   },
+  computed: {
+    ...mapState('project', ['info'])
+  },
+  methods: {
+    ...mapActions('project', ['getInfo'])
+  },
+  async mounted() {
+    await this.getInfo();
+  }
 };
 </script>
+
 <style></style>
+
+
