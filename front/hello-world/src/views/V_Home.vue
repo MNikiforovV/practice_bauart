@@ -1,18 +1,19 @@
 <template>
-  <div class="position-absolute top-50 start-50 translate-middle">
+  <div id="V_Home">
     <div>
+      </div>
       <Form @submit.prevent="createbtn">
         <button class="btn btn-primary">Создать проект</button>
       </Form>
-      <Form @submit.prevent="deletebtn" v-if="info.title != null">
-        <button class="btn btn-primary">Удалить проект</button>
+    <div class="project" v-for="project in info" :key="project.id">
+      <p class="text-center">Название проекта: {{ project.title }}</p>
+      <p class="text-center">Описание проекта: {{ project.content }}</p>
+      <p class="text-center">Автор проекта: {{ project.author.name }}</p>
+      
+      <Form @submit.prevent="deletebtn">
+        <button class="btn btn-danger">Удалить проект</button>
       </Form>
     </div>
-    <h1>
-      <p class="text-center">Название проекта: {{ info.title }}</p>
-      <p class="text-center">Описание проекта: {{ info.content }}</p>
-      <p class="text-center">Автор проекта: {{ info.author.name }}</p>
-    </h1>
   </div>
 </template>
 
@@ -48,4 +49,20 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+#V_Home {
+  font-family: "Avenir", Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin: 60px auto;
+  width: 400px;
+}
+
+.project {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+</style>
