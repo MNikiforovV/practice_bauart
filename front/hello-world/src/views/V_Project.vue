@@ -12,19 +12,19 @@
                 <input
                   type="text"
                   class="form-control"
-                  :class="$v.form.name.$error ? 'is-invalid' : ''"
-                  id="name"
+                  :class="$v.form.title.$error ? 'is-invalid' : ''"
+                  id="title"
                   placeholder="Введите название проекта"
-                  v-model.trim="form.name"
+                  v-model.trim="form.title"
                 />
                 <p
-                  v-if="$v.form.name.$dirty && !$v.form.name.required"
+                  v-if="$v.form.title.$dirty && !$v.form.name.required"
                   class="invalid-feedback"
                 >
                   Обязательное поле
                 </p>
                 <p
-                  v-if="$v.form.name.$dirty && !$v.form.name.minLength"
+                  v-if="$v.form.title.$dirty && !$v.form.name.minLength"
                   class="invalid-feedback"
                 >
                   Минимальная длина названия 5 символов
@@ -123,7 +123,7 @@ export default {
   data() {
     return {
       form: {
-        name: '',
+        title: '',
         content: '',
         // author: '',
       },
@@ -131,7 +131,7 @@ export default {
   },
   validations: {
     form: {
-      name: {
+      title: {
         required,
         minLength: minLength(5),
       },

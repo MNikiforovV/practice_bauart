@@ -11,13 +11,17 @@ export default {
       const { data } = await instance.get('/user/profile/');
       commit('updateInfo', data);
     },
-    async createProject({ commit }) {
+    async createProject({ commit }, form) {
       const { data } = await instance.post('/project/create', form);
       commit('updateInfo', data);
     },
     async viewAllProject({ commit }) {
       const { data } = await instance.get('/project');
       commit('updateInfo', data);
+    },
+    async deleteProject({ commit }) {
+      await instance.delete('/project/:slug'); // пока не знаю какой правильный роут
+      commit('clearInfo');
     },
   },
   mutations: {
