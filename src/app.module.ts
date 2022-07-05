@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { AuthService } from './auth/auth.service';
 import { UsersService } from './users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { JwtService } from '@nestjs/jwt';
         JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
       })
     }),
+    ProjectsModule,
 
   ],
   controllers:[AppController],
