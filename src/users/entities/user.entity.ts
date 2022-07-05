@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 import Project from 'src/projects/entities/project.entity';
 import Role from 'src/users/roles/role.enum';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany } from 'typeorm';
 
 @Entity()
 class User {
@@ -39,8 +39,11 @@ class User {
     @OneToMany(() => Project, (project: Project) => project.author)
     public projects: Project[];
 
-    @ManyToOne(() => User, (subscriber: User) => subscriber.projects)
-    public subscriber: User;
+    // @ManyToMany(() => Project, (project: Project) => project.subscribers)
+    // public subscribed: Project[];
+
+    // @ManyToOne(() => Project, (project: Project) => project.subscribers)
+    // public subscribed: Project[];
 
   }
 

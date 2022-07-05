@@ -1,10 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import User from './user.entity';
+import User from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import CreateUserDto from './dto/createUser.dto';
 import { encodePassword } from 'src/utils/bcrypt';
 import * as bcrypt from 'bcrypt';
+import Project from 'src/projects/entities/project.entity';
+import Subscriber from 'src/projects/entities/subscriber.entity';
 
 
 // This should be a real class/interface representing a user entity
@@ -12,7 +14,10 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>
+    private usersRepository: Repository<User>,
+
+    @InjectRepository(Project)
+    private subscribersRepostory: Repository<Subscriber>
   ) {}
 
   async getByEmail(email: string): Promise<User | undefined> {
@@ -77,6 +82,11 @@ export class UsersService {
     return this.usersRepository.update(userId, {
       currentHashedRefreshToken: null
     });
+  }
+
+  async findUsersProjects(user: User) {
+    
+
   }
 
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query, HttpException, HttpStatus } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -30,11 +30,24 @@ export class ProjectsController {
   //   return this.projectsService.findOne(+id);
   // }
 
-  @ApiOperation({ summary: 'Update project' })
-  @Patch(':slug')
-  async update(@Param() params, @Body() updateProjectDto: UpdateProjectDto) {
+  @ApiOperation({ summary: 'Subscribe to project' })
+  @Patch('subscribe/:slug')
+  async subscribe(@Param() params, @Body() updateProjectDto: UpdateProjectDto) {
+    const projct = await this.projectsService.getProjectBySlug(params.slug);
     return await this.projectsService.updateProject(params.slug, updateProjectDto);
   }
+
+  @UseGuards(JwtAuthGuard)
+    @ApiOperation({ summary: 'Update project' })
+    @Patch(':slug')
+    async update(@Param() params, @Body() updateProjectDto: UpdateProjectDto, @Req() req: RequestWithUser) {
+      const project = await this.projectsService.getProjectBySlug(params.slug)
+      console.log(project)
+      if (this.projectsService.isAuthor(project, req.user)){
+        return await this.projectsService.updateProject(params.slug, updateProjectDto);
+      }
+      throw new HttpException('Table wasnt updated', HttpStatus.FORBIDDEN)
+    }
 
   @ApiOperation({ summary: 'Delete project' })
   @Delete(':slug')
