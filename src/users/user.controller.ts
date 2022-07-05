@@ -17,8 +17,9 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'User profile' })
   @Get('profile')
-  getProfile(@Request() req: RequestWithUser, @Res() res) {
+  async getProfile(@Request() req: RequestWithUser, @Res() res) {
+    const projects = await this.userService.getSubscribersProjects(req.user);
     
-    return res.json({name: req.user.name, surname: req.user.surname, email: req.user.email})
+    return res.json({projects: projects })
   }
 }

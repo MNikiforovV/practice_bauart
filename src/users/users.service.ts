@@ -16,12 +16,15 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
 
+    @InjectRepository(Project)
+    private projectsRepository: Repository<Project>,
+
     @InjectRepository(Subscriber)
     private subscribersRepostory: Repository<Subscriber>
   ) {}
 
   async getByEmail(email: string): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ where:{ email: email }})
+    const user = await this.usersRepository.findOne({ where:{ email: email }, relations: ['subscribed']})
     if (!user){
       throw new HttpException('User with this email does not exist', HttpStatus.NOT_FOUND);
     }
@@ -29,7 +32,7 @@ export class UsersService {
   }
 
   async getById(id: number) {
-      const user = await this.usersRepository.findOne({ where:{ id: id }});
+      const user = await this.usersRepository.findOne({ where:{ id: id }, relations: ['subscribed']});
       if (!user) {
         throw new HttpException('User with this id does not exist', HttpStatus.NOT_FOUND);
       }
@@ -37,7 +40,7 @@ export class UsersService {
     }
   
   async tryGetUser(email: string): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ where:{ email: email }})
+    const user = await this.usersRepository.findOne({ where:{ email: email }, relations: ['subscribed']})
     if (!user){
       null;
     } else {
@@ -84,9 +87,47 @@ export class UsersService {
     });
   }
 
-  async findUsersProjects(user: User) {
-    
+  async getProjectsByUser(user: User) {
+    const userWithProjects = await this.usersRepository.findOne({ where:{ id: user.id}, relations: ['projects']});
 
+    console.log(userWithProjects)
+    if (userWithProjects) {
+    return userWithProjects.projects;
+    }
+    throw new HttpException('Project not found', HttpStatus.FORBIDDEN); 
+  }
+
+  // getSubscribersProjects(user: User){
+  //   console.log(user.subscribed)
+  //   return user.subscribed
+  // }
+
+
+  // async getSubscribersProjects(user: User){
+  //   const subProjects = user.subscribed;
+  //   const projects = [];
+    
+  //   for (var p of subProjects){
+  //     projects.push(await this.projectsRepository.findOne({ where:{id: p.projectId }}))
+  //   } 
+  //   return projects
+  // }
+
+  async getSubscribersProjects(user: User){
+    const subProjects = user.subscribed;
+    console.log('1', subProjects)
+    const subscribers = [];
+    
+    for (var p of subProjects){
+      subscribers.push(await this.subscribersRepostory.findOne({ where:{id: p.id }}))
+    } 
+    console.log('2', subscribers)
+    const projects = [];
+    for (var v of subscribers){
+      projects.push(await this.projectsRepository.findOne({ where:{id: v.projectId }}))
+    } 
+    console.log('3', projects)
+    return projects
   }
 
 }

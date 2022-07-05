@@ -30,12 +30,12 @@ export class ProjectsController {
   //   return this.projectsService.findOne(+id);
   // }
 
-  @ApiOperation({ summary: 'Subscribe to project' })
-  @Patch('subscribe/:slug')
-  async subscribe(@Param() params, @Body() updateProjectDto: UpdateProjectDto) {
-    const projct = await this.projectsService.getProjectBySlug(params.slug);
-    return await this.projectsService.updateProject(params.slug, updateProjectDto);
-  }
+  // @ApiOperation({ summary: 'Subscribe to project' })
+  // @Patch('subscribe/:slug')
+  // async subscribe(@Param() params, @Body() updateProjectDto: UpdateProjectDto) {
+  //   const projct = await this.projectsService.getProjectBySlug(params.slug);
+  //   return await this.projectsService.updateProject(params.slug, updateProjectDto);
+  // }
 
   @UseGuards(JwtAuthGuard)
     @ApiOperation({ summary: 'Update project' })
@@ -44,14 +44,19 @@ export class ProjectsController {
       const project = await this.projectsService.getProjectBySlug(params.slug)
       console.log(project)
       if (this.projectsService.isAuthor(project, req.user)){
-        return await this.projectsService.updateProject(params.slug, updateProjectDto);
+        const {toUpdate, updatedProject} = await this.projectsService.updateProject(params.slug, updateProjectDto);
+        return {toUpdate, updatedProject}
       }
       throw new HttpException('Table wasnt updated', HttpStatus.FORBIDDEN)
     }
 
   @ApiOperation({ summary: 'Delete project' })
   @Delete(':slug')
-  remove(@Param() params) {
-    return this.projectsService.delete(params.slug);
+  async remove(@Param() params, @Req() req: RequestWithUser) {
+    const project = await this.projectsService.getProjectBySlug(params.slug)
+    if (this.projectsService.isAuthor(project, req.user)){
+      return this.projectsService.delete(params.slug);
+    }
+    throw new HttpException('Table wasnt updated', HttpStatus.FORBIDDEN)
   }
 }

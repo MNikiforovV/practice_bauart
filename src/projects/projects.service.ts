@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { userInfo } from 'os';
 import Subscriber from 'src/projects/entities/subscriber.entity';
 import User from 'src/users/entities/user.entity';
 import { DeleteResult, Repository } from 'typeorm';
@@ -39,6 +40,9 @@ export class ProjectsService {
     }
     throw new HttpException('Project not found', HttpStatus.FORBIDDEN); //ProjectNotFoundException(id);
   }
+
+
+
    
   async updateProject(slug: string, project: UpdateProjectDto) {
     // await this.projectsRepository.update(slug, project);
@@ -47,7 +51,7 @@ export class ProjectsService {
     let updated = Object.assign(toUpdate, project);
     const updatedProject = await this.projectsRepository.save(updated);
     if (updatedProject) {
-      return updatedProject
+      return {toUpdate, updatedProject}
     }
     throw new HttpException('Project not found', HttpStatus.FORBIDDEN);  //ProjectNotFoundException(id);
   }
@@ -61,12 +65,14 @@ export class ProjectsService {
   }
   
   isAuthor(project: Project, user: User){
-    if (project.author.email == user.email){
+    if (project.author.email == user.email || user.role == 'Admin'){
       return true;
     }
       throw new HttpException('You dont have permission to see this page', HttpStatus.FORBIDDEN)
     }
 
+
+    
   // async subscribe(project: Project, user: User) {
   //   //const project = this.getProjectBySlug(slug)
   //   const newSubscriber = this.subscribersRepostory.create({
