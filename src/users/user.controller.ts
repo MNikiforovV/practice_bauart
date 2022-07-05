@@ -18,8 +18,9 @@ export class UserController {
   @ApiOperation({summary: 'User profile' })
   @Get('profile')
   async getProfile(@Request() req: RequestWithUser, @Res() res) {
-    const projects = await this.userService.getSubscribersProjects(req.user);
-    
-    return res.json({projects: projects })
+    const authorProjects = await this.userService.getProjectsByUser(req.user);
+    const subscriberProjects = await this.userService.getSubscribersProjects(req.user);
+
+    return res.json({authorProjects,  subscriberProjects})
   }
 }
