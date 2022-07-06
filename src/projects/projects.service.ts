@@ -75,29 +75,29 @@ export class ProjectsService {
     );
   }
 
-  async isAuthor(project: Project, user: User) {
+  async isNotAuthor(project: Project, user: User) {
     if (project.author.email == user.email || user.role == 'Admin') {
-      return true;
+      return false;
     } else {
-    return false;}
+    return true;}
   }
 
   async isAlreadySubscribed(project: Project, user: User) {
     const subProjects = await this.usersService.getSubscribersProjects(user)
-    const subbedProjects = []
+    console.log(subProjects)
     for (var p of subProjects) {
       if (p.id == project.id){
         return false
       }
     }
-    throw new HttpException('You cannot subscribe twice on this project', HttpStatus.FORBIDDEN)
+    return true;
   }
 
   async subscribe(project: Project, user: User) {
-    const check = await this.isAuthor(project, user)
+    const check = await this.isNotAuthor(project, user)
     const doubleCheck = await this.isAlreadySubscribed(project, user)
-    console.log(doubleCheck)
-    if (!check && doubleCheck) {
+    console.log(check, doubleCheck)
+    if (check && doubleCheck) {
       const sub = this.subscribersRepostory.create({
         user: user,
         project: project,
