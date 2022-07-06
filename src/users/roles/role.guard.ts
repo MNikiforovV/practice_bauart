@@ -1,5 +1,5 @@
 import Role from './role.enum';
-import { CanActivate, ExecutionContext, Injectable, mixin, Type } from '@nestjs/common';
+import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable, mixin, Type } from '@nestjs/common';
 import RequestWithUser from 'src/auth/requestWithUser.interface';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import { ProjectsService } from 'src/projects/projects.service';
@@ -28,10 +28,11 @@ const RoleGuard = (role: Role): Type<CanActivate> => {
       //console.log(this.projectsService)
       const project = await this.projectsService.getProjectBySlug(slug)
       console.log(project)
-      if (project.author.email == user.email) {
+      if (project.author.email == user.email || user?.role.includes(role)) {
         return true
       } else {
-        return false;
+        throw new HttpException('xuy tebe', HttpStatus.FORBIDDEN);
+        // return false;
       }
     }
   }

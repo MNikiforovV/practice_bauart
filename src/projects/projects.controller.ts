@@ -39,15 +39,16 @@ export class ProjectsController {
   //   return await this.projectsService.updateProject(params.slug, updateProjectDto);
   // }
 
-  //@UseGuards(RoleGuard(Role.Admin))
+  @UseGuards(RoleGuard(Role.Admin))
   @ApiOperation({ summary: 'Update project' })
   @Patch(':slug')
   async update(@Param() params, @Body() updateProjectDto: UpdateProjectDto, @Req() req: RequestWithUser) {
-    //const project = await this.projectsService.getProjectBySlug(params.slug)
+    const project = await this.projectsService.getProjectBySlug(params.slug)
     // console.log('patch')
     return await this.projectsService.updateProject(params.slug, updateProjectDto);
   }
 
+  @UseGuards(RoleGuard(Role.Admin))
   @ApiOperation({ summary: 'Delete project' })
   @Delete(':slug')
   async remove(@Param() params, @Req() req: RequestWithUser) {
