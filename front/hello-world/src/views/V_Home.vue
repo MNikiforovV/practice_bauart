@@ -16,9 +16,7 @@
           project.author.email == UserEmail || UserRole == 'Admin'
         "
       >
-        <button type="button" @click="deleteProject(project.slug)">
-          Удалить проект
-        </button>
+        
         <button type="button" @click="editProject(project.slug)">
           Изменить проект
         </button>
@@ -27,10 +25,10 @@
       </form> -->
         <!-- </Form> -->
       </div>
-      <button  type="button" @click="subForProject(project.slug)">
+      <button v-if="infoUser" type="button" @click="subForProject(project.slug)">
         Подписаться
       </button>
-      <button type="button" @click="">Отписаться</button>
+      <button type="button" @click="unSubForProject(infoUser.subscribed.id)">Отписаться</button>
     </div>
   </div>
 </template>
@@ -46,6 +44,7 @@ export default {
     ...mapState('project', ['info']),
     ...mapState('user', ['infoUser']),
     ...mapState('project', ['infoSub']),
+    ...mapState('project', ['infoUnSub']),
     
     UserRole() {
       if (this.infoUser) {
@@ -65,9 +64,9 @@ export default {
 
   methods: {
     ...mapActions('project', ['viewAllProject']),
-    ...mapActions('project', ['deleteProject']),
     ...mapActions('user', ['getInfoN']),
     ...mapActions('project', ['subForProject']),
+    ...mapActions('project', ['unSubForProject']),
 
     async createbtn() {
       this.$router.push('/project');

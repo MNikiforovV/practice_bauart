@@ -4,7 +4,8 @@ export default {
   namespaced: true,
   state: {
     info: null,
-    infoSub: null
+    infoSub: null,
+    infoUnSub: null
   },
   actions: {
     async getInfo({ commit }) {
@@ -38,6 +39,10 @@ export default {
       const { data } = await instance.post('/project/subscribe/' + slug);
       commit('subForProj', data);
     },
+    async unSubForProject({ commit }, id) {
+       await instance.delete('/project/unsubscribe/' + id);
+      commit('unSubForProject');
+    },
   },
   mutations: {
     updateInfo(state, info) {
@@ -51,6 +56,9 @@ export default {
     },
     subForProject(state, infoSub) {
       state.infoSub = infoSub;
+    },
+    unSubForProject(state) {
+      state.infoUnSub = null;
     },
   },
 
