@@ -40,13 +40,11 @@ export class ProjectsService {
     }
     throw new HttpException('Project not found', HttpStatus.FORBIDDEN); //ProjectNotFoundException(id);
   }
-
-
-
    
-  async updateProject(id: number, project: UpdateProjectDto) {
-    await this.projectsRepository.update(id, project);
-    const updatedProject = await this.projectsRepository.findOne({ where:{ id: id }}); //id, { relations: ['author'] }
+  async updateProject(slug: string, project: UpdateProjectDto) {
+    await this.projectsRepository.update(slug, project);
+    console.log()
+    const updatedProject = await this.projectsRepository.findOne({ where:{ slug: slug }}); //id, { relations: ['author'] }
     // let toUpdate = await this.projectsRepository.findOne({ where:{ slug: slug }, relations: ['author']});
     // let updated = Object.assign(toUpdate, project);
     // const updatedProject = await this.projectsRepository.save(updated);

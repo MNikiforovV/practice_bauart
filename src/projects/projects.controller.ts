@@ -5,6 +5,8 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import RequestWithUser from 'src/auth/requestWithUser.interface';
 import { ApiOperation } from '@nestjs/swagger';
+import RoleGuard from 'src/users/roles/role.guard';
+import Role from 'src/users/roles/role.enum';
 
 @Controller('project')
 export class ProjectsController {
@@ -37,18 +39,14 @@ export class ProjectsController {
   //   return await this.projectsService.updateProject(params.slug, updateProjectDto);
   // }
 
-  @UseGuards(JwtAuthGuard)
-    @ApiOperation({ summary: 'Update project' })
-    @Patch(':slug')
-    async update(@Param() params, @Body() updateProjectDto: UpdateProjectDto, @Req() req: RequestWithUser) {
-      const project = await this.projectsService.getProjectBySlug(params.slug)
-      console.log(project)
-      if (this.projectsService.isAuthor(project, req.user)){
-        const {toUpdate, updatedProject} = await this.projectsService.updateProject(params.slug, updateProjectDto);
-        return {toUpdate, updatedProject}
-      }
-      throw new HttpException('Table wasnt updated', HttpStatus.FORBIDDEN)
-    }
+  //@UseGuards(RoleGuard(Role.Admin))
+  @ApiOperation({ summary: 'Update project' })
+  @Patch(':slug')
+  async update(@Param() params, @Body() updateProjectDto: UpdateProjectDto, @Req() req: RequestWithUser) {
+    //const project = await this.projectsService.getProjectBySlug(params.slug)
+    // console.log('patch')
+    return await this.projectsService.updateProject(params.slug, updateProjectDto);
+  }
 
   @ApiOperation({ summary: 'Delete project' })
   @Delete(':slug')
