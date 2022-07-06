@@ -115,11 +115,12 @@
 <script>
 import { validationMixin } from 'vuelidate';
 import { required, minLength } from 'vuelidate/lib/validators';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import router from '@/router';
 
 export default {
   mixins: [validationMixin],
+  props: ['slug', 'isNewProject'],
   data() {
     return {
       form: {
@@ -127,6 +128,7 @@ export default {
         content: '',
         // author: '',
       },
+      slug: {},
     };
   },
   validations: {
@@ -146,14 +148,31 @@ export default {
       // },
     },
   },
+  computed: {
+    ...mapState('project', ['info']),
+    ...mapState('project', ['currentProject']),
+  },
   methods: {
     ...mapActions('project', ['createProject']),
+    ...mapActions('project', ['updateProject']),
+    ...mapActions('project', ['viewAllProject']),
     async submit() {
       this.$v.form.$touch();
       if (!this.$v.form.$error) {
         console.log('Валидация успешна!');
         await this.createProject(this.form);
         router.push('/');
+      }
+    },
+    async mounted() {
+      await this.viewAllProject(info.slug);
+      if (
+        this.isNewProject === false ||
+        (this.isNewProject === undefined && this.slug != null)
+      ) {
+        this.updateProject(this.slug).then(() => {
+          this.form = this.currentProject;
+        });
       }
     },
   },

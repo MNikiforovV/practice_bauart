@@ -4,7 +4,7 @@ export default {
   namespaced: true,
   state: {
     info: null,
-   
+    currentProject: {}
   },
   actions: {
     async getInfo({ commit }) {
@@ -19,9 +19,13 @@ export default {
       const { data } = await instance.get('/project');
       commit('updateInfo', data);
     },
-    async deleteProject({ commit }) {
-      await instance.delete('/project/:slug'); // пока не знаю какой правильный роут
+    async deleteProject({ commit }, slug) {
+      await instance.delete('/project/' + slug); // пока не знаю какой правильный роут
       commit('clearInfo');
+    },
+    async updateProject({ commit }, slug) {
+      const { data } = await instance.patch('/project/' + slug);
+      commit('updateProject', data);
     },
   },
   mutations: {
@@ -29,7 +33,10 @@ export default {
       state.info = info;
     },
     clearInfo(state) {
-        state.info = null;
+      state.info = null;
+    },
+    updateProject(state, project) {
+      state.currentProject = project;
     }
   },
 

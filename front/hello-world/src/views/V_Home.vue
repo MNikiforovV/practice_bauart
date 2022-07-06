@@ -1,18 +1,24 @@
 <template>
   <div id="V_Home">
-    <div>
-      </div>
-      <Form @submit.prevent="createbtn">
-        <button class="btn btn-primary">Создать проект</button>
-      </Form>
-    <div class="project" v-for="project in info" :key="project.id">
-      <p class="text-center">Название проекта: {{ project.title }}</p>
-      <p class="text-center">Описание проекта: {{ project.content }}</p>
-      <p class="text-center">Автор проекта: {{ project.author.name }}</p>
-      
-      <Form @submit.prevent="deletebtn">
-        <button class="btn btn-danger">Удалить проект</button>
-      </Form>
+    <div></div>
+    <Form @submit.prevent="createbtn">
+      <button class="btn btn-primary">Создать проект</button>
+    </Form>
+    <div class="project" v-for="project in info" :key="project.slug">
+      <p align="left">Название проекта: {{ project.title }}</p>
+      <p align="left">Описание проекта: {{ project.content }}</p>
+      <p align="left">Автор проекта: {{ project.author.name }}</p>
+
+      <!-- <Form @submit.prevent="deletebtn"> -->
+      <!-- <button class="btn btn-danger">Удалить проект</button> -->
+      <button type="button" @click="deleteProject(project.slug)">
+        Удалить проект
+      </button>
+      <!-- <button type="button" @click="updateProject(project.slug)">Изменить проект</button> -->
+      <form @submit.prevent="createbtn">
+        <button type="submit">Изменить проект</button>
+      </form>
+      <!-- </Form> -->
     </div>
   </div>
 </template>
@@ -28,15 +34,20 @@ export default {
   computed: {
     ...mapState('project', ['info']),
   },
+  data() {
+    return {
+      slug: {},
+    };
+  },
   methods: {
     ...mapActions('project', ['viewAllProject']),
     ...mapActions('project', ['deleteProject']),
     async createbtn() {
       router.push('/project');
     },
-    async deletebtn() {
-      await this.deleteProject();
-    },
+    // async deletebtn() {
+    //   await this.deleteProject(this.slug);
+    // },
     // beforeMount() {
     //   axios.get(`${server.baseURL}/user/profile`, this.cookie)
     //     .then((res) => {
@@ -51,7 +62,7 @@ export default {
 </script>
 <style>
 #V_Home {
-  font-family: "Avenir", Arial, Helvetica, sans-serif;
+  font-family: 'Avenir', Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

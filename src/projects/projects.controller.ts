@@ -5,13 +5,10 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import RequestWithUser from 'src/auth/requestWithUser.interface';
 import { ApiOperation } from '@nestjs/swagger';
-import RoleGuard from 'src/users/roles/role.guard';
-import Role from 'src/users/roles/role.enum';
-import Project from './entities/project.entity';
 
 @Controller('project')
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) { }
+  constructor(private readonly projectsService: ProjectsService) {}
 
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create project' })
@@ -40,22 +37,27 @@ export class ProjectsController {
   //   return await this.projectsService.updateProject(params.slug, updateProjectDto);
   // }
 
-  @UseGuards(RoleGuard(Role.Admin))
-  @ApiOperation({ summary: 'Update project' })
-  @Patch(':id')
-  async update(@Param() params, @Body() updateProjectDto: UpdateProjectDto, @Req() req: RequestWithUser) {
-    //const project = await this.projectsService.getProjectBySlug(params.slug)
-    //console.log(project)
-    return await this.projectsService.updateProject(params.id, updateProjectDto);
-  }
+  @UseGuards(JwtAuthGuard)
+    @ApiOperation({ summary: 'Update project' })
+    @Patch(':slug')
+    async update(@Param() params, @Body() updateProjectDto: UpdateProjectDto, @Req() req: RequestWithUser) {
+      const project = await this.projectsService.getProjectBySlug(params.slug)
+      console.log(project)
+      if (this.projectsService.isAuthor(project, req.user)){
+        const {toUpdate, updatedProject} = await this.projectsService.updateProject(params.slug, updateProjectDto);
+        return {toUpdate, updatedProject}
+      }
+      throw new HttpException('Table wasnt updated', HttpStatus.FORBIDDEN)
+    }
 
   @ApiOperation({ summary: 'Delete project' })
   @Delete(':slug')
   async remove(@Param() params, @Req() req: RequestWithUser) {
     const project = await this.projectsService.getProjectBySlug(params.slug)
-    if (this.projectsService.isAuthor(project, req.user)) {
+    console.log(project)
+    // if (this.projectsService.isAuthor(project, req.user)){
       return this.projectsService.delete(params.slug);
-    }
+    // }
     throw new HttpException('Table wasnt updated', HttpStatus.FORBIDDEN)
   }
 }
