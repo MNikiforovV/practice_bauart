@@ -54,9 +54,10 @@ export class ProjectsController {
   @Delete(':slug')
   async remove(@Param() params, @Req() req: RequestWithUser) {
     const project = await this.projectsService.getProjectBySlug(params.slug)
-    if (this.projectsService.isAuthor(project, req.user)){
+    console.log(project)
+    // if (this.projectsService.isAuthor(project, req.user)){
       return this.projectsService.delete(params.slug);
-    }
+    // }
     throw new HttpException('Table wasnt updated', HttpStatus.FORBIDDEN)
   }
 }
