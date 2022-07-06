@@ -12,11 +12,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import User from 'src/users/entities/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtRefreshTokenStrategy } from './jwt/jwt-refresh.stertegy';
+import { ProjectsModule } from 'src/projects/projects.module';
+import { ProjectsService } from 'src/projects/projects.service';
 
 @Module({
   imports: [
     PassportModule,
     AuthModule,
+    ProjectsModule,
     UsersModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -31,6 +34,6 @@ import { JwtRefreshTokenStrategy } from './jwt/jwt-refresh.stertegy';
     TypeOrmModule.forFeature([User])
   ],
   controllers:[AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, UsersService, ConfigService, JwtRefreshTokenStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, UsersService, ConfigService, JwtRefreshTokenStrategy, ProjectsService],
 })
 export class AuthModule {}

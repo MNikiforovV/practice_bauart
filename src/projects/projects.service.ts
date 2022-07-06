@@ -44,14 +44,14 @@ export class ProjectsService {
 
 
    
-  async updateProject(slug: string, project: UpdateProjectDto) {
-    // await this.projectsRepository.update(slug, project);
-    // const updatedProject = await this.projectsRepository.findOne({ where:{ slug: slug }}); //id, { relations: ['author'] }
-    let toUpdate = await this.projectsRepository.findOne({ where:{ slug: slug }, relations: ['author']});
-    let updated = Object.assign(toUpdate, project);
-    const updatedProject = await this.projectsRepository.save(updated);
+  async updateProject(id: number, project: UpdateProjectDto) {
+    await this.projectsRepository.update(id, project);
+    const updatedProject = await this.projectsRepository.findOne({ where:{ id: id }}); //id, { relations: ['author'] }
+    // let toUpdate = await this.projectsRepository.findOne({ where:{ slug: slug }, relations: ['author']});
+    // let updated = Object.assign(toUpdate, project);
+    // const updatedProject = await this.projectsRepository.save(updated);
     if (updatedProject) {
-      return {toUpdate, updatedProject}
+      return updatedProject
     }
     throw new HttpException('Project not found', HttpStatus.FORBIDDEN);  //ProjectNotFoundException(id);
   }
@@ -64,7 +64,7 @@ export class ProjectsService {
     return slug(title, {lower: true}) + '-' + (Math.random() * Math.pow(36, 6) | 0).toString(36)
   }
   
-  isAuthor(project: Project, user: User){
+  async isAuthor(project: Project, user: User){
     if (project.author.email == user.email || user.role == 'Admin'){
       return true;
     }
