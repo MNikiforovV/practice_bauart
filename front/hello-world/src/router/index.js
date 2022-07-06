@@ -9,6 +9,7 @@ import store from '@/store';
 import { mapGetters } from 'vuex';
 import PageNotFound from '@/components/PageNotFound.vue';
 import V_Project from '../views/V_Project.vue';
+import V_UpdateProject from '@/components/V_UpdateProject.vue';
 
 
 Vue.use(VueRouter);
@@ -51,6 +52,13 @@ const routes = [
     path: '/project',
     name: 'Project',
     component: V_Project,
+    props: true,
+    
+  },
+  {
+    path: '/project/:slug',
+    name: 'V_UpdateProject',
+    component: V_UpdateProject,
     props: true,
     
   },

@@ -55,55 +55,10 @@
                   Минимальная длина содержания 10 символов
                 </p>
               </div>
-
-              <!-- <div class="mb-3">
-                <label for="author" class="form-label">Автор проекта</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  :class="$v.form.author.$error ? 'is-invalid' : ''"
-                  id="author"
-                  placeholder="Введите автора проекта"
-                  v-model.trim="form.author"
-                />
-                <p
-                  v-if="$v.form.author.$dirty && !$v.form.author.required"
-                  class="invalid-feedback"
-                >
-                  Обязательное поле
-                </p>
-                <p
-                  v-if="$v.form.author.$dirty && !$v.form.author.minLength"
-                  class="invalid-feedback"
-                >
-                  Минимальная длина автора 2 символа
-                </p>
-                <p
-                  v-if="$v.form.author.$dirty && !$v.form.author.alpha"
-                  class="invalid-feedback"
-                >
-                  Можно использовать только буквы
-                </p>
-              </div> -->
-
-              <!-- <div class="mb-3">
-                <label for="image" class="form-label">Аватарка проекта</label>
-                <p>
-                  <input
-                    type="file"
-                    name="image"
-                    multiple
-                    accept="image/jpeg, image/png"
-                  />
-                </p>
-                <input
-                  type="image"
-                  class="form-control"
-                  id="email"
-                  placeholder="Вставьте аватар проекта"
-                />
-              </div> -->
-              <button class="btn btn-primary">Создать</button>
+              <button class="btn btn-primary">Изменить</button>
+              <button @click="deleteProj" class="btn btn-danger">
+                Удалить
+              </button>
             </div>
           </form>
         </div>
@@ -140,30 +95,37 @@ export default {
         required,
         minLength: minLength(10),
       },
-      // author: {
-      //   required,
-      //   minLength: minLength(2),
-      //   alpha: (val) => /^[а-яё]*$/i.test(val),
-      // },
     },
   },
   computed: {
     ...mapState('project', ['info']),
-
   },
   methods: {
-    ...mapActions('project', ['createProject']),
-
+    ...mapActions('project', ['updateProject']),
+    ...mapActions('project', ['getProjectBySlug']),
+    ...mapActions('project', ['deleteProject']),
     async submit() {
       this.$v.form.$touch();
       if (!this.$v.form.$error) {
         console.log('Валидация успешна!');
-        await this.createProject(this.form);
+        const slug = this.$route.params.slug;
+        await this.updateProject({ slug, data: this.form });
         router.push('/');
       }
     },
-    async mounted() { 
+    async deleteProj() {
+      const slug = this.$route.params.slug;
+      await this.deleteProject({ slug });
+       router.push('/');
     },
+  },
+  async mounted() {
+    //   console.log(typeof this.$route.params.slug);
+    const slug = this.$route.params.slug;
+    const form = await this.getProjectBySlug(slug);
+    if (form) {
+      this.form = form;
+    }
   },
 };
 </script>

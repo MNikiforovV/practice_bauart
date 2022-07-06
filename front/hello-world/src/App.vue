@@ -2,7 +2,7 @@
   <div>
     <Header />
     <div id="app">
-      <div class="user" v-if="info != null">
+      <div class="user">
         <!-- <p>Ваш Email: {{ info.email }}</p>
         <p>Ваш Name: {{ info.name }}</p>
         <p>Ваш Surname: {{ info.surname }}</p> -->
@@ -13,18 +13,18 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+// import { mapState, mapActions } from 'vuex';
 import Header from '@/components/V_Header.vue';
 
 export default {
   computed: {
-    ...mapState('user', ['info']),
+    // ...mapState('user', ['info']),
   },
   methods: {
-    ...mapActions('user', ['getInfo']),
+    // ...mapActions('user', ['getInfo']),
   },
   async mounted() {
-    await this.getInfo();
+    // await this.getInfo();
   },
   components: {
     Header,

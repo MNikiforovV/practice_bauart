@@ -4,11 +4,11 @@ export default {
   namespaced: true,
   state: {
     info: null,
-    currentProject: {}
+    infoSub: null
   },
   actions: {
     async getInfo({ commit }) {
-      const { data } = await instance.get('/user/profile/');
+      const { data } = await instance.get('/user/profile');
       commit('updateInfo', data);
     },
     async createProject({ commit }, form) {
@@ -19,13 +19,24 @@ export default {
       const { data } = await instance.get('/project');
       commit('updateInfo', data);
     },
-    async deleteProject({ commit }, slug) {
-      await instance.delete('/project/' + slug); // пока не знаю какой правильный роут
+    async deleteProject({ commit }, payloud) {
+      const slug = payloud.slug
+      await instance.delete('/project/' + slug); 
       commit('clearInfo');
     },
-    async updateProject({ commit }, slug) {
-      const { data } = await instance.patch('/project/' + slug);
-      commit('updateProject', data);
+    async updateProject({ commit }, payloud) {
+      const slug = payloud.slug
+      const data = payloud.data
+      await instance.patch('/project/' + slug, data);
+    },
+    async getProjectBySlug(store, slug) {
+      const { data } = await instance.get('/project/' + slug);
+      return data
+     
+    },
+    async subForProject({ commit }, slug) {
+      const { data } = await instance.post('/project/subscribe/' + slug);
+      commit('subForProj', data);
     },
   },
   mutations: {
@@ -37,7 +48,10 @@ export default {
     },
     updateProject(state, project) {
       state.currentProject = project;
-    }
+    },
+    subForProject(state, infoSub) {
+      state.infoSub = infoSub;
+    },
   },
 
   getters: {
