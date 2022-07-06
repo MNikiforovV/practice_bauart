@@ -40,7 +40,7 @@ class User {
     @OneToMany(() => Project, (project: Project) => project.author)
     public projects: Project[];
 
-    @OneToMany(() => Subscriber, (subscriber: Subscriber) => subscriber.userId)
+    @OneToMany(() => Subscriber, (subscriber: Subscriber) => subscriber.user)
     public subscribed: Subscriber[];
 
     // @ManyToMany(() => Project, (project: Project) => project.subscribers)

@@ -22,5 +22,13 @@ export class UserController {
     const subscriberProjects = await this.userService.getSubscribersProjects(req.user);
 
     return res.json({authorProjects,  subscriberProjects})
+  } 
+
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({summary: 'Get user' })
+  @Get('user')
+  async getUser(@Request() req: RequestWithUser, @Res() res) {
+    const user = req.user
+    return res.json(user)
   }
 }

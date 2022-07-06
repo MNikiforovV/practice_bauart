@@ -100,10 +100,10 @@ export class UsersService {
   async getSubscribersProjects(user: User) {
     const subbedProjectsId = await this.subscribersRepostory.find({
       where: {
-        userId: {
+        user: {
           id: user.id
         }
-      }, relations: ["userId"]
+      }, relations: ["user"]
     })
 
     const subbedProjects = []

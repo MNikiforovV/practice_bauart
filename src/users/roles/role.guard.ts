@@ -18,20 +18,13 @@ const RoleGuard = (role: Role): Type<CanActivate> => {
       const requestRequest = context.switchToHttp().getRequest<RequestWithUser>();
 
       const slug = request.params.slug
-      // console.log('1', slug)
-
-      //const updatedProject = await getProjectBySlug(project)
-
       const user = requestRequest.user;
-      //console.log('2',user)
-
-      //console.log(this.projectsService)
       const project = await this.projectsService.getProjectBySlug(slug)
-      console.log(project)
+      
       if (project.author.email == user.email || user?.role.includes(role)) {
         return true
       } else {
-        throw new HttpException('xuy tebe', HttpStatus.FORBIDDEN);
+        throw new HttpException('Access forbidden', HttpStatus.FORBIDDEN);
         // return false;
       }
     }

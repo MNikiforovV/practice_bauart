@@ -8,10 +8,10 @@ class Subscriber {
     id: number;
 
     @ManyToOne(() => Project, (project: Project) => project.subscribers)
-    projectId: Project;
+    project: Project;
 
     @ManyToOne(() => User, (user: User) => user.projects)
-    userId: User;
+    user: User;
 
 
     // @OneToMany(() => Project, (project: Project) => project.author)

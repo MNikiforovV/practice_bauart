@@ -30,7 +30,7 @@ class Project {
   @ManyToOne(() => User, (author: User) => author.projects)
   public author: User;
 
-  @OneToMany(() => Subscriber, (subscriber: Subscriber) => subscriber.projectId)
+  @OneToMany(() => Subscriber, (subscriber: Subscriber) => subscriber.project)
   public subscribers: Subscriber[];
 
   // @ManyToMany(() => User, (subscriber: User) => subscriber.subscribed)
