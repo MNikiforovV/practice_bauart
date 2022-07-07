@@ -14,7 +14,7 @@
               </li>
               <li class="nav-item" v-if="isLoggedIn">
                 <router-link class="nav-link active" to="/register"
-                  ><h6>Профиль</h6></router-link
+                  ><h6>Личный кабинет</h6></router-link
                 >
               </li>
               <li class="nav-item" v-if="!isLoggedIn">
@@ -23,7 +23,9 @@
                 >
               </li>
               <li class="nav-item" v-if="isLoggedIn">
-                <div @click="logout" class="nav-link active"><h6>Выйти</h6></div>
+                <div @click="logout" class="nav-link active">
+                  <h6>Выйти</h6>
+                </div>
               </li>
             </ul>
           </div>
@@ -45,7 +47,7 @@ export default {
     async logout() {
       await this.logoutUser();
       this.$router.push('/auth');
-    }
+    },
   },
 };
 </script>

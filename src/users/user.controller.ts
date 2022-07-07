@@ -6,6 +6,7 @@ import RoleGuard from './roles/role.guard';
 import Role from './roles/role.enum';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import JwtRefreshGuard from 'src/auth/jwt/jwt-refresh.guard';
+import RequestWithUser from 'src/auth/requestWithUser.interface';
 
 @Controller('user')
 // @UseGuards(RoleGuard(Role.Admin)) // Доступно только пользователю с ролью админа
@@ -16,7 +17,18 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({summary: 'User profile' })
   @Get('profile')
-  getProfile(@Request() req, @Res() res) {
-    return res.json({name: req.user.name, surname: req.user.surname, email: req.user.email})
+  async getProfile(@Request() req: RequestWithUser, @Res() res) {
+    const authorProjects = await this.userService.getProjectsByUser(req.user);
+    const subscriberProjects = await this.userService.getSubscribersProjects(req.user);
+
+    return res.json({authorProjects,  subscriberProjects})
+  } 
+
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({summary: 'Get user' })
+  @Get('user')
+  async getUser(@Request() req: RequestWithUser, @Res() res) {
+    const user = req.user
+    return res.json(user)
   }
 }

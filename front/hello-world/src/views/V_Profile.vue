@@ -1,26 +1,66 @@
 <template>
-  <div class="position-absolute top-50 start-50 translate-middle">
-    <h1>
-      <p class="text-center">Профиль</p>
-    </h1>
+  <div id="V_Profile">
+    <div>
+      <p>Ваши проекты: </p>
+      <div class="project" v-for="(project, key) in authorProjects" :key="key">
+        <p align="left">Название проекта: {{ project.title }}</p>
+        <p align="left">Содержание проекта: {{ project.content }}</p>
+        <!-- <p align="left">Автор проекта: {{ project.author }}</p> -->
+      </div>
+      <p>Проекты на которые вы подписаны:</p> 
+      <div class="project" v-for="(project, key) in subscriberProjects" :key="key">
+        <p align="left">Название проекта: {{ project.title }}</p>
+        <p align="left">Содержание проекта: {{ project.content }}</p>
+        <!-- <p align="left">Автор проекта: {{ project.author }}</p> -->
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import router from '@/router/index.js';
-import instance from '../components/Instance.js';
+import { mapState, mapActions } from 'vuex';
 export default {
-  name: 'V_Profile',
-  methods: {},
-  mounted() {
-    try {
-      instance.get('auth/isloggedin');
-    } catch (error) {
-      console.log(error);
-      this.$router.push('/auth');
-    }
+  computed: {
+    ...mapState('project', ['info']),
+    authorProjects() {
+      if (this.info) {
+        return this.info.authorProjects;
+      } else {
+        return [];
+      }
+    },
+    subscriberProjects() {
+      if (this.info) {
+        return this.info.subscriberProjects;
+      } else {
+        return [];
+      }
+    },
+  },
+  methods: {
+    ...mapActions('project', ['getInfo']),
+  },
+  async mounted() {
+    await this.getInfo();
   },
 };
 </script>
-<style></style>
+
+<style>
+#V_Profile {
+  font-family: 'Avenir', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin: 60px auto;
+  width: 400px;
+}
+
+.project {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+</style>
