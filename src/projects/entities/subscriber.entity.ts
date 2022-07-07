@@ -7,10 +7,15 @@ class Subscriber {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Project, (project: Project) => project.subscribers)
+    @ManyToOne(() => Project, (project: Project) => project.subscribers, {
+      onDelete: 'CASCADE'
+    })
     project: Project;
 
-    @ManyToOne(() => User, (user: User) => user.projects)
+    @ManyToOne(() => User, (user: User) => user.projects, 
+    {
+      onDelete: 'CASCADE'
+    })
     user: User;
 
 

@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { userInfo } from 'os';
 import Subscriber from 'src/projects/entities/subscriber.entity';
 import User from 'src/users/entities/user.entity';
 import { DeleteResult, Repository } from 'typeorm';
@@ -8,7 +7,8 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import Project from './entities/project.entity';
 import { UsersService } from 'src/users/users.service';
-const slug = require('slug');
+import { slugify } from 'src/utils/slugify';
+
 
 @Injectable()
 export class ProjectsService {
@@ -26,7 +26,7 @@ export class ProjectsService {
     const newProject = this.projectsRepository.create({
       ...project,
       author: user,
-      slug: this.slugify(project.title),
+      slug: slugify(project.title),
     });
     await this.projectsRepository.save(newProject);
     return newProject;
@@ -55,7 +55,8 @@ export class ProjectsService {
       where: { slug: slug },
       relations: ['author'],
     });
-    let updated = Object.assign(toUpdate, project);
+    const projctAndSlug = {project, slug: slugify(project.title)}
+    let updated = Object.assign(toUpdate, projctAndSlug);
     const updatedProject = await this.projectsRepository.save(updated);
     if (updatedProject) {
       return updatedProject;
@@ -67,13 +68,7 @@ export class ProjectsService {
     return await this.projectsRepository.delete({ slug: slug });
   }
 
-  slugify(title: string) {
-    return (
-      slug(title, { lower: true }) +
-      '-' +
-      ((Math.random() * Math.pow(36, 6)) | 0).toString(36)
-    );
-  }
+
 
   async isNotAuthor(project: Project, user: User) {
     if (project.author.email == user.email || user.role == 'Admin') {

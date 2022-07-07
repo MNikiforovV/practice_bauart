@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import Donations from 'src/ideas/entities/donations.entity';
 import Project from 'src/projects/entities/project.entity';
 import Subscriber from 'src/projects/entities/subscriber.entity';
 import Role from 'src/users/roles/role.enum';
@@ -43,11 +44,8 @@ class User {
     @OneToMany(() => Subscriber, (subscriber: Subscriber) => subscriber.user)
     public subscribed: Subscriber[];
 
-    // @ManyToMany(() => Project, (project: Project) => project.subscribers)
-    // public subscribed: Project[];
-
-    // @ManyToOne(() => Project, (project: Project) => project.subscribers)
-    // public subscribed: Project[];
+    // @OneToMany(() => Donations, (donations: Donations) => donations.user)
+    // public donations: Donations[];
 
   }
 
