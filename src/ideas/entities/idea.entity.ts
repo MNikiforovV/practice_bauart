@@ -1,6 +1,6 @@
 
 import Project from "src/projects/entities/project.entity";
-import { BeforeUpdate, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Discussion from "./discussion.entity";
 import Fundraising from "../../fundraising/entities/fundraising.entity";
 

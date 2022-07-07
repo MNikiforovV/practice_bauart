@@ -1,5 +1,5 @@
 import User from "src/users/entities/user.entity";
-import { BeforeUpdate, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import Fundraising from "./fundraising.entity";
 
 @Entity()

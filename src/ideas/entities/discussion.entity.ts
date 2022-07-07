@@ -1,6 +1,6 @@
-
 import { Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Idea from "./idea.entity";
+import Message from "./message.entity";
 
 @Entity()
 class Discussion {
@@ -12,8 +12,8 @@ class Discussion {
   })
   public idea: Idea;
 
-  // @OneToMany(() => Messages, (messages: Messages) => messages.messages)
-  // public messages: Messages[];
+  @OneToMany(() => Message, (message: Message) => message.discussion)
+  public messages: Message[];
 
 }
 
