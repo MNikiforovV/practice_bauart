@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectsService } from 'src/projects/projects.service';
-import User from 'src/users/entities/user.entity';
 import { slugify } from 'src/utils/slugify';
 import { Repository } from 'typeorm';
 import { CreateIdeaDto } from './dto/create-idea.dto';
@@ -13,6 +12,7 @@ export class IdeasService {
   constructor(
     @InjectRepository(Idea)
     private ideasRepository: Repository<Idea>,
+    
     private projectsService: ProjectsService
   ){}
 
