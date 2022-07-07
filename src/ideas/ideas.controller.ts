@@ -1,34 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { IdeasService } from './ideas.service';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
+import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 
-@Controller('ideas')
+@Controller('project/:slug/idea')
 export class IdeasController {
   constructor(private readonly ideasService: IdeasService) {}
 
-  @Post()
-  create(@Body() createIdeaDto: CreateIdeaDto) {
-    return this.ideasService.create(createIdeaDto);
+  @UseGuards(JwtAuthGuard)
+  @Post('create')
+  createIdea(@Body() idea: CreateIdeaDto, @Param() params) {
+    return this.ideasService.createIdea(idea, params.slug);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.ideasService.findAll();
+  getAllIdeas() {
+    return this.ideasService.getAllIdeas();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ideasService.findOne(+id);
+  @UseGuards(JwtAuthGuard)
+  @Get(':slugIdea')
+  getIdeaBySlug(@Param() params) {
+    return this.ideasService.getIdeaBySlug(params.slugIdea);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateIdeaDto: UpdateIdeaDto) {
-    return this.ideasService.update(+id, updateIdeaDto);
+  @UseGuards(JwtAuthGuard)
+  @Patch(':slugIdea')
+  updateIdea(@Param() params, @Body() idea: UpdateIdeaDto) {
+    return this.ideasService.updateIdea(params.slugIdea, idea);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ideasService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Delete(':slugIdea')
+  removeIdea(@Param() params) {
+    return this.ideasService.removeIdea(params.slugIdea);
   }
 }

@@ -18,7 +18,7 @@ class Idea {
   @Column()
   public content: string;
 
-  @Column()
+  @Column({default: false})
   public isArchived: boolean;
 
   @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP"})
