@@ -1,4 +1,4 @@
-import { BeforeUpdate, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Donations from "./donations.entity";
 import Idea from "./idea.entity";
 
