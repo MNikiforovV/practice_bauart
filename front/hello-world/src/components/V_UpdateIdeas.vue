@@ -101,7 +101,7 @@ export default {
           slugIdea,
           data: this.form,
         });
-        this.$router.push('/project/' + slug + '/idea/' + slugIdea);
+        this.$router.push('/project/' + slug + '/idea/');
       }
     },
   },
