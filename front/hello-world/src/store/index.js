@@ -2,6 +2,7 @@
  import Vuex from 'vuex'
  import user from './modules/user' 
  import project from './modules/project' 
+ import idea from './modules/idea' 
 
 
  Vue.use(Vuex)
@@ -10,6 +11,7 @@
 
     modules: {
         user,
-        project
+        project,
+        idea
     }
  })

@@ -18,13 +18,13 @@
                   v-model.trim="form.title"
                 />
                 <p
-                  v-if="$v.form.title.$dirty && !$v.form.name.required"
+                  v-if="$v.form.title.$dirty && !$v.form.title.required"
                   class="invalid-feedback"
                 >
                   Обязательное поле
                 </p>
                 <p
-                  v-if="$v.form.title.$dirty && !$v.form.name.minLength"
+                  v-if="$v.form.title.$dirty && !$v.form.title.minLength"
                   class="invalid-feedback"
                 >
                   Минимальная длина названия 5 символов
@@ -55,55 +55,7 @@
                   Минимальная длина содержания 10 символов
                 </p>
               </div>
-
-              <!-- <div class="mb-3">
-                <label for="author" class="form-label">Автор проекта</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  :class="$v.form.author.$error ? 'is-invalid' : ''"
-                  id="author"
-                  placeholder="Введите автора проекта"
-                  v-model.trim="form.author"
-                />
-                <p
-                  v-if="$v.form.author.$dirty && !$v.form.author.required"
-                  class="invalid-feedback"
-                >
-                  Обязательное поле
-                </p>
-                <p
-                  v-if="$v.form.author.$dirty && !$v.form.author.minLength"
-                  class="invalid-feedback"
-                >
-                  Минимальная длина автора 2 символа
-                </p>
-                <p
-                  v-if="$v.form.author.$dirty && !$v.form.author.alpha"
-                  class="invalid-feedback"
-                >
-                  Можно использовать только буквы
-                </p>
-              </div> -->
-
-              <!-- <div class="mb-3">
-                <label for="image" class="form-label">Аватарка проекта</label>
-                <p>
-                  <input
-                    type="file"
-                    name="image"
-                    multiple
-                    accept="image/jpeg, image/png"
-                  />
-                </p>
-                <input
-                  type="image"
-                  class="form-control"
-                  id="email"
-                  placeholder="Вставьте аватар проекта"
-                />
-              </div> -->
-              <button class="btn btn-primary">Создать</button>
+              <button onclick="submit" type="submit" class="btn btn-primary">Создать</button>
             </div>
           </form>
         </div>
@@ -120,13 +72,11 @@ import router from '@/router';
 
 export default {
   mixins: [validationMixin],
-  // props: ['slug'],
   data() {
     return {
       form: {
         title: '',
         content: '',
-        // author: '',
       },
     };
   },
@@ -140,11 +90,6 @@ export default {
         required,
         minLength: minLength(10),
       },
-      // author: {
-      //   required,
-      //   minLength: minLength(2),
-      //   alpha: (val) => /^[а-яё]*$/i.test(val),
-      // },
     },
   },
   computed: {
@@ -161,8 +106,6 @@ export default {
         await this.createProject(this.form);
         router.push('/');
       }
-    },
-    async mounted() { 
     },
   },
 };

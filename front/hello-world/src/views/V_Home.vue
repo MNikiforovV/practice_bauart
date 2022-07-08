@@ -8,27 +8,24 @@
       <p align="left">Название проекта: {{ project.title }}</p>
       <p align="left">Описание проекта: {{ project.content }}</p>
       <p align="left">Автор проекта: {{ project.author.name }}</p>
-
-      <!-- <Form @submit.prevent="deletebtn"> -->
-      <!-- <button class="btn btn-danger">Удалить проект</button> -->
-      <div
-        v-if="
-          project.author.email == UserEmail || UserRole == 'Admin'
-        "
-      >
-        
+      <div v-if="project.author.email == UserEmail || UserRole == 'Admin'">
         <button type="button" @click="editProject(project.slug)">
           Изменить проект
         </button>
-        <!-- <form @submit.prevent="createbtn">
-        <button type="submit">Изменить проект</button>
-      </form> -->
-        <!-- </Form> -->
       </div>
-      <button v-if="infoUser" type="button" @click="subForProject(project.slug)">
+      <button
+        v-if="infoUser"
+        type="button"
+        @click="subForProject(project.slug)"
+      >
         Подписаться
       </button>
-      <button type="button" @click="unSubForProject(infoUser.subscribed.id)">Отписаться</button>
+      <button type="button" @click="unSubForProject(infoUser.subscribed.id)">
+        Отписаться
+      </button>
+      <button type="button" @click="goToIdeas(project.slug)">
+        Перейти к идеям
+      </button>
     </div>
   </div>
 </template>
@@ -45,7 +42,7 @@ export default {
     ...mapState('user', ['infoUser']),
     ...mapState('project', ['infoSub']),
     ...mapState('project', ['infoUnSub']),
-    
+
     UserRole() {
       if (this.infoUser) {
         return this.infoUser.role;
@@ -73,6 +70,9 @@ export default {
     },
     async editProject(slug) {
       this.$router.push('/project/' + slug);
+    },
+    async goToIdeas(slug) {
+      this.$router.push('/project/' + slug + '/idea/');
     },
     // async deletebtn() {
     //   await this.deleteProject(this.slug);
