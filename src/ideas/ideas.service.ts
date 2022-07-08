@@ -47,11 +47,13 @@ export class IdeasService {
   }
 
   async updateIdea(slug: string, idea: UpdateIdeaDto) {
-    let toUpdate = await this.ideasRepository.findOne({
-      where: { slug: slug },
-      relations: ['project'],
-    });
-    const ideaAndSlug = {idea, slug: slugify(idea.title)}
+    // const toUpdate = await this.ideasRepository.findOne({
+    //   where: { slug: slug },
+    //   relations: ['project'],
+    // });
+    const toUpdate = await this.getIdeaBySlug(slug)
+    const ideaAndSlug = {...idea, slug: slugify(idea.title)}
+    console.log(toUpdate)
     let updated = Object.assign(toUpdate, ideaAndSlug);
     const updatedIdea = await this.ideasRepository.save(updated);
     if (updatedIdea) {

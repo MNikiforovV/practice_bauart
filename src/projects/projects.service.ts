@@ -55,7 +55,7 @@ export class ProjectsService {
       where: { slug: slug },
       relations: ['author'],
     });
-    const projctAndSlug = {project, slug: slugify(project.title)}
+    const projctAndSlug = {...project, slug: slugify(project.title)}
     let updated = Object.assign(toUpdate, projctAndSlug);
     const updatedProject = await this.projectsRepository.save(updated);
     if (updatedProject) {

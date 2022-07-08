@@ -12,48 +12,48 @@ import Fundraising from './entities/fundraising.entity';
 export class FundraisingService {
   constructor(
     @InjectRepository(Fundraising)
-    // private fundraisingRepository: Repository<Fundraising>,
+    private fundraisingRepository: Repository<Fundraising>,
     
     @InjectRepository(Donations)
-    // private donationsRepository: Repository<Donations>,
+    private donationsRepository: Repository<Donations>,
 
     private ideasServices: IdeasService
   ){}
 
-  // async create(createFundraisingDto: CreateFundraisingDto, slug: string) {
-  //   const idea = await this.ideasServices.getIdeaBySlug(slug)
-  //   const fundraising = await this.fundraisingRepository.create({ 
-  //     ...createFundraisingDto,
-  //     idea: idea
-  //   })
-  //   await this.fundraisingRepository.save(fundraising)
-  //   return fundraising;
-  // }
+  async create(createFundraisingDto: CreateFundraisingDto, slug: string) {
+    const idea = await this.ideasServices.getIdeaBySlug(slug)
+    const fundraising = await this.fundraisingRepository.create({ 
+      ...createFundraisingDto,
+      idea: idea
+    })
+    await this.fundraisingRepository.save(fundraising)
+    return fundraising;
+  }
 
-  // async findOne(id: number) {
-  //   return await this.fundraisingRepository.findOne({ where: { id: id } });
-  // }
+  async findOne(id: number) {
+    return await this.fundraisingRepository.findOne({ where: { id: id } });
+  }
 
-  // async update(id: number, updateFundraisingDto: UpdateFundraisingDto) {
-  //   let toUpdate = await this.fundraisingRepository.findOne({
-  //     where: { id: id },
-  //     relations: ['idea'],
-  //   });
-  //   let updated = Object.assign(toUpdate, updateFundraisingDto);
-  //   const updatedFundraising = await this.fundraisingRepository.save(updated);
-  //   if (updatedFundraising) {
-  //     return updatedFundraising;
-  //   }
-  //   throw new HttpException('Fundraising not found', HttpStatus.NOT_FOUND);
-  // }
+  async update(id: number, updateFundraisingDto: UpdateFundraisingDto) {
+    let toUpdate = await this.fundraisingRepository.findOne({
+      where: { id: id },
+      relations: ['idea'],
+    });
+    let updated = Object.assign(toUpdate, updateFundraisingDto);
+    const updatedFundraising = await this.fundraisingRepository.save(updated);
+    if (updatedFundraising) {
+      return updatedFundraising;
+    }
+    throw new HttpException('Fundraising not found', HttpStatus.NOT_FOUND);
+  }
 
-  // async createDonation(createDonationDto: CreateDonationDto, id: number){
-  //   const fundraising = await this.findOne(id)
-  //   const donation = await this.donationsRepository.create({ 
-  //     ...createDonationDto,
-  //     fundraising: fundraising
-  //   })
-  //   await this.fundraisingRepository.save(donation)
-  //   return donation;
-  // }
+  async createDonation(createDonationDto: CreateDonationDto, id: number){
+    const fundraising = await this.findOne(id)
+    const donation = await this.donationsRepository.create({ 
+      ...createDonationDto,
+      fundraising: fundraising
+    })
+    await this.donationsRepository.save(donation)
+    return donation;
+  }
 }

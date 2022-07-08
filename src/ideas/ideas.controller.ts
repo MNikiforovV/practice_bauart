@@ -31,8 +31,8 @@ export class IdeasController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':slugIdea')
-  updateIdea(@Param() params, @Body() idea: UpdateIdeaDto) {
-    return this.ideasService.updateIdea(params.slugIdea, idea);
+  async updateIdea(@Param() params, @Body() idea: UpdateIdeaDto) {
+    return await this.ideasService.updateIdea(params.slugIdea, idea);
   }
 
   @UseGuards(JwtAuthGuard)
