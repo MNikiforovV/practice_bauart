@@ -5,9 +5,9 @@ import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import { ProjectsService } from 'src/projects/projects.service';
 
 
-const RoleGuard = (role: Role): Type<CanActivate> => {
+const RoleCreatorGuard = (role: Role): Type<CanActivate> => {
   @Injectable()
-  class RoleGuardMixin extends JwtAuthGuard {
+  class RoleCreatorGuardMixin extends JwtAuthGuard {
     constructor (private projectsService: ProjectsService){
       super();
     }
@@ -30,7 +30,7 @@ const RoleGuard = (role: Role): Type<CanActivate> => {
     }
   }
 
-  return mixin(RoleGuardMixin);
+  return mixin(RoleCreatorGuardMixin);
 }
 
-export default RoleGuard;
+export default RoleCreatorGuard;

@@ -2,7 +2,7 @@ import { Controller, Get, Request, Post, UseGuards, Body, Res, Req, HttpStatus }
 import { AuthService } from '../auth/auth.service';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import RoleGuard from './roles/role.guard';
+import RoleCreatorGuard from './roles/role-creator-admin.guard';
 import Role from './roles/role.enum';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import JwtRefreshGuard from 'src/auth/jwt/jwt-refresh.guard';
