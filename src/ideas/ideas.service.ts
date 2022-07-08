@@ -34,8 +34,8 @@ export class IdeasService {
     return newIdea;
   }
 
-  async getAllIdeas() {
-    return await this.ideasRepository.find({ relations: ['project'] });
+  async getAllIdeas(slug: string) {
+    return await this.ideasRepository.find({ where: {project: {slug: slug}} ,relations: ['project'] });
   }
 
   async getIdeaBySlug(slug: string) {

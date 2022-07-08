@@ -19,8 +19,8 @@ export class IdeasController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getAllIdeas() {
-    return this.ideasService.getAllIdeas();
+  async getAllIdeas(@Param() params) {
+    return await this.ideasService.getAllIdeas(params.slug);
   }
 
   @UseGuards(JwtAuthGuard)
