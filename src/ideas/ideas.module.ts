@@ -9,9 +9,11 @@ import { ProjectsService } from 'src/projects/projects.service';
 import { Subscriber } from 'rxjs';
 import { UsersModule } from 'src/users/users.module';
 import { UsersService } from 'src/users/users.service';
+import Message from './entities/message.entity';
+import Discussion from './entities/discussion.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Idea, Project, Subscriber]), ProjectsModule, UsersModule],
+  imports: [TypeOrmModule.forFeature([Idea, Project, Subscriber, Message, Discussion]), ProjectsModule, UsersModule],
   controllers: [IdeasController],
   providers: [IdeasService, ProjectsService, UsersService],
   exports:[IdeasService]

@@ -10,9 +10,11 @@ import Idea from 'src/ideas/entities/idea.entity';
 import { ProjectsService } from 'src/projects/projects.service';
 import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
+import Message from 'src/ideas/entities/message.entity';
+import Discussion from 'src/ideas/entities/discussion.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Fundraising, Donations, Idea]), IdeasModule, UsersModule],
+  imports: [TypeOrmModule.forFeature([Fundraising, Donations, Idea, Message, Discussion]), IdeasModule, UsersModule],
   controllers: [FundraisingController],
   providers: [FundraisingService, IdeasService, ProjectsService, UsersService]
 })
