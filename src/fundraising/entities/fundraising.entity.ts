@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Donations from "./donations.entity";
-import Idea from "./idea.entity";
+import Idea from "../../ideas/entities/idea.entity";
 
 @Entity()
 class Fundraising {

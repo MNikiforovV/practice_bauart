@@ -17,7 +17,7 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import RequestWithUser from 'src/auth/requestWithUser.interface';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import RoleGuard from 'src/users/roles/role.guard';
+import RoleCreatorGuard from 'src/users/roles/role-creator-admin.guard';
 import Role from 'src/users/roles/role.enum';
 
 @ApiTags('project')
@@ -61,7 +61,7 @@ export class ProjectsController {
     return await this.projectsService.unSubscribe(param.id);
   }
 
-  @UseGuards(RoleGuard(Role.Admin))
+  @UseGuards(RoleCreatorGuard(Role.Admin))
   @ApiOperation({ summary: 'Update project' })
   @Patch(':slug')
   async update(
@@ -77,7 +77,7 @@ export class ProjectsController {
     );
   }
 
-  @UseGuards(RoleGuard(Role.Admin))
+  @UseGuards(RoleCreatorGuard(Role.Admin))
   @ApiOperation({ summary: 'Delete project' })
   @Delete(':slug')
   async remove(@Param() params, @Req() req: RequestWithUser) {

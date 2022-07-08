@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import User from './entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { getRepositoryToken, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, getConnection, getRepository, Repository } from 'typeorm';
 import CreateUserDto from './dto/createUser.dto';
 import { encodePassword } from 'src/utils/bcrypt';
 import * as bcrypt from 'bcrypt';
@@ -98,23 +98,18 @@ export class UsersService {
   }
 
   async getSubscribersProjects(user: User) {
-    const subbedProjectsId = await this.subscribersRepostory.find({
+    const subbedProjectsId = await this.subscribersRepostory.find({ 
+      relations: ["user", 'project'],
       where: {
         user: {
           id: user.id
         }
-      }, relations: ["user"]
+      }      
     })
 
     const subbedProjects = []
     for (var p of subbedProjectsId) {
-      subbedProjects.push(await this.projectsRepository.findOne({
-        where:{
-          subscribers: {
-            id: p.id
-          }
-        }
-      }))
+      subbedProjects.push(p.project)
     }
 
     return subbedProjects

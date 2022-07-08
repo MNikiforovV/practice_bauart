@@ -2,7 +2,7 @@
 import Project from "src/projects/entities/project.entity";
 import { BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Discussion from "./discussion.entity";
-import Fundraising from "./fundraising.entity";
+import Fundraising from "../../fundraising/entities/fundraising.entity";
 
 @Entity()
 class Idea {

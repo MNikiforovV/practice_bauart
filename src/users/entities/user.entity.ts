@@ -1,5 +1,4 @@
 import { Exclude } from 'class-transformer';
-import Donations from 'src/ideas/entities/donations.entity';
 import Project from 'src/projects/entities/project.entity';
 import Subscriber from 'src/projects/entities/subscriber.entity';
 import Role from 'src/users/roles/role.enum';
