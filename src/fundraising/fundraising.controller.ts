@@ -1,12 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { FundraisingService } from './fundraising.service';
 import { CreateFundraisingDto } from './dto/create-fundraising.dto';
 import { UpdateFundraisingDto } from './dto/update-fundraising.dto';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import { CreateDonationDto } from './dto/create-donation.dto';
-import RoleCreatorGuard from 'src/users/roles/role-creator-admin.guard';
 import RoleAdminGuard from 'src/users/roles/role-admin.guard';
 import Role from 'src/users/roles/role.enum';
+import RequestWithUser from 'src/auth/requestWithUser.interface';
 
 @Controller('project/:slug/idea/:slugIdea/fundraising')
 export class FundraisingController {
@@ -32,7 +32,19 @@ export class FundraisingController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/donate')
-  createDonation(@Param() params, @Body() createDonationDto: CreateDonationDto){
-    return this.fundraisingService.createDonation(createDonationDto, params.id)
+  createDonation(@Param() params, @Body() createDonationDto: CreateDonationDto, @Req() req: RequestWithUser){
+    return this.fundraisingService.createDonation(createDonationDto, params.id, req.user)
+  }
+
+  @UseGuards(RoleAdminGuard(Role.Admin))
+  @Patch(':id/:idDonation')
+  checkDonation(@Param() params) {
+    return this.fundraisingService.updateDonation(params.idDonation);
+  }
+
+  @UseGuards(RoleAdminGuard(Role.Admin))
+  @Get(':id/donations')
+  viewAllDonations(@Param() params) {
+    return this.fundraisingService.findAllDonations(params.id);
   }
 }

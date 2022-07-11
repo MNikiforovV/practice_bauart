@@ -42,7 +42,7 @@ class Idea {
   public discussion: Discussion;
   
   @OneToOne(() => Fundraising)
-  @JoinColumn()
+  // @JoinColumn()
   public fundraising: Fundraising;
 
   

@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Donations from "./donations.entity";
 import Idea from "../../ideas/entities/idea.entity";
 
@@ -10,7 +10,11 @@ class Fundraising {
   @Column()
   public goal: number;
 
+  @Column({ nullable: true })
+  public title: string;
+
   @OneToOne(() => Idea, (idea: Idea) => idea.fundraising)
+  @JoinColumn()
   public idea: Idea;
 
   @OneToMany(() => Donations, (donations: Donations) => donations.fundraising)

@@ -21,7 +21,7 @@ export class UserController {
     const authorProjects = await this.userService.getProjectsByUser(req.user);
     const subscriberProjects = await this.userService.getSubscribersProjects(req.user);
 
-    return res.json({authorProjects,  subscriberProjects})
+    return {authorProjects,  subscriberProjects}
   } 
 
   @UseGuards(JwtAuthGuard)
@@ -29,6 +29,12 @@ export class UserController {
   @Get('user')
   async getUser(@Request() req: RequestWithUser, @Res() res) {
     const user = req.user
-    return res.json(user)
+    return user
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('cart')
+  async getFundraisings(@Req() req: RequestWithUser){
+    return await this.userService.getFundraisingsByUser(req.user)
   }
 }

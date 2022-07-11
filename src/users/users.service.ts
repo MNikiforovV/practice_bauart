@@ -7,6 +7,7 @@ import { encodePassword } from 'src/utils/bcrypt';
 import * as bcrypt from 'bcrypt';
 import Project from 'src/projects/entities/project.entity';
 import Subscriber from 'src/projects/entities/subscriber.entity';
+import Donations from 'src/fundraising/entities/donations.entity';
 
 
 // This should be a real class/interface representing a user entity
@@ -20,7 +21,10 @@ export class UsersService {
     private projectsRepository: Repository<Project>,
 
     @InjectRepository(Subscriber)
-    private subscribersRepostory: Repository<Subscriber>
+    private subscribersRepostory: Repository<Subscriber>,
+    
+    @InjectRepository(Donations)
+    private donationsRepository: Repository<Donations>
   ) { }
 
   async getByEmail(email: string): Promise<User | undefined> {
@@ -113,6 +117,24 @@ export class UsersService {
     }
 
     return subbedProjects
+  }
+
+  async getFundraisingsByUser(user: User) {
+    const donations = await this.donationsRepository.find({ 
+      relations: ["user", 'fundraising'],
+      where: {
+        user: {
+          id: user.id
+        }
+      }      
+    })
+
+    // const subbedProjects = []
+    // for (var p of subbedProjectsId) {
+    //   subbedProjects.push(p.project)
+    // }
+
+    return donations
   }
 
 }

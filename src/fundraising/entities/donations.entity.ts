@@ -10,6 +10,9 @@ class Donations {
   @Column()
   public money: number;
 
+  @Column({default: false})
+  public check: boolean;
+
   @ManyToOne(() => User, (user: User) => user.projects, {
     onDelete: 'CASCADE'
   })
@@ -19,7 +22,6 @@ class Donations {
     onDelete: 'CASCADE'
   })
   public fundraising: Fundraising;
-
 }
 
 export default Donations;

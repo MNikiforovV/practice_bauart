@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IdeasService } from 'src/ideas/ideas.service';
+import User from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateDonationDto } from './dto/create-donation.dto';
 import { CreateFundraisingDto } from './dto/create-fundraising.dto';
@@ -23,11 +24,11 @@ export class FundraisingService {
   async create(createFundraisingDto: CreateFundraisingDto, slug: string) {
     const idea = await this.ideasServices.getIdeaBySlug(slug)
     const fundraising = await this.fundraisingRepository.create({ 
+      title: idea.title,
       ...createFundraisingDto,
       idea: idea
     })
-    await this.fundraisingRepository.save(fundraising)
-    return fundraising;
+    return await this.fundraisingRepository.save(fundraising);
   }
 
   async findOne(id: number) {
@@ -47,13 +48,32 @@ export class FundraisingService {
     throw new HttpException('Fundraising not found', HttpStatus.NOT_FOUND);
   }
 
-  async createDonation(createDonationDto: CreateDonationDto, id: number){
+  async createDonation(createDonationDto: CreateDonationDto, id: number, user: User){
     const fundraising = await this.findOne(id)
     const donation = await this.donationsRepository.create({ 
       ...createDonationDto,
-      fundraising: fundraising
+      fundraising: fundraising,
+      user: user,
+      check: false
     })
     await this.donationsRepository.save(donation)
     return donation;
+  }
+
+  async findAllDonations(id: number) {
+    return await this.donationsRepository.find({ where: {fundraising: {id: id}}, relations:['user']} );
+  }
+
+  async updateDonation(id: number) {
+    let toUpdate = await this.donationsRepository.findOne({
+      where: { id: id },
+      relations: ['fundraising'],
+    });
+    let updated = Object.assign(toUpdate, {check: true});
+    const updatedDonation = await this.donationsRepository.save(updated);
+    if (updatedDonation) {
+      return updatedDonation;
+    }
+    throw new HttpException('Fundraising not found', HttpStatus.NOT_FOUND);
   }
 }
