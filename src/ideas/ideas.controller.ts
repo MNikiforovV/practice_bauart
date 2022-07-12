@@ -53,6 +53,6 @@ export class IdeasController {
   @UseGuards(JwtAuthGuard)
   @Get(':slugIdea/sendmessage/')
   getMessages(@Param() params){
-    return this.ideasService.getMessagesByDiscussion(params.disId)
+    return this.ideasService.getMessagesByDiscussion(params.slugIdea)
   }
 }
