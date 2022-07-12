@@ -88,4 +88,10 @@ export class ProjectsController {
     // }
     throw new HttpException('Table wasnt updated', HttpStatus.FORBIDDEN);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':slug/subs')
+  async getAuthorAndSubs(@Param() params){
+    return await this.projectsService.getAuthorAndSubs(params.slug)
+  }
 }

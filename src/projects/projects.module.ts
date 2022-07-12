@@ -3,7 +3,7 @@ import { ProjectsService } from './projects.service';
 import { ProjectsController } from './projects.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import Project from './entities/project.entity';
-import Subscriber from 'src/projects/entities/subscriber.entity';
+import Subscriber from 'src/projects/entities/subscribers.entity';
 import { UsersModule } from 'src/users/users.module';
 import { UsersService } from 'src/users/users.service';
 

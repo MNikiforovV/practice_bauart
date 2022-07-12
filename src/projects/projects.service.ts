@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import Subscriber from 'src/projects/entities/subscriber.entity';
+import Subscriber from 'src/projects/entities/subscribers.entity';
 import User from 'src/users/entities/user.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -39,7 +39,7 @@ export class ProjectsService {
   async getProjectBySlug(slug: string) {
     const project = await this.projectsRepository.findOne({
       where: { slug: slug },
-      relations: ['author'],
+      relations: ['author', 'subscribers'],
     });
     if (project) {
       return project;
@@ -68,13 +68,11 @@ export class ProjectsService {
     return await this.projectsRepository.delete({ slug: slug });
   }
 
-
-
   async isNotAuthor(project: Project, user: User) {
-    if (project.author.email == user.email || user.role == 'Admin') {
-      return false;
+    if (project.author.email != user.email || user.role == 'Admin') {
+      return true;
     } else {
-    return true;}
+    return false;}
   }
 
   async isAlreadySubscribed(project: Project, user: User) {
@@ -109,19 +107,17 @@ export class ProjectsService {
   async unSubscribe(subscribe_id: number) {
     return await this.subscribersRepostory.delete({ id: subscribe_id });
   }
-  // findAll() {
-  //   return `This action returns all projects`;
-  // }
+  
+  async getAuthorAndSubs(slug: string) {
+    const project = await this.getProjectBySlug(slug)
+    const author = project.author
+    const subs = await this.subscribersRepostory.find( { where: {project: {id: project.id }}, relations: ['user', 'project'] } )
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} project`;
-  // }
+    const subUsers = []
+    for (var s of subs){
+      subUsers.push(s.user)
+    }
 
-  // update(id: number, updateProjectDto: UpdateProjectDto) {
-  //   return `This action updates a #${id} project`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} project`;
-  // }
+    return {author, subUsers}
+  }
 }

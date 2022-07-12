@@ -4,6 +4,9 @@ import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import { CreateMessageDto } from './dto/create-message.dto';
+import RoleSubGuard from 'src/users/roles/role-sub-admin.guard';
+import Role from 'src/users/roles/role.enum';
+import RequestWithUser from 'src/auth/requestWithUser.interface';
 
 @Controller('project/:slug/idea')
 export class IdeasController {
@@ -11,8 +14,8 @@ export class IdeasController {
 
   @UseGuards(JwtAuthGuard)
   @Post('create')
-  async createIdea(@Body() idea: CreateIdeaDto, @Param() params) {
-    const newIdea = await this.ideasService.createIdea(idea, params.slug);
+  async createIdea(@Body() idea: CreateIdeaDto, @Param() params, @Req() req: RequestWithUser) {
+    const newIdea = await this.ideasService.createIdea(idea, params.slug, req.user);
     const discussion = await this.ideasService.createDiscussion(newIdea)
     return newIdea
   }
@@ -23,7 +26,7 @@ export class IdeasController {
     return await this.ideasService.getAllIdeas(params.slug);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RoleSubGuard(Role.Admin))
   @Get(':slugIdea')
   getIdeaBySlug(@Param() params) {
     return this.ideasService.getIdeaBySlug(params.slugIdea);
@@ -42,9 +45,9 @@ export class IdeasController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post(':slugIdea/sendmessage/:disId')
+  @Post(':slugIdea/sendmessage/')
   sendMessage(@Param() params, @Body() message: CreateMessageDto){
-    return this.ideasService.createMessage(params.disId, message)
+    return this.ideasService.createMessage(params.slugIdea, message)
   }
 
   @UseGuards(JwtAuthGuard)

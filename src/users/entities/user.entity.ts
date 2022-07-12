@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import Project from 'src/projects/entities/project.entity';
-import Subscriber from 'src/projects/entities/subscriber.entity';
+import Subscriber from 'src/projects/entities/subscribers.entity';
 import Role from 'src/users/roles/role.enum';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany } from 'typeorm';
 

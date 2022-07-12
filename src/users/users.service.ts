@@ -6,7 +6,7 @@ import CreateUserDto from './dto/createUser.dto';
 import { encodePassword } from 'src/utils/bcrypt';
 import * as bcrypt from 'bcrypt';
 import Project from 'src/projects/entities/project.entity';
-import Subscriber from 'src/projects/entities/subscriber.entity';
+import Subscriber from 'src/projects/entities/subscribers.entity';
 import Donations from 'src/fundraising/entities/donations.entity';
 
 

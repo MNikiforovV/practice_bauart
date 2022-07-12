@@ -7,7 +7,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import Subscriber from 'src/projects/entities/subscriber.entity';
+import Subscriber from 'src/projects/entities/subscribers.entity';
 import Project from 'src/projects/entities/project.entity';
 import Donations from 'src/fundraising/entities/donations.entity';
 

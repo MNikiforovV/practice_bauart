@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectsService } from 'src/projects/projects.service';
+import User from 'src/users/entities/user.entity';
 import { slugify } from 'src/utils/slugify';
 import { Repository } from 'typeorm';
 import { CreateIdeaDto } from './dto/create-idea.dto';
@@ -23,23 +24,24 @@ export class IdeasService {
     private projectsService: ProjectsService
   ){}
 
-  async createIdea(idea: CreateIdeaDto, slug: string) {
+  async createIdea(idea: CreateIdeaDto, slug: string, user: User) {
     const project = await this.projectsService.getProjectBySlug(slug)
     const newIdea = this.ideasRepository.create({
       ...idea,
       slug: slugify(idea.title),
-      project: project
+      project: project,
+      author: user
     });
     await this.ideasRepository.save(newIdea)
     return newIdea;
   }
 
   async getAllIdeas(slug: string) {
-    return await this.ideasRepository.find({ where: {project: {slug: slug}} ,relations: ['project'] });
+    return await this.ideasRepository.find({ where: {project: {slug: slug}} ,relations: ['project', 'author'] });
   }
 
   async getIdeaBySlug(slug: string) {
-    const idea = await this.ideasRepository.findOne({ where: {slug: slug}, relations: ['project'] });
+    const idea = await this.ideasRepository.findOne({ where: {slug: slug}, relations: ['project', 'discussion', 'author'] });
     if (idea){
       return idea;
     }
@@ -82,8 +84,8 @@ export class IdeasService {
     throw new HttpException('Idea not found', HttpStatus.NOT_FOUND)
   }
 
-  async createMessage(id: number, createMessageDto: CreateMessageDto){
-    const discussion = await this.getDiscussionById(id)
+  async createMessage(slug: string, createMessageDto: CreateMessageDto){
+    const discussion = await (await this.getIdeaBySlug(slug)).discussion
     const message = this.messageRepository.create({
       ...createMessageDto,
       discussion: discussion

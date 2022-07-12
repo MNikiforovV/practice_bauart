@@ -1,5 +1,5 @@
 import Idea from "src/ideas/entities/idea.entity";
-import Subscriber from "src/projects/entities/subscriber.entity";
+import Subscriber from "src/projects/entities/subscribers.entity";
 import User from "src/users/entities/user.entity";
 import { BeforeUpdate, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 

@@ -3,7 +3,7 @@ import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import User from "../../users/entities/user.entity";
 
 @Entity()
-class Subscriber {
+class Subscribers {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -30,4 +30,4 @@ class Subscriber {
 
   }
 
-export default Subscriber;
+export default Subscribers;
