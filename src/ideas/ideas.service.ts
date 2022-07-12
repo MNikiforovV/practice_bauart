@@ -7,9 +7,10 @@ import { Repository } from 'typeorm';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
-import Discussion from './entities/discussion.entity';
+import Discussion from '../chat/entities/discussion.entity';
 import Idea from './entities/idea.entity';
-import Message from './entities/message.entity';
+import Message from 'src/chat/entities/message.entity';
+
 
 @Injectable()
 export class IdeasService {

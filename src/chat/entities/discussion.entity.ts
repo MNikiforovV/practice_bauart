@@ -1,6 +1,7 @@
-import { Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import Idea from "./idea.entity";
+import { Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import Idea from "../../ideas/entities/idea.entity";
 import Message from "./message.entity";
+
 
 @Entity()
 class Discussion {
@@ -10,6 +11,7 @@ class Discussion {
   @OneToOne(() => Idea, (idea: Idea) => idea.discussion, {
     onDelete: 'CASCADE'
   })
+  @JoinColumn()
   public idea: Idea;
 
   @OneToMany(() => Message, (message: Message) => message.discussion)

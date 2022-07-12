@@ -12,6 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ProjectsModule } from './projects/projects.module';
 import { IdeasModule } from './ideas/ideas.module';
 import { FundraisingModule } from './fundraising/fundraising.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { FundraisingModule } from './fundraising/fundraising.module';
     ProjectsModule,
     IdeasModule,
     FundraisingModule,
+    ChatModule,
 
   ],
   controllers:[AppController],

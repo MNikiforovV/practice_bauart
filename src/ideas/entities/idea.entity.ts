@@ -1,7 +1,7 @@
 
+import Discussion from "src/chat/entities/discussion.entity";
 import Project from "src/projects/entities/project.entity";
 import { BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import Discussion from "./discussion.entity";
 import Fundraising from "../../fundraising/entities/fundraising.entity";
 import User from "src/users/entities/user.entity";
 
@@ -44,7 +44,7 @@ class Idea {
   public project: Project;
   
   @OneToOne(() => Discussion)
-  @JoinColumn()
+  // @JoinColumn()
   public discussion: Discussion;
   
   @OneToOne(() => Fundraising)
