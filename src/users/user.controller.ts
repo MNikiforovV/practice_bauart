@@ -29,7 +29,7 @@ export class UserController {
   @Get('user')
   async getUser(@Request() req: RequestWithUser, @Res() res) {
     const user = req.user
-    return user
+    return res.json(user)
   }
 
   @UseGuards(JwtAuthGuard)

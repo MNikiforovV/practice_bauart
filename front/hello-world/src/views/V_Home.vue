@@ -24,7 +24,7 @@
         Отписаться
       </button>
       <button type="button" @click="goToIdeas(project.slug)">
-        Перейти к идеям
+        Войти
       </button>
     </div>
   </div>

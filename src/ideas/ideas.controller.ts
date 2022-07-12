@@ -26,7 +26,7 @@ export class IdeasController {
     return await this.ideasService.getAllIdeas(params.slug);
   }
 
-  @UseGuards(RoleSubGuard(Role.Admin))
+  @UseGuards(JwtAuthGuard)
   @Get(':slugIdea')
   getIdeaBySlug(@Param() params) {
     return this.ideasService.getIdeaBySlug(params.slugIdea);
@@ -46,12 +46,12 @@ export class IdeasController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':slugIdea/sendmessage/')
-  sendMessage(@Param() params, @Body() message: CreateMessageDto){
-    return this.ideasService.createMessage(params.slugIdea, message)
+  sendMessage(@Param() params, @Body() message: CreateMessageDto, @Req() req: RequestWithUser){
+    return this.ideasService.createMessage(params.slugIdea, message, req.user)
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':slugIdea/sendmessage/:disId')
+  @Get(':slugIdea/sendmessage/')
   getMessages(@Param() params){
     return this.ideasService.getMessagesByDiscussion(params.disId)
   }

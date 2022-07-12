@@ -3,7 +3,7 @@
     <form @submit.prevent="submit">
       <div>
         <div>
-          <label for="name" class="form-label">Название идеи</label>
+          <label for="title" class="form-label">Название идеи</label>
           <input
             type="text"
             class="form-control"
@@ -19,7 +19,7 @@
             Обязательное поле
           </p>
           <p
-            v-if="$v.form.title.$dirty && !$v.form.content.minLength"
+            v-if="$v.form.title.$dirty && !$v.form.titke.minLength"
             class="invalid-feedback"
           >
             Минимальная длина названия 5 символов

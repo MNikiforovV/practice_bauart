@@ -84,11 +84,12 @@ export class IdeasService {
     throw new HttpException('Idea not found', HttpStatus.NOT_FOUND)
   }
 
-  async createMessage(slug: string, createMessageDto: CreateMessageDto){
+  async createMessage(slug: string, createMessageDto: CreateMessageDto, user: User){
     const discussion = await (await this.getIdeaBySlug(slug)).discussion
     const message = this.messageRepository.create({
       ...createMessageDto,
-      discussion: discussion
+      discussion: discussion,
+      author: user
     });
     await this.messageRepository.save(message)
     return message;
@@ -96,7 +97,7 @@ export class IdeasService {
 
   async getMessagesByDiscussion(id: number){
     const discussion = await this.getDiscussionById(id)
-    const messages = await this.messageRepository.find({where: {discussion: {id: discussion.id}}, relations:['discussion']})
+    const messages = await this.messageRepository.find({where: {discussion: {id: discussion.id}}, relations:['discussion', 'author']})
     if(messages){
       return messages
     }
