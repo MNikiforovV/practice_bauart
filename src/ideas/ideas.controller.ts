@@ -7,6 +7,7 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import RoleSubGuard from 'src/users/roles/role-sub-admin.guard';
 import Role from 'src/users/roles/role.enum';
 import RequestWithUser from 'src/auth/requestWithUser.interface';
+import RoleCreatorGuard from 'src/users/roles/role-creator-admin.guard';
 
 @Controller('project/:slug/idea')
 export class IdeasController {
@@ -53,6 +54,11 @@ export class IdeasController {
   @UseGuards(JwtAuthGuard)
   @Get(':slugIdea/sendmessage/:disId')
   getMessages(@Param() params){
-    return this.ideasService.getMessagesByDiscussion(params.disId)
+    return this.ideasService.getMessagesByDiscussion(params.slugIdea)
+  }
+  @UseGuards(RoleCreatorGuard(Role.Admin))
+  @Patch(':slugIdea/archive')
+  async archive(@Param() params){
+    return this.ideasService.archive(params.slugIdea)
   }
 }

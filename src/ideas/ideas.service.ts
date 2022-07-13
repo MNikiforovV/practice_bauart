@@ -94,9 +94,20 @@ export class IdeasService {
     return message;
   }
 
-  async getMessagesByDiscussion(id: number){
-    const discussion = await this.getDiscussionById(id)
-    const messages = await this.messageRepository.find({where: {discussion: {id: discussion.id}}, relations:['discussion']})
+  async archive(slug: string){
+    const idea = await this.getIdeaBySlug(slug)
+    let updated = Object.assign(idea, {isArchived: !idea.isArchived});
+    const updatedIdea = await this.ideasRepository.save(updated);
+    if (updatedIdea) {
+      return updatedIdea;
+    }
+    throw new HttpException('Idea not found', HttpStatus.NOT_FOUND);
+  }
+
+  async getMessagesByDiscussion(slug: string){
+    const discussion = await (await this.getIdeaBySlug(slug)).discussion
+    // const discussion = await this.getDiscussionById(id)
+    const messages = await this.messageRepository.find({where: {discussion: {id: discussion.id}}, relations:['discussion', 'author']})
     if(messages){
       return messages
     }

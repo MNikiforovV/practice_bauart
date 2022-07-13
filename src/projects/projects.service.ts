@@ -69,7 +69,7 @@ export class ProjectsService {
   }
 
   async isNotAuthor(project: Project, user: User) {
-    if (project.author.email != user.email || user.role == 'Admin') {
+    if (project.author.email != user.email) {
       return true;
     } else {
     return false;}
@@ -77,7 +77,6 @@ export class ProjectsService {
 
   async isAlreadySubscribed(project: Project, user: User) {
     const subProjects = await this.usersService.getSubscribersProjects(user)
-    console.log(subProjects)
     for (var p of subProjects) {
       if (p.id == project.id){
         return false
@@ -89,7 +88,7 @@ export class ProjectsService {
   async subscribe(project: Project, user: User) {
     const check = await this.isNotAuthor(project, user)
     const doubleCheck = await this.isAlreadySubscribed(project, user)
-    console.log(check, doubleCheck)
+    // console.log('Subscribe',check, doubleCheck)
     if (check && doubleCheck) {
       const sub = this.subscribersRepostory.create({
         user: user,
@@ -104,8 +103,10 @@ export class ProjectsService {
     );}
   }
 
-  async unSubscribe(subscribe_id: number) {
-    return await this.subscribersRepostory.delete({ id: subscribe_id });
+  async unSubscribe(slug: string, user: User) {
+    const project = await this.getProjectBySlug(slug)
+    const sub = await this.subscribersRepostory.findOne({ where: {project: { id: project.id }, user: {id: user.id}}, relations:['project', 'user']})
+    return await this.subscribersRepostory.delete({ id: sub.id });
   }
   
   async getAuthorAndSubs(slug: string) {
@@ -119,5 +120,14 @@ export class ProjectsService {
     }
 
     return {author, subUsers}
+  }
+
+  async isSubscribed(slug: string, user: User) {
+    const project = await this.getProjectBySlug(slug)
+    const sub = await this.subscribersRepostory.findOne({ where: {project: { id: project.id }, user: {id: user.id}}, relations:['project', 'user']})
+    if(sub){
+      return true
+    }
+    return false
   }
 }

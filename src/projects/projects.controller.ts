@@ -56,9 +56,9 @@ export class ProjectsController {
   }
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Unsubscribe from project' })
-  @Delete('unsubscribe/:id')
+  @Delete('unsubscribe/:slug')
   async unSubscribe(@Req() req: RequestWithUser, @Param() param) {
-    return await this.projectsService.unSubscribe(param.id);
+    return await this.projectsService.unSubscribe(param.slug, req.user);
   }
 
   @UseGuards(RoleCreatorGuard(Role.Admin))
@@ -93,5 +93,11 @@ export class ProjectsController {
   @Get(':slug/subs')
   async getAuthorAndSubs(@Param() params){
     return await this.projectsService.getAuthorAndSubs(params.slug)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('issub/:slug')
+  async isSubscribed(@Param() params, @Req() req: RequestWithUser){
+    return await this.projectsService.isSubscribed(params.slug, req.user)
   }
 }

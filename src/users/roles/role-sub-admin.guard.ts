@@ -3,13 +3,15 @@ import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable, m
 import RequestWithUser from 'src/auth/requestWithUser.interface';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import { ProjectsService } from 'src/projects/projects.service';
+import { UsersService } from '../users.service';
 
 
 const RoleSubGuard = (role: Role): Type<CanActivate> => {
   @Injectable()
   class RoleSubGuardMixin extends JwtAuthGuard {
     constructor (
-      private projectsService: ProjectsService
+      private projectsService: ProjectsService,
+      private usersServices: UsersService
       ){
       super();
     }
@@ -22,12 +24,11 @@ const RoleSubGuard = (role: Role): Type<CanActivate> => {
       const slug = request.params.slug
       const user = requestRequest.user;
       const project = await this.projectsService.getProjectBySlug(slug)
-      const sub = await this.projectsService.getAuthorAndSubs(slug)
-      console.log(sub)
       
-      console.log(user.id in sub)
+      const sub = await this.projectsService.isSubscribed(slug, user)
 
-      if (project.author.email == user.email || user?.role.includes(role) || user.id in sub) {
+      console.log('guard', sub)
+      if (project.author.email == user.email || user?.role.includes(role) || sub) {
         return true
       } else {
         throw new HttpException('Access forbidden', HttpStatus.FORBIDDEN);
