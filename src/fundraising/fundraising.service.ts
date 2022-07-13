@@ -31,8 +31,9 @@ export class FundraisingService {
     return await this.fundraisingRepository.save(fundraising);
   }
 
-  async findOne(id: number) {
-    return await this.fundraisingRepository.findOne({ where: { id: id } });
+  async findOne(slug: string) {
+    const idea = await this.ideasServices.getIdeaBySlug(slug)
+    return await this.fundraisingRepository.findOne({ where: { idea: {id: idea.id} }, relations: ['idea'] });
   }
 
   async update(id: number, updateFundraisingDto: UpdateFundraisingDto) {
@@ -48,8 +49,8 @@ export class FundraisingService {
     throw new HttpException('Fundraising not found', HttpStatus.NOT_FOUND);
   }
 
-  async createDonation(createDonationDto: CreateDonationDto, id: number, user: User){
-    const fundraising = await this.findOne(id)
+  async createDonation(createDonationDto: CreateDonationDto, slug: string, user: User){
+    const fundraising = await this.findOne(slug)
     const donation = await this.donationsRepository.create({ 
       ...createDonationDto,
       fundraising: fundraising,

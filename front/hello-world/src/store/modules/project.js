@@ -3,57 +3,58 @@ import instance from '@/components/Instance.js';
 export default {
   namespaced: true,
   state: {
-    info: null,
-    infoSub: null,
-    infoUnSub: null
+    userProjects: null,
+    allProjects: null,
+    subInfo: null,
+    unSubInfo: null,
   },
   actions: {
-    async getInfo({ commit }) {
-      const { data } = await instance.get('/user/profile');
-      commit('updateInfo', data);
+    async getUserProjects({ commit }) {
+      const { data } = await instance.get('user/profile/');
+      commit('updateUserProjects', data);
     },
-    async createProject({ commit }, form) {
-      const { data } = await instance.post('/project/create', form);
-      commit('updateInfo', data);
+    async createProject({}, form) {
+      await instance.post('/project/create', form);
     },
-    async viewAllProject({ commit }) {
+    async getAllProject({ commit }) {
       const { data } = await instance.get('/project');
-      commit('updateInfo', data);
+      commit('updateAllProjects', data);
     },
-    async deleteProject({ commit }, payloud) {
-      const slug = payloud.slug
-      await instance.delete('/project/' + slug); 
-      commit('clearInfo');
+    async deleteProject({}, payloud) {
+      const slug = payloud.slug;
+      await instance.delete('/project/' + slug);
     },
     async updateProject({ commit }, payloud) {
-      const slug = payloud.slug
-      const data = payloud.data
+      const slug = payloud.slug;
+      const data = payloud.data;
       await instance.patch('/project/' + slug, data);
     },
     async getProjectBySlug(store, slug) {
       const { data } = await instance.get('/project/' + slug);
-      return data
-     
+      return data;
     },
-    async subForProject({ commit }, slug) {
+
+    async subForProject({ commit, dispatch }, slug) {
       const { data } = await instance.post('/project/subscribe/' + slug);
-      commit('subForProj', data);
+      dispatch("getUserProjects");
     },
-    async unSubForProject({ commit }, id) {
-       await instance.delete('/project/unsubscribe/' + id);
-      commit('unSubForProject');
+    async unSubForProject({ commit, rootState, dispatch }, slug) {
+      const user = rootState.user.userInfo;
+      await instance.delete('/project/unsubscribe/' + slug, {
+        user
+      });
+      dispatch("getUserProjects");
     },
   },
   mutations: {
-    updateInfo(state, info) {
-      state.info = info;
+    updateUserProjects(state, userProjects) {
+      state.userProjects = userProjects;
     },
-    clearInfo(state) {
-      state.info = null;
+
+    updateAllProjects(state, allProjects) {
+      state.allProjects = allProjects;
     },
-    updateProject(state, project) {
-      state.currentProject = project;
-    },
+
     subForProject(state, infoSub) {
       state.infoSub = infoSub;
     },
@@ -63,12 +64,11 @@ export default {
   },
 
   getters: {
-    allInfo(state) {
-      return state.info;
+    subscribedProjects(state) {
+      if (state.userProjects) {
+        return state.userProjects.subscriberProjects
+      }
+      return []
     },
-
-    // usersCount(state) {
-    //     return state.users.length
-    // }
   },
 };

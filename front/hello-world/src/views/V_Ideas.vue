@@ -1,56 +1,62 @@
 <template>
   <div id="V_Ideas">
-    <button @click="goToCreate" class="btn btn-primary">Создать идею</button>
-    <div class="idea" v-for="idea in infoIdeas" :key="idea.slug">
-      <p align="left">Название идеи: {{ idea.title }}</p>
-      <!-- <router-link class="navbar-brand" to="/project/:slug/ideas/:slug">{{ idea.title }}</router-link> -->
-      <button type="button" @click="goInIdea(idea.slug)">
-        Войти
-      </button>
+    <div  ></div>
+    <div class="ideas">
+      <button @click="goToCreate" class="btn btn-primary">Создать идею</button>
+      <div class="idea">
+        <idea v-for="idea in infoIdeas" :key="idea.slug" :idea="idea"> </idea>
+      </div>
+      <h1>Архив</h1>
+      <div class="arch">
+        <div v-for="(idea, key) in archivedIdeas()" :key="key">
+          <p>{{ idea.title }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import idea from '@/components/Ideas.vue';
 
 export default {
+  components: {
+    idea,
+  },
   computed: {
     ...mapState('idea', ['infoIdeas']),
   },
   methods: {
-    ...mapActions('idea', ['updateIdea']),
-    ...mapActions('idea', ['getIdeaBySlug']),
-    ...mapActions('idea', ['getAllIdeas']),
+    ...mapActions('idea', [
+      'updateIdea',
+      'getIdeaBySlug',
+      'getAllIdeas',
+      'archiveIdea',
+    ]),
+    ...mapState('user', ['userInfo']),
 
+    archivedIdeas() {
+      if (this.infoIdeas == null) return [];
+      const archived = this.infoIdeas.filter(
+        (Element) => Element.isArchived == true,
+      );
+      return archived;
+    },
     async goToCreate() {
       const slug = this.$route.params.slug;
       this.$router.push('/project/' + slug + '/idea/create');
     },
-     async goInIdea(slugIdea) {
-      const slug = this.$route.params.slug;
-      console.log(slugIdea)
-      // const info1 = await this.getIdeaBySlug({slug, slugIdea});
-      this.$router.push('/project/' + slug + '/idea/' + slugIdea);
-    },
-    
   },
-
   async mounted() {
     const slug = this.$route.params.slug;
-    console.log(slug);
-    // const info1 = await this.getIdeaBySlug(slug);
-    // this.getAllIdeas(info1);
     this.getAllIdeas(slug);
-    // if (info1) {
-    //   this.info = info1;
-    // }
   },
 };
 </script>
 
 <style>
-#V_Ideas   {
+#V_Ideas {
   font-family: 'Avenir', Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -61,6 +67,17 @@ export default {
 }
 
 .idea {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+/* .projects {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+} */
+
+.arch {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 1rem;

@@ -1,42 +1,40 @@
 <template>
-  <div>
-    <header>
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-          <router-link class="navbar-brand" to="/"><h6>Foedus</h6></router-link>
 
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-              <li class="nav-item" v-if="!isLoggedIn">
-                <router-link class="nav-link active" to="/register"
-                  ><h6>Регистрация</h6></router-link
-                >
-              </li>
-              <li class="nav-item" v-if="isLoggedIn">
-                <router-link class="nav-link active" to="/register"
-                  ><h6>Личный кабинет</h6></router-link
-                >
-              </li>
-              <li class="nav-item" v-if="!isLoggedIn">
-                <router-link class="nav-link active" to="/auth"
-                  ><h6>Авторизация</h6></router-link
-                >
-              </li>
-              <li class="nav-item" v-if="isLoggedIn">
-                <div @click="logout" class="nav-link active">
-                  <h6>Выйти</h6>
-                </div>
-              </li>
-            </ul>
+
+  <header class="header">
+    <div class="container_head">
+      <div class="header-inner">
+
+        <router-link class="logo active" to="/">
+          <div class="logo">Foedus</div>
+        </router-link>
+
+        <nav class="nav">
+          <router-link class="nav-link" to="/register">
+            <a class="nav-link" href="">Регистрация</a>
+          </router-link>
+          <router-link class="nav-link" v-if="isLoggedIn" to="/register">
+            <a class="nav-link" href="#">Личный кабинет</a>
+          </router-link>
+          <router-link class="nav-link" v-if="!isLoggedIn" to="/auth">
+            <a class="nav-link" href="#">Авторизация</a>
+          </router-link>
+          <div class="nav-link" v-if="isLoggedIn" @click="logout">
+            <a class="nav-link" href="#">Выйти</a>
           </div>
-        </div>
-      </nav>
-    </header>
-  </div>
+
+        </nav>
+
+      </div>
+    </div>
+
+  </header>
+
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+
 export default {
   computed: {
     ...mapGetters('user', ['isLoggedIn']),
@@ -51,3 +49,8 @@ export default {
   },
 };
 </script>
+
+<style src=@/style/header.css >
+</style>
+
+

@@ -4,7 +4,8 @@ export default {
   namespaced: true,
   state: {
     infoIdeas: null,
-    oneIdea: null
+    oneIdea: null,
+    contentChat: null
   },
   actions: {
     async getIdeaBySlug({commit}, payloud) {
@@ -44,6 +45,25 @@ export default {
         await instance.delete('/project/' + slug + '/idea/' + slugIdea); 
         commit('clearInfo');
     },
+    async getChat({ commit }, payloud) {
+      const slug = payloud.slug
+      const slugIdea = payloud.slugIdea
+      const { data } = await instance.get('/project/' + slug + '/idea/' + slugIdea + '/sendmessage/');
+      commit('chatM', data);
+    },
+    async postChat({ commit }, payloud) {
+      const slug = payloud.slug
+      const slugIdea = payloud.slugIdea
+      const form = payloud.form
+      const { data } = await instance.post('/project/' + slug + '/idea/' + slugIdea + '/sendmessage/', form);
+      commit('chatM', data);
+  },
+  async archiveIdea({ commit }, payloud) {
+    const slug = payloud.slug
+    const slugIdea = payloud.slugIdea
+    const data = payloud.data
+    await instance.patch('project/' + slug + '/idea/'+ slugIdea + '/archive', data);
+},
   
   },
   mutations: {
@@ -55,7 +75,10 @@ export default {
     },
     oneIdea(state, oneIdea) {
         state.oneIdea = oneIdea;
-      },
+    },
+    chatM(state, contentChat) {
+      state.contentChat = contentChat;
+    },
  
   },
 
@@ -65,10 +88,9 @@ export default {
     },
     oneIdea(state) {
         return state.oneIdea;
-    }
-
-    // usersCount(state) {
-    //     return state.users.length
-    // }
+    },
+    chat(state, contentChat) {
+      state.contentChat = contentChat;
+    },
   },
 };

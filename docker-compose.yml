@@ -21,6 +21,7 @@ services:
     - "8080:80"
     volumes:
     - /data/pgadmin:/root/.pgadmin
+    env_file:
     - docker.env
     networks:
     - postgres
