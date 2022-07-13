@@ -21,7 +21,7 @@ export class UserController {
     const authorProjects = await this.userService.getProjectsByUser(req.user);
     const subscriberProjects = await this.userService.getSubscribersProjects(req.user);
 
-    return {authorProjects,  subscriberProjects}
+    return res.json({authorProjects,  subscriberProjects})
   } 
 
   @UseGuards(JwtAuthGuard)

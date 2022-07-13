@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsNumberString } from "class-validator";
 
 export class CreateFundraisingDto {
-    @IsString()
+    @IsNumberString()
     @IsNotEmpty()
     public goal: number;
 

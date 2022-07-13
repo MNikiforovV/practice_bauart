@@ -3,52 +3,34 @@ import instance from '@/components/Instance.js';
 export default {
   namespaced: true,
   state: {
-    info: null,
-    infoUser: null,
+    userInfo: null,
   },
   actions: {
-    async getInfoN({ commit }) {
+    async getUserInfo({ commit }) {
       const { data } = await instance.get('user/user/');
-      commit('infoUser', data);
-    },
-    async getInfo({ commit }) {
-      const { data } = await instance.get('user/profile/');
-      commit('updateInfo', data);
+      commit('updateUserInfo', data);
     },
     async logoutUser({ commit }) {
       await instance.post('auth/logout');
-      commit('clearInfo');
+      commit('clearUserInfo');
     },
     async loginUser({ commit }, form) {
       const { data } = await instance.post('auth/login', form);
-      commit('updateInfo', data);
+      commit('updateUserInfo', data);
     },
   },
   mutations: {
-    updateInfo(state, info) {
-      console.log(info)
-      state.info = info;
+    clearUserInfo(state) {
+      state.userInfo = null;
     },
-    clearInfo(state) {
-      state.info = null;
-    },
-    infoUser(state, infoUser) {
-      state.infoUser = infoUser;
+    updateUserInfo(state, userInfo) {
+      state.userInfo = userInfo;
     },
   },
 
   getters: {
-    allInfo(state) {
-      return state.info;
-    },
     isLoggedIn(state) {
-      return !!state.info;
+      return !!state.userInfo;
     },
-    infoUser(state) {
-      return state.infoUser;
-    },
-    // usersCount(state) {
-    //     return state.users.length
-    // }
   },
 };

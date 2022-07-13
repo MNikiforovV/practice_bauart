@@ -44,7 +44,7 @@ router.beforeEach(async (to, from, next) => {
   let isLoggedIn;
   try {
     const { data } = await instance.get('user/user');
-    store.commit('user/updateInfo', data)
+    store.commit('user/updateUserInfo', data)
     isLoggedIn = true;
   } catch (error) {
     isLoggedIn = false

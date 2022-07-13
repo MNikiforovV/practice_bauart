@@ -22,7 +22,7 @@
 import { mapState, mapActions } from 'vuex';
 export default {
   computed: {
-    ...mapState('project', ['info']),
+    ...mapState('project', ['projectInfo']),
     authorProjects() {
       if (this.info) {
         return this.info.authorProjects;
@@ -39,7 +39,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('project', ['getInfo']),
+    ...mapActions('project', ['getProjectsInfo']),
   },
   async mounted() {
     await this.getInfo();

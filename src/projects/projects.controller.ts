@@ -56,9 +56,9 @@ export class ProjectsController {
   }
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Unsubscribe from project' })
-  @Delete('unsubscribe/:id')
+  @Delete('unsubscribe/:slug')
   async unSubscribe(@Req() req: RequestWithUser, @Param() param) {
-    return await this.projectsService.unSubscribe(param.id);
+    return await this.projectsService.unSubscribe(param.slug, req.user);
   }
 
   @UseGuards(RoleCreatorGuard(Role.Admin))

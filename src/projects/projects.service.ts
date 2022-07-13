@@ -104,8 +104,10 @@ export class ProjectsService {
     );}
   }
 
-  async unSubscribe(subscribe_id: number) {
-    return await this.subscribersRepostory.delete({ id: subscribe_id });
+  async unSubscribe(slug: string, user: User) {
+    const project = await this.getProjectBySlug(slug)
+    const sub = await this.subscribersRepostory.findOne({ where: {project: { id: project.id }, user: {id: user.id}}, relations:['project', 'user']})
+    return await this.subscribersRepostory.delete({ id: sub.id });
   }
   
   async getAuthorAndSubs(slug: string) {

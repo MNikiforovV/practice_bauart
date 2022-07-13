@@ -50,7 +50,7 @@ export default {
       const slugIdea = payloud.slugIdea
       const { data } = await instance.get('/project/' + slug + '/idea/' + slugIdea + '/sendmessage/');
       commit('chatM', data);
-  },
+    },
     async postChat({ commit }, payloud) {
       const slug = payloud.slug
       const slugIdea = payloud.slugIdea
