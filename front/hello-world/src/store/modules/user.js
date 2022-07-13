@@ -4,7 +4,6 @@ export default {
   namespaced: true,
   state: {
     info: null,
-    isLoggedIn: localStorage.getItem('isLoggedIn') || false,
     infoUser: null,
   },
   actions: {
@@ -19,16 +18,15 @@ export default {
     async logoutUser({ commit }) {
       await instance.post('auth/logout');
       commit('clearInfo');
-      localStorage.removeItem('isLoggedIn');
     },
     async loginUser({ commit }, form) {
       const { data } = await instance.post('auth/login', form);
       commit('updateInfo', data);
-      localStorage.setItem('isLoggedIn', true);
     },
   },
   mutations: {
     updateInfo(state, info) {
+      console.log(info)
       state.info = info;
     },
     clearInfo(state) {
