@@ -55,4 +55,10 @@ export class IdeasController {
   getMessages(@Param() params){
     return this.ideasService.getMessagesByDiscussion(params.slugIdea)
   }
+  @UseGuards(JwtAuthGuard)
+  @Patch(':slugIdea/archive')
+  async archive(@Param() params){
+    return this.ideasService.archive(params.slugIdea)
+  }
+  
 }

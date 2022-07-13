@@ -58,6 +58,12 @@ export default {
       const { data } = await instance.post('/project/' + slug + '/idea/' + slugIdea + '/sendmessage/', form);
       commit('chatM', data);
   },
+  async archiveIdea({ commit }, payloud) {
+    const slug = payloud.slug
+    const slugIdea = payloud.slugIdea
+    const data = payloud.data
+    await instance.patch('project/' + slug + '/idea/'+ slugIdea + '/archive', data);
+},
   
   },
   mutations: {
