@@ -1,0 +1,135 @@
+
+.email {
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 0px;
+	gap: 10px;
+
+	position: absolute;
+	width: 341px;
+	height: 36px;
+	left: 50px;
+	top: 156px;
+
+	background: #D3D3D3;
+	border-radius: 30px;
+
+}
+
+
+.password {
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 0px;
+	gap: 10px;
+
+	position: absolute;
+	width: 341px;
+	height: 36px;
+	left: 50px;
+	top: 209px;
+
+	background: #D3D3D3;
+	border-radius: 30px;
+}
+
+
+p {
+
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	justify-content: space-evenly;
+	flex-direction: column;
+	align-items: center;
+
+}
+
+
+
+
+
+.auth-container {
+
+	position: relative;
+	display: flex;
+	justify-content: center;
+	width: 450px;
+	height: 450px;
+	box-shadow: 0 5px 45px #D5F3EE;
+	margin: 0 auto;
+	top: 15px;
+
+	background: #FFFFFF;
+	border-radius: 30px;
+
+}
+
+.auth-title {
+
+	position: absolute;
+	width: 154px;
+	height: 29px;
+	display: flex;
+	justify-content: center;
+	top: 50px;
+
+
+
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 29px;
+
+	color: #000000;
+}
+
+.auth-field {
+
+	margin: auto;
+
+}
+
+
+.form-button {
+
+	box-sizing: border-box;
+	font-family: 'Inter';
+   font-style: normal;
+	font-size: 20px;
+	line-height: 24.2px;
+
+
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 15px 25px;
+	gap: 10px;
+
+	position: absolute;
+	width: 341px;
+	height: 36px;
+	top: 350px;
+	
+
+	background: #D5F3EE;
+	border: 1px solid #000000;
+	border-radius: 30px;
+}
+
+.form-button :hover {
+
+	background-color: #0d6cf2;
+
+}
