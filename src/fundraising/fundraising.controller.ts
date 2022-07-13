@@ -4,45 +4,45 @@ import { CreateFundraisingDto } from './dto/create-fundraising.dto';
 import { UpdateFundraisingDto } from './dto/update-fundraising.dto';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import { CreateDonationDto } from './dto/create-donation.dto';
-import RoleAdminGuard from 'src/users/roles/role-admin.guard';
 import Role from 'src/users/roles/role.enum';
 import RequestWithUser from 'src/auth/requestWithUser.interface';
+import RoleCreatorGuard from 'src/users/roles/role-creator-admin.guard';
 
 @Controller('project/:slug/idea/:slugIdea/fundraising')
 export class FundraisingController {
   constructor(private readonly fundraisingService: FundraisingService) {}
 
-  @UseGuards(RoleAdminGuard(Role.Admin))
+  @UseGuards(RoleCreatorGuard(Role.Admin))
   @Post('create')
   create(@Body() createFundraisingDto: CreateFundraisingDto, @Param() params) {
     return this.fundraisingService.create(createFundraisingDto, params.slugIdea);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.fundraisingService.findOne(+id);
+  @Get()
+  findOne(@Param() params) {
+    return this.fundraisingService.findOne(params.slugIdea);
   }
 
-  @UseGuards(RoleAdminGuard(Role.Admin))
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFundraisingDto: UpdateFundraisingDto) {
-    return this.fundraisingService.update(+id, updateFundraisingDto);
+  @UseGuards(RoleCreatorGuard(Role.Admin))
+  @Patch()
+  update(@Param() params, @Body() updateFundraisingDto: UpdateFundraisingDto) {
+    return this.fundraisingService.update(params, updateFundraisingDto);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post(':id/donate')
+  @Post('donate')
   createDonation(@Param() params, @Body() createDonationDto: CreateDonationDto, @Req() req: RequestWithUser){
-    return this.fundraisingService.createDonation(createDonationDto, params.id, req.user)
+    return this.fundraisingService.createDonation(createDonationDto, params.slugIdea, req.user)
   }
 
-  @UseGuards(RoleAdminGuard(Role.Admin))
+  @UseGuards(RoleCreatorGuard(Role.Admin))
   @Patch(':id/:idDonation')
   checkDonation(@Param() params) {
     return this.fundraisingService.updateDonation(params.idDonation);
   }
 
-  @UseGuards(RoleAdminGuard(Role.Admin))
+  @UseGuards(RoleCreatorGuard(Role.Admin))
   @Get(':id/donations')
   viewAllDonations(@Param() params) {
     return this.fundraisingService.findAllDonations(params.id);
