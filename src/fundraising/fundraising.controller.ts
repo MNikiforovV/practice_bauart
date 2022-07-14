@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, UseGuards, Req } from '@nestjs/common';
 import { FundraisingService } from './fundraising.service';
 import { CreateFundraisingDto } from './dto/create-fundraising.dto';
 import { UpdateFundraisingDto } from './dto/update-fundraising.dto';
@@ -15,7 +15,10 @@ export class FundraisingController {
   @UseGuards(RoleCreatorGuard(Role.Admin))
   @Post('create')
   create(@Body() createFundraisingDto: CreateFundraisingDto, @Param() params) {
-    return this.fundraisingService.create(createFundraisingDto, params.slugIdea);
+    return this.fundraisingService.create(
+      createFundraisingDto,
+      params.slugIdea,
+    );
   }
 
   @UseGuards(JwtAuthGuard)
@@ -32,8 +35,16 @@ export class FundraisingController {
 
   @UseGuards(JwtAuthGuard)
   @Post('donate')
-  createDonation(@Param() params, @Body() createDonationDto: CreateDonationDto, @Req() req: RequestWithUser){
-    return this.fundraisingService.createDonation(createDonationDto, params.slugIdea, req.user)
+  createDonation(
+    @Param() params,
+    @Body() createDonationDto: CreateDonationDto,
+    @Req() req: RequestWithUser,
+  ) {
+    return this.fundraisingService.createDonation(
+      createDonationDto,
+      params.slugIdea,
+      req.user,
+    );
   }
 
   @UseGuards(RoleCreatorGuard(Role.Admin))
@@ -42,15 +53,17 @@ export class FundraisingController {
     return this.fundraisingService.updateDonation(params.idDonation);
   }
 
+  //Возвращает все донаты конкретного fundraising
   @UseGuards(RoleCreatorGuard(Role.Admin))
-  @Get(':id/donations')
+  @Get('/donations')
   viewAllDonations(@Param() params) {
-    return this.fundraisingService.findAllDonations(params.id);
+    return this.fundraisingService.findAllDonations(params.slugIdea);
   }
 
+  //Вызывает метод, который возвращает сумму проверенных донатов. (У которых Check = true)
   @UseGuards(JwtAuthGuard)
   @Get('donationssum')
-  getSumDonations(@Param() params){
-    return this.fundraisingService.sumDonations(params.slugIdea)
+  getSumDonations(@Param() params) {
+    return this.fundraisingService.sumDonations(params.slugIdea);
   }
 }

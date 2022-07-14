@@ -14,8 +14,18 @@ import Message from 'src/ideas/entities/message.entity';
 import Discussion from 'src/ideas/entities/discussion.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Fundraising, Donations, Idea, Message, Discussion]), IdeasModule, UsersModule],
+  imports: [
+    TypeOrmModule.forFeature([
+      Fundraising,
+      Donations,
+      Idea,
+      Message,
+      Discussion,
+    ]),
+    IdeasModule,
+    UsersModule,
+  ],
   controllers: [FundraisingController],
-  providers: [FundraisingService, IdeasService, ProjectsService, UsersService]
+  providers: [FundraisingService, IdeasService, ProjectsService, UsersService],
 })
 export class FundraisingModule {}

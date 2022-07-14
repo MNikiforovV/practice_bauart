@@ -16,42 +16,49 @@ export class IdeasService {
   constructor(
     @InjectRepository(Idea)
     private ideasRepository: Repository<Idea>,
+
     @InjectRepository(Message)
     private messageRepository: Repository<Message>,
+
     @InjectRepository(Discussion)
     private discussionRepository: Repository<Discussion>,
 
-    private projectsService: ProjectsService
-  ){}
+    private projectsService: ProjectsService,
+  ) {}
 
   async createIdea(idea: CreateIdeaDto, slug: string, user: User) {
-    const project = await this.projectsService.getProjectBySlug(slug)
+    const project = await this.projectsService.getProjectBySlug(slug);
     const newIdea = this.ideasRepository.create({
       ...idea,
       slug: slugify(idea.title),
       project: project,
-      author: user
+      author: user,
     });
-    await this.ideasRepository.save(newIdea)
+    await this.ideasRepository.save(newIdea);
     return newIdea;
   }
 
   async getAllIdeas(slug: string) {
-    return await this.ideasRepository.find({ where: {project: {slug: slug}} ,relations: ['project', 'author'] });
+    return await this.ideasRepository.find({
+      where: { project: { slug: slug } },
+      relations: ['project', 'author'],
+    });
   }
 
   async getIdeaBySlug(slug: string) {
-    const idea = await this.ideasRepository.findOne({ where: {slug: slug}, relations: ['project', 'discussion', 'author'] });
-    if (idea){
+    const idea = await this.ideasRepository.findOne({
+      where: { slug: slug },
+      relations: ['project', 'discussion', 'author'],
+    });
+    if (idea) {
       return idea;
     }
-    throw new HttpException('Idea not found', HttpStatus.NOT_FOUND)
+    throw new HttpException('Idea not found', HttpStatus.NOT_FOUND);
   }
 
   async updateIdea(slug: string, idea: UpdateIdeaDto) {
-    const toUpdate = await this.getIdeaBySlug(slug)
-    const ideaAndSlug = {...idea, slug: slugify(idea.title)}
-    console.log(toUpdate)
+    const toUpdate = await this.getIdeaBySlug(slug);
+    const ideaAndSlug = { ...idea, slug: slugify(idea.title) };
     let updated = Object.assign(toUpdate, ideaAndSlug);
     const updatedIdea = await this.ideasRepository.save(updated);
     if (updatedIdea) {
@@ -64,36 +71,43 @@ export class IdeasService {
     return this.ideasRepository.delete({ slug: slug });
   }
 
-  async createDiscussion(idea: Idea){
+  async createDiscussion(idea: Idea) {
     const discussion = await this.discussionRepository.create({
-      idea: idea
-    })
-    await this.discussionRepository.save(discussion)
-    return discussion
+      idea: idea,
+    });
+    await this.discussionRepository.save(discussion);
+    return discussion;
   }
 
-  async getDiscussionById(id: number){
-    const discussion = await this.discussionRepository.findOne({ where: {id: id}, relations: ['idea'] });
-    if (discussion){
+  async getDiscussionById(id: number) {
+    const discussion = await this.discussionRepository.findOne({
+      where: { id: id },
+      relations: ['idea'],
+    });
+    if (discussion) {
       return discussion;
     }
-    throw new HttpException('Idea not found', HttpStatus.NOT_FOUND)
+    throw new HttpException('Idea not found', HttpStatus.NOT_FOUND);
   }
 
-  async createMessage(slug: string, createMessageDto: CreateMessageDto, user: User){
-    const discussion = await (await this.getIdeaBySlug(slug)).discussion
+  async createMessage(
+    slug: string,
+    createMessageDto: CreateMessageDto,
+    user: User,
+  ) {
+    const discussion = await (await this.getIdeaBySlug(slug)).discussion;
     const message = this.messageRepository.create({
       ...createMessageDto,
       discussion: discussion,
-      author: user
+      author: user,
     });
-    await this.messageRepository.save(message)
+    await this.messageRepository.save(message);
     return message;
   }
 
-  async archive(slug: string){
-    const idea = await this.getIdeaBySlug(slug)
-    let updated = Object.assign(idea, {isArchived: !idea.isArchived});
+  async archive(slug: string) {
+    const idea = await this.getIdeaBySlug(slug);
+    let updated = Object.assign(idea, { isArchived: !idea.isArchived });
     const updatedIdea = await this.ideasRepository.save(updated);
     if (updatedIdea) {
       return updatedIdea;
@@ -101,13 +115,15 @@ export class IdeasService {
     throw new HttpException('Idea not found', HttpStatus.NOT_FOUND);
   }
 
-  async getMessagesByDiscussion(slug: string){
-    const discussion = await (await this.getIdeaBySlug(slug)).discussion
-    // const discussion = await this.getDiscussionById(id)
-    const messages = await this.messageRepository.find({where: {discussion: {id: discussion.id}}, relations:['discussion', 'author']})
-    if(messages){
-      return messages
+  async getMessagesByDiscussion(slug: string) {
+    const discussion = await (await this.getIdeaBySlug(slug)).discussion;
+    const messages = await this.messageRepository.find({
+      where: { discussion: { id: discussion.id } },
+      relations: ['discussion', 'author'],
+    });
+    if (messages) {
+      return messages;
     }
-    throw new HttpException('Messages not found', HttpStatus.NOT_FOUND)
+    throw new HttpException('Messages not found', HttpStatus.NOT_FOUND);
   }
 }

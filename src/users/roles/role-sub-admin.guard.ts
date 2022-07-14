@@ -5,39 +5,42 @@ import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import { ProjectsService } from 'src/projects/projects.service';
 import { UsersService } from '../users.service';
 
-
 const RoleSubGuard = (role: Role): Type<CanActivate> => {
   @Injectable()
   class RoleSubGuardMixin extends JwtAuthGuard {
-    constructor (
+    constructor(
       private projectsService: ProjectsService,
-      private usersServices: UsersService
-      ){
+      private usersServices: UsersService,
+    ) {
       super();
     }
     async canActivate(context: ExecutionContext) {
       await super.canActivate(context);
 
       const request = context.switchToHttp().getRequest();
-      const requestRequest = context.switchToHttp().getRequest<RequestWithUser>();
+      const requestRequest = context
+        .switchToHttp()
+        .getRequest<RequestWithUser>();
 
-      const slug = request.params.slug
+      const slug = request.params.slug;
       const user = requestRequest.user;
-      const project = await this.projectsService.getProjectBySlug(slug)
-      
-      const sub = await this.projectsService.isSubscribed(slug, user)
+      const project = await this.projectsService.getProjectBySlug(slug);
 
-      console.log('guard', sub)
-      if (project.author.email == user.email || user?.role.includes(role) || sub) {
-        return true
+      const sub = await this.projectsService.isSubscribed(slug, user);
+
+      if (
+        project.author.email == user.email ||
+        user?.role.includes(role) ||
+        sub
+      ) {
+        return true;
       } else {
         throw new HttpException('Access forbidden', HttpStatus.FORBIDDEN);
-        // return false;
       }
     }
   }
 
   return mixin(RoleSubGuardMixin);
-}
+};
 
 export default RoleSubGuard;

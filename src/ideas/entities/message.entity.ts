@@ -1,8 +1,6 @@
-
-import User from "src/users/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import Discussion from "./discussion.entity";
-
+import User from 'src/users/entities/user.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import Discussion from './discussion.entity';
 
 @Entity()
 class Message {
@@ -12,16 +10,20 @@ class Message {
   @Column()
   public content: string;
 
-  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP"})
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public created: Date;
 
-  @ManyToOne(() => Discussion, (discussion: Discussion) => discussion.messages, {
-    onDelete: 'CASCADE'
-  })
+  @ManyToOne(
+    () => Discussion,
+    (discussion: Discussion) => discussion.messages,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
   public discussion: Discussion;
 
   @ManyToOne(() => User, (author: User) => author.projects, {
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   public author: User;
 }

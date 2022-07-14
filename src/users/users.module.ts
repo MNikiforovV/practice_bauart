@@ -13,7 +13,7 @@ import Donations from 'src/fundraising/entities/donations.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Subscriber, Project, Donations])],
-  controllers:[UserController],
+  controllers: [UserController],
   providers: [UsersService, AuthService, JwtService, ConfigService],
   exports: [TypeOrmModule],
 })

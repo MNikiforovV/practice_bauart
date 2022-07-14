@@ -1,6 +1,6 @@
-import User from "src/users/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import Fundraising from "./fundraising.entity";
+import User from 'src/users/entities/user.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import Fundraising from './fundraising.entity';
 
 @Entity()
 class Donations {
@@ -10,17 +10,21 @@ class Donations {
   @Column()
   public money: number;
 
-  @Column({default: false})
+  @Column({ default: false })
   public check: boolean;
 
   @ManyToOne(() => User, (user: User) => user.projects, {
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   public user: User;
 
-  @ManyToOne(() => Fundraising, (fundraising: Fundraising) => fundraising.donations, {
-    onDelete: 'CASCADE'
-  })
+  @ManyToOne(
+    () => Fundraising,
+    (fundraising: Fundraising) => fundraising.donations,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
   public fundraising: Fundraising;
 }
 

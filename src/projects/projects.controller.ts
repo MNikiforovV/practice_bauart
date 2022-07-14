@@ -1,16 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Req,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -29,10 +17,10 @@ export class ProjectsController {
   @ApiOperation({ summary: 'Create project' })
   @Post('create')
   async createPost(
-    @Body() projct: CreateProjectDto,
+    @Body() project: CreateProjectDto,
     @Req() req: RequestWithUser,
   ) {
-    return await this.projectsService.createProject(projct, req.user);
+    return await this.projectsService.createProject(project, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -64,13 +52,8 @@ export class ProjectsController {
   @UseGuards(RoleCreatorGuard(Role.Admin))
   @ApiOperation({ summary: 'Update project' })
   @Patch(':slug')
-  async update(
-    @Param() params,
-    @Body() updateProjectDto: UpdateProjectDto,
-    @Req() req: RequestWithUser,
-  ) {
+  async update(@Param() params, @Body() updateProjectDto: UpdateProjectDto) {
     const project = await this.projectsService.getProjectBySlug(params.slug);
-    // console.log('patch')
     return await this.projectsService.updateProject(
       params.slug,
       updateProjectDto,
@@ -80,24 +63,19 @@ export class ProjectsController {
   @UseGuards(RoleCreatorGuard(Role.Admin))
   @ApiOperation({ summary: 'Delete project' })
   @Delete(':slug')
-  async remove(@Param() params, @Req() req: RequestWithUser) {
-    const project = await this.projectsService.getProjectBySlug(params.slug);
-    //console.log(project)
-    // if (this.projectsService.isAuthor(project, req.user)){
+  async remove(@Param() params) {
     return this.projectsService.delete(params.slug);
-    // }
-    throw new HttpException('Table wasnt updated', HttpStatus.FORBIDDEN);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':slug/subs')
-  async getAuthorAndSubs(@Param() params){
-    return await this.projectsService.getAuthorAndSubs(params.slug)
+  async getAuthorAndSubs(@Param() params) {
+    return await this.projectsService.getAuthorAndSubs(params.slug);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('issub/:slug')
-  async isSubscribed(@Param() params, @Req() req: RequestWithUser){
-    return await this.projectsService.isSubscribed(params.slug, req.user)
+  async isSubscribed(@Param() params, @Req() req: RequestWithUser) {
+    return await this.projectsService.isSubscribed(params.slug, req.user);
   }
 }

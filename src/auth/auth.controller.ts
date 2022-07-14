@@ -1,4 +1,4 @@
-import { Controller, Get, Request, Post, UseGuards, Body, Res, Req, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Request, Post, UseGuards, Body, Res, Req, HttpCode } from '@nestjs/common';
 import { LocalAuthGuard } from './strategy/local-auth.guard';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
@@ -10,32 +10,34 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import JwtRefreshGuard from './jwt/jwt-refresh.guard';
 import JwtAuthGuard from './jwt/jwt-auth.guard';
 
-
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
-  constructor(private authService: AuthService, private userService: UsersService) { }
+  constructor(
+    private authService: AuthService,
+    private userService: UsersService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @HttpCode(200)
   @ApiOperation({ summary: 'Loggin in of new user' })
   @Post('login')
-  async login(@Body() dto: LoginUserDto, @Request() req: RequestWithUser, @Res() res: Response) {
+  async login(
+    @Body() dto: LoginUserDto,
+    @Request() req: RequestWithUser,
+    @Res() res: Response,
+  ) {
     return await this.authService.login(dto, res);
   }
 
   @UseGuards(JwtRefreshGuard)
   @Get('refresh')
   async refresh(@Req() request: RequestWithUser, @Res() res) {
-    const accessTokenCookie = await this.authService.getCookieWithJwtAccessToken(request.user.id);
+    const accessTokenCookie =
+      await this.authService.getCookieWithJwtAccessToken(request.user.id);
     request.res.setHeader('Set-Cookie', accessTokenCookie);
-    console.log(request.user);
 
-    // const {user} = request
-    // const {name, surname, email, password, role, currentHashedRefreshToken} = user
-    // return res({name, surname, email, password, role, currentHashedRefreshToken})
-
-    return request.user // правильно должно быть return request.user, но у меня не парвильно собирается проект
+    return request.user;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -50,13 +52,13 @@ export class AuthController {
   @Post('register')
   async register(@Res() res, @Body() createUserDto: CreateUserDto) {
     const newUser = await this.userService.createUser(createUserDto);
-    return res.json(newUser)
+    return res.json(newUser);
   }
 
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Checking if the user is logged in' })
   @Get('isloggedin')
   isLoggedIn() {
-    return true
+    return true;
   }
 }

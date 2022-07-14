@@ -1,9 +1,8 @@
-
-import Project from "src/projects/entities/project.entity";
+import Project from 'src/projects/entities/project.entity';
 import { BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import Discussion from "./discussion.entity";
-import Fundraising from "../../fundraising/entities/fundraising.entity";
-import User from "src/users/entities/user.entity";
+import Discussion from './discussion.entity';
+import Fundraising from '../../fundraising/entities/fundraising.entity';
+import User from 'src/users/entities/user.entity';
 
 @Entity()
 class Idea {
@@ -12,41 +11,41 @@ class Idea {
 
   @Column()
   public slug: string;
- 
+
   @Column()
   public title: string;
- 
+
   @Column()
   public content: string;
 
-  @Column({default: false})
+  @Column({ default: false })
   public isArchived: boolean;
 
-  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP"})
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created: Date;
 
-  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP"})
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updated: Date;
 
   @ManyToOne(() => User, (author: User) => author.projects, {
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   public author: User;
- 
+
   @BeforeUpdate()
   updateTimestamp() {
-    this.updated = new Date;
+    this.updated = new Date();
   }
 
   @ManyToOne(() => Project, (user: Project) => user.ideas, {
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   public project: Project;
-  
+
   @OneToOne(() => Discussion)
   @JoinColumn()
   public discussion: Discussion;
-  
+
   @OneToOne(() => Fundraising)
   public fundraising: Fundraising;
 }

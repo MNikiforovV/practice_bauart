@@ -44,7 +44,7 @@ export class ProjectsService {
     if (project) {
       return project;
     }
-    throw new HttpException('Project not found', HttpStatus.FORBIDDEN); 
+    throw new HttpException('Project not found', HttpStatus.NOT_FOUND); 
   }
 
   async updateProject(slug: string, project: UpdateProjectDto) {
@@ -58,7 +58,7 @@ export class ProjectsService {
     if (updatedProject) {
       return updatedProject;
     }
-    throw new HttpException('Project not found', HttpStatus.FORBIDDEN); 
+    throw new HttpException('Project not found', HttpStatus.NOT_FOUND); 
   }
 
   async delete(slug: string): Promise<DeleteResult> {
@@ -85,7 +85,6 @@ export class ProjectsService {
   async subscribe(project: Project, user: User) {
     const check = await this.isNotAuthor(project, user)
     const doubleCheck = await this.isAlreadySubscribed(project, user)
-    // console.log('Subscribe',check, doubleCheck)
     if (check && doubleCheck) {
       const sub = this.subscribersRepostory.create({
         user: user,
@@ -106,6 +105,7 @@ export class ProjectsService {
     return await this.subscribersRepostory.delete({ id: sub.id });
   }
   
+  //Метод для профиля. Возвращает все проекты пользователя, в которых он автор, и на которые он подписан.
   async getAuthorAndSubs(slug: string) {
     const project = await this.getProjectBySlug(slug)
     const author = project.author

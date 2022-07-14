@@ -1,7 +1,8 @@
-import Idea from "src/ideas/entities/idea.entity";
-import Subscriber from "src/projects/entities/subscribers.entity";
-import User from "src/users/entities/user.entity";
-import { BeforeUpdate, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import Idea from 'src/ideas/entities/idea.entity';
+import Subscriber from 'src/projects/entities/subscribers.entity';
+import User from 'src/users/entities/user.entity';
+import { BeforeUpdate, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+
 
 @Entity()
 class Project {
@@ -10,26 +11,26 @@ class Project {
 
   @Column()
   slug: string;
- 
+
   @Column()
   public title: string;
- 
+
   @Column()
   public content: string;
 
-  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP"})
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created: Date;
 
-  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP"})
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updated: Date;
- 
+
   @BeforeUpdate()
   updateTimestamp() {
-    this.updated = new Date;
+    this.updated = new Date();
   }
 
   @ManyToOne(() => User, (author: User) => author.projects, {
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   public author: User;
 
@@ -38,11 +39,6 @@ class Project {
 
   @OneToMany(() => Idea, (idea: Idea) => idea.project)
   public ideas: Idea[];
-
-  // @ManyToMany(() => User, (subscriber: User) => subscriber.subscribed)
-  // @JoinTable()
-  // public subscribers: User[];
-
 }
 
 export default Project;
