@@ -1,6 +1,4 @@
 <template>
-
-
   <header class="header">
     <div class="container_head">
       <div class="header-inner">
@@ -11,7 +9,7 @@
 
         <nav class="nav">
          
-          <router-link class="nav-link" v-if="isLoggedIn" to="/register">
+          <router-link class="nav-link" v-if="isLoggedIn" to="/profile">
             <a class="nav-link" href="#">Личный кабинет</a>
           </router-link>
     

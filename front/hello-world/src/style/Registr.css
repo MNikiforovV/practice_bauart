@@ -20,6 +20,7 @@
 	left: 0;
 	bottom: 0;
 	right: 0;
+	background:rgba(0,0,0,0.5);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -30,7 +31,7 @@
 	display: flex;
 	justify-content: center;
 	max-width: 450px;
-	height: 700px;
+	height: 750px;
 	box-shadow: 0 5px 45px #D5F3EE;
 	margin: 0 auto;
 	top: 15px;
@@ -72,15 +73,12 @@
 }
 
 .register-field {
-
 	margin: auto;
-
-
 }
 
 
 
-p {
+/* p {
 
 	width: 100%;
 	display: flex;
@@ -91,7 +89,7 @@ p {
 
 
 
-}
+} */
 
 
 input {

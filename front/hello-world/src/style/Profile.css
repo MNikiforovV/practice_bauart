@@ -1,0 +1,41 @@
+#V_Profile {
+    font-family: 'Avenir', Arial, Helvetica, sans-serif;
+       -webkit-font-smoothing: antialiased;
+       -moz-osx-font-smoothing: grayscale;
+       text-align: center;
+       color: #2c3e50;
+       margin: 60px auto;
+       padding: 0 20px;
+       max-width: 1200px;
+       width: 100%;
+       display: flex;
+   }
+   .projectss{
+       display: flex;
+       flex-direction: row;
+       width: 100%;
+       justify-content: space-between;
+       gap: 30px;
+   }
+   
+   .left {
+      width: 100%;
+   }
+   .right {
+      width: 100%;
+   }
+   
+   .authorProject {
+     border: 1px solid #ccc;
+     border-radius: 30px;
+     margin-bottom: 1rem;
+	 box-shadow: 0 5px 45px #D5F3EE;
+   }
+   
+   .subscriberProject {
+     border: 1px solid #ccc;
+     border-radius: 30px;
+     margin-bottom: 1rem;
+	 box-shadow: 0 5px 45px #D5F3EE;
+   }
+   

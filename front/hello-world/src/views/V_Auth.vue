@@ -24,9 +24,11 @@
             Минимальная длина пароля 4 символа
           </p>
         </div>
+    
         <button class="form-button">Авторизация</button>
         <label class="or">ИЛИ</label>
         <router-link to="/register"><button class="form-button">Зарегистрироваться</button></router-link>
+    
       </div>
 
 

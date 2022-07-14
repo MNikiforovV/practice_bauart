@@ -77,6 +77,8 @@
           </div>
          
             <button onclick="submit" type="submit" class="button">Зарегистрироваться</button>
+            <label class="or">ИЛИ</label>
+            <router-link to="/auth"><button class="button">Авторизация</button></router-link>
           
 
         </div>

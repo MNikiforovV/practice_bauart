@@ -1,5 +1,6 @@
 <template>
   <div id="V_Home">
+    <h1>Проекты</h1>
     <Form @submit.prevent="createbtn">
       <button class="btn btn-primary">Создать проект</button>
     </Form>
@@ -16,7 +17,7 @@
 
 <script>
 /* eslint-disable */
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Project from '@/components/Project.vue';
 
 export default {
@@ -51,7 +52,10 @@ export default {
   color: #2c3e50;
   margin: 60px auto;
   width: 400px;
+  
+
 }
+
 
 
 </style>

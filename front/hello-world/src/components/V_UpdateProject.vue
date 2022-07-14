@@ -1,13 +1,11 @@
 <template>
   <div id="project">
-    <div
-      class="container mt-5 position-absolute top-50 start-50 translate-middle"
-    >
-      <div class="row">
-        <div class="col-sm-3 mx-auto">
+    <div>
+      <div>
+        <div class="UpdateProject">
           <form @submit.prevent="submit">
             <div>
-              <div class="mb-3">
+              <div>
                 <label for="name" class="form-label">Название проекта</label>
                 <input
                   type="text"
@@ -116,7 +114,7 @@ export default {
     async deleteProj() {
       const slug = this.$route.params.slug;
       await this.deleteProject({ slug });
-       router.push('/');
+      router.push('/');
     },
   },
   async mounted() {
@@ -130,4 +128,33 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.UpdateProject {
+  display: flex;
+  justify-content: center;
+  max-width: 450px;
+  height: 250px;
+  box-shadow: 0 5px 45px #d5f3ee;
+  margin: 0 auto;
+  top: 15px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  width: 100%;
+  margin-top: 200px;
+	padding: 30px 25px;
+  font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 29px;
+
+
+
+  background: #ffffff;
+  border-radius: 30px;
+}
+</style>

@@ -80,7 +80,11 @@ export default {
 <style>
 .project {
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 30px;
   margin-bottom: 1rem;
+	box-shadow: 0 5px 45px #D5F3EE;
+  
+	/* justify-content: center; */
+  
 }
 </style>
