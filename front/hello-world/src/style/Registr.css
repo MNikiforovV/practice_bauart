@@ -33,7 +33,7 @@
 	max-width: 450px;
 	height: 750px;
 	box-shadow: 0 5px 45px #D5F3EE;
-	margin: 0 auto;
+	margin-right: 0 auto;
 	top: 15px;
 
 	background: #FFFFFF;
@@ -74,6 +74,7 @@
 
 .register-field {
 	margin: auto;
+
 }
 
 
@@ -111,6 +112,7 @@ input {
 	border-radius: 30px;
 
 	margin-bottom: 17px;
+
 
 
 }

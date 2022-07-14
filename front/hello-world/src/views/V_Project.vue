@@ -128,13 +128,20 @@ export default {
   width: 100%;
   margin-top: 200px;
   padding: 30px 25px;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 29px;
 
   background: #ffffff;
   border-radius: 30px;
+}
+
+.form-label {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;  
+  line-height: 29px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center ;
 }
 </style>
