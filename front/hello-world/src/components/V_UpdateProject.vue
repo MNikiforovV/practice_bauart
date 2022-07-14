@@ -133,7 +133,7 @@ export default {
   display: flex;
   justify-content: center;
   max-width: 450px;
-  height: 250px;
+  height: 320px;
   box-shadow: 0 5px 45px #d5f3ee;
   margin: 0 auto;
   top: 15px;

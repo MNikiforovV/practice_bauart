@@ -83,6 +83,7 @@ export default {
   border-radius: 30px;
 
   transition: color 0.2s linear;
+  margin-bottom: 10px;
 }
 
 .formBtn {
@@ -90,4 +91,6 @@ export default {
   justify-content: center;
   margin-bottom: 60px;
 }
+
+
 </style>

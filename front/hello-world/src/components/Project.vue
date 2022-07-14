@@ -121,6 +121,9 @@ export default {
 	border: 1px solid #000000;
   gap: 10px;
   border-radius: 30px;
+  margin-bottom: 10px;
+
+
 
 }
 </style>

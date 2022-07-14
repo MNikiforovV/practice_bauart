@@ -1,40 +1,44 @@
 <template>
-  <div id="V_Idea">
+  <div class="chatCont" id="V_Idea">
     <div class="idea">
       <p align="left">Название идеи: {{ infoIdeas.title }}</p>
       <p align="left">Описание идеи: {{ infoIdeas.content }}</p>
       <button
         v-if="UserRole == 'Admin' || infoIdeas.author.email == UserEmail"
         @click="editIdea"
-        class="btn btn-primary"
+        class="btn1"
       >
         Изменить
       </button>
       <button
         v-if="UserRole == 'Admin' || infoIdeas.author.email == UserEmail"
         @click="deleteIdeas"
-        class="btn btn-danger"
+        class="btn1"
       >
         Удалить
       </button>
     </div>
-    <button
-      v-if="(UserRole == 'Admin' || infoIdeas.author.email == UserEmail) && status == false"
+    <!-- <button
+      v-if="
+        (UserRole == 'Admin' || infoIdeas.author.email == UserEmail)
+      "
       @click="goToAddMoney"
       class="btn btn-primary"
     >
       Добавить сбор средств
-    </button>
+    </button> -->
     <form
       @submit.prevent="addMoney"
       class="donate"
-      v-if="(UserRole == 'Admin' || infoIdeas.author.email == UserEmail) && status == false"
+      v-if="
+        (UserRole == 'Admin' || infoIdeas.author.email == UserEmail)
+      "
     >
       <div>
         <label for="titleMoney" class="form-label">Название сбора</label>
         <input
           type="text"
-          class="form-control"
+          class="inChat"
           :class="$v.adminForm.titleMoney.$error ? 'is-invalid' : ''"
           id="title"
           placeholder="Введите название сбора"
@@ -53,7 +57,7 @@
         <label for="goal" class="form-label">Цель сбора (руб.)</label>
         <input
           type="number"
-          class="form-control"
+          class="inChat"
           :class="$v.adminForm.goal.$error ? 'is-invalid' : ''"
           id="goal"
           placeholder="Введите цель сбора в рублях"
@@ -66,11 +70,11 @@
           Обязательное поле
         </p>
       </div>
-      <button class="btn btn-primary">Добавить</button>
+      <button class="btn5">Добавить</button>
     </form>
-    <div v-if="status == false" class="moneyProgress">
-      <p align="left">Собрано: {{infoFund}}</p>
-      <p align="left">Цель: {{infoFund.goal}}</p>
+    <div class="moneyProgress">
+      <p align="left">Собрано: [[данные удалены]]</p>
+      <p align="left">Цель: {{ infoFund.goal }}</p>
       <button>Учавствовать</button>
     </div>
     <form @submit="submit" class="chat">
@@ -85,7 +89,7 @@
         v-model.trim="chatForm.content"
       />
       <div class="buttonChat">
-        <button class="btn btn-primary">Отправить</button>
+        <button class="btn5">Отправить</button>
       </div>
     </form>
   </div>
@@ -179,7 +183,11 @@ export default {
       if (!this.$v.adminForm.$error) {
         const slug = this.$route.params.slug;
         const slugIdea = this.$route.params.slugIdea;
-        const create = this.createFund({form: this.adminForm, slug, slugIdea});
+        const create = this.createFund({
+          form: this.adminForm,
+          slug,
+          slugIdea,
+        });
       }
     },
     async goToAddMoney() {
@@ -193,7 +201,7 @@ export default {
     this.getIdeaBySlug({ slug, slugIdea });
     this.getChat({ slug, slugIdea });
     this.getUserInfo();
-    this.getFund({ slug, slugIdea })
+    this.getFund({ slug, slugIdea });
   },
 };
 </script>
@@ -210,24 +218,70 @@ export default {
 
 .idea {
   border: 1px solid #ccc;
-  border-radius: 5px;
   margin-bottom: 1rem;
+  border-radius: 30px;
+  box-shadow: 0 5px 45px #d5f3ee;
+  margin-right: 5%;
+  margin-left: 5%;
 }
 
 .inChat {
   margin: auto;
-  width: 500px;
+  width: 400px;
   height: 36px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  margin-top: 20px;
 }
 
-.buttonChat {
-  width: 500px;
+.btn5 {
+   border: none;
+  background: none;
+  box-sizing: border-box;
+  font-family: 'Inter';
+  font-style: normal;
+  font-size: 20px;
+  line-height: 0px;
+
+ 
+  justify-content: center;
+  align-items: center;
+  padding: 15px 25px;
+  gap: 10px;
+
+  width: 250px;
   height: 36px;
+
+  background: #d5f3ee;
+  border: 1px solid #000000;
+  border-radius: 30px;
+
+  transition: color 0.2s linear;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .moneyProgress {
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 30px;
   margin-bottom: 1rem;
+  box-shadow: 0 5px 45px #d5f3ee;
 }
+
+.chatCont {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 400px;
+
+}
+
+.donate {
+  box-shadow: 0 5px 45px #d5f3ee;
+  margin-bottom: 30px;
+}
+/* .inputAdmin */
 </style>
