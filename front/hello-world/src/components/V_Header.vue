@@ -10,15 +10,11 @@
         </router-link>
 
         <nav class="nav">
-          <router-link class="nav-link" to="/register">
-            <a class="nav-link" href="">Регистрация</a>
-          </router-link>
+         
           <router-link class="nav-link" v-if="isLoggedIn" to="/register">
             <a class="nav-link" href="#">Личный кабинет</a>
           </router-link>
-          <router-link class="nav-link" v-if="!isLoggedIn" to="/auth">
-            <a class="nav-link" href="#">Авторизация</a>
-          </router-link>
+    
           <div class="nav-link" v-if="isLoggedIn" @click="logout">
             <a class="nav-link" href="#">Выйти</a>
           </div>
