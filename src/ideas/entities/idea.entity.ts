@@ -48,10 +48,7 @@ class Idea {
   public discussion: Discussion;
   
   @OneToOne(() => Fundraising)
-  // @JoinColumn()
   public fundraising: Fundraising;
-
-  
 }
 
 export default Idea;

@@ -47,4 +47,10 @@ export class FundraisingController {
   viewAllDonations(@Param() params) {
     return this.fundraisingService.findAllDonations(params.id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('donationssum')
+  getSumDonations(@Param() params){
+    return this.fundraisingService.sumDonations(params.slugIdea)
+  }
 }

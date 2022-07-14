@@ -61,8 +61,12 @@ export class FundraisingService {
     return donation;
   }
 
-  async findAllDonations(id: number) {
-    return await this.donationsRepository.find({ where: {fundraising: {id: id}}, relations:['user']} );
+  async findAllDonations(slug: string) {
+    const fund = await this.findOne(slug)
+    if(fund){
+      return await this.donationsRepository.find({ where: {fundraising: {id: fund.id}}, relations:['user']} );
+    }
+    throw new HttpException('Fundraising not found', HttpStatus.NOT_FOUND)
   }
 
   async updateDonation(id: number) {
@@ -76,5 +80,16 @@ export class FundraisingService {
       return updatedDonation;
     }
     throw new HttpException('Fundraising not found', HttpStatus.NOT_FOUND);
+  }
+
+  async sumDonations(slug: string){
+    const donations = await this.findAllDonations(slug)
+    let sum = 0
+    for (var d of donations){
+      if (d.check){
+        sum += d.money
+      }
+    }
+    return sum
   }
 }

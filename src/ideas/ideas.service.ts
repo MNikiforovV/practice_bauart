@@ -49,10 +49,6 @@ export class IdeasService {
   }
 
   async updateIdea(slug: string, idea: UpdateIdeaDto) {
-    // const toUpdate = await this.ideasRepository.findOne({
-    //   where: { slug: slug },
-    //   relations: ['project'],
-    // });
     const toUpdate = await this.getIdeaBySlug(slug)
     const ideaAndSlug = {...idea, slug: slugify(idea.title)}
     console.log(toUpdate)

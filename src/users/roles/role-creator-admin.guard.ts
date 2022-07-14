@@ -25,7 +25,6 @@ const RoleCreatorGuard = (role: Role): Type<CanActivate> => {
         return true
       } else {
         throw new HttpException('Access forbidden', HttpStatus.FORBIDDEN);
-        // return false;
       }
     }
   }
