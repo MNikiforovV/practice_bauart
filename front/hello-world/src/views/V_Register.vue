@@ -1,93 +1,91 @@
 <template>
 
 
-
-  <form class="register-container" @submit.prevent="submit">
-    <div class="row"></div>
-
-    <div class="register-field">
-
-      <div>
+  <div class="register-body">
+    <form class="register-container" @submit.prevent="submit">
+      <div class="register">
         <h1 class="register-title">Регистрация</h1>
+        <div class="register-field">
+          
+          <div>
+            <input type="text" class="name" :class="$v.form.name.$error ? 'is-invalid' : ''" id="name" placeholder="Имя"
+              v-model.trim="form.name">
+            <p v-if="$v.form.username.$dirty && !$v.form.name.required" class="invalid-feedback">
+              Обязательное поле
+            </p>
+            <p v-if="$v.form.username.$dirty && !$v.form.name.alpha" class="invalid-feedback">
+              Имя должно содержать только буквы
+            </p>
+          </div>
+
+
+          <div>
+            <input type="text" class="surname" :class="$v.form.surname.$error ? 'is-invalid' : ''" id="surname"
+              placeholder="Фамилия" v-model.trim="form.surname">
+            <p v-if="$v.form.username.$dirty && !$v.form.surname.required" class="invalid-feedback">
+              Обязательное поле
+            </p>
+            <p v-if="$v.form.username.$dirty && !$v.form.surname.alpha" class="invalid-feedback">
+              Фамилия должна содержать только буквы
+            </p>
+          </div>
+
+
+          <div>
+            <input type="email" class="emailreg" :class="$v.form.email.$error ? 'is-invalid' : ''" id="email"
+              placeholder="Почта" v-model.trim="form.email">
+            <p v-if="$v.form.username.$dirty && !$v.form.email.required" class="invalid-feedback">
+              Обязательное поле
+            </p>
+            <p v-if="$v.form.username.$dirty && !$v.form.email.email" class="invalid-feedback">
+              Неккоректный Email
+            </p>
+          </div>
+
+
+          <div>
+            <input type="username" class="username" :class="$v.form.username.$error ? 'is-invalid' : ''" id="username"
+              placeholder="Логин" v-model.trim="form.username">
+            <p v-if="$v.form.username.$dirty && !$v.form.username.required" class="invalid-feedback">
+              Обязательное поле
+            </p>
+            <p v-if="$v.form.username.$dirty && !$v.form.username.minLength" class="invalid-feedback">
+              Минимальная длина логина 4 символа
+            </p>
+          </div>
+
+
+          <div>
+            <input type="password" class="passwordreg" :class="$v.form.password.$error ? 'is-invalid' : ''"
+              id="password" placeholder="Пароль" v-model.trim="form.password">
+            <p v-if="$v.form.username.$dirty && !$v.form.password.required" class="invalid-feedback">
+              Обязательное поле
+            </p>
+            <p v-if="$v.form.username.$dirty && !$v.form.password.minLength" class="invalid-feedback">
+              Минимальная длина логина 4 символа
+            </p>
+          </div>
+
+
+          <div>
+            <input @blur='$v.confirmPassword.$touch()' type="password" class="passwordConfirm"
+              :class="$v.form.passwordConfirm.$error ? 'is-invalid' : ''" id="passwordConfirm"
+              placeholder="Повторите Ваш пароль" v-model.trim="form.passwordConfirm">
+            <p v-if="$v.form.username.$dirty && !$v.form.passwordConfirm.required" class="invalid-feedback">
+              Обязательное поле
+            </p>
+          </div>
+         
+            <button onclick="submit" type="submit" class="button">Зарегистрироваться</button>
+            <label class="or">ИЛИ</label>
+            <router-link to="/auth"><button class="button">Авторизация</button></router-link>
+          
+
+        </div>
       </div>
 
-      <div>
-        <input type="text" class="name" :class="$v.form.name.$error ? 'is-invalid' : ''" id="name" placeholder="Имя"
-          v-model.trim="form.name">
-        <p v-if="$v.form.username.$dirty && !$v.form.name.required" class="invalid-feedback">
-          Обязательное поле
-        </p>
-        <p v-if="$v.form.username.$dirty && !$v.form.name.alpha" class="invalid-feedback">
-          Имя должно содержать только буквы
-        </p>
-      </div>
-
-
-      <div>
-        <input type="text" class="surname" :class="$v.form.surname.$error ? 'is-invalid' : ''" id="surname"
-          placeholder="Фамилия" v-model.trim="form.surname">
-        <p v-if="$v.form.username.$dirty && !$v.form.surname.required" class="invalid-feedback">
-          Обязательное поле
-        </p>
-        <p v-if="$v.form.username.$dirty && !$v.form.surname.alpha" class="invalid-feedback">
-          Фамилия должна содержать только буквы
-        </p>
-      </div>
-
-
-      <div>
-        <input type="email" class="emailreg" :class="$v.form.email.$error ? 'is-invalid' : ''" id="email"
-          placeholder="Почта" v-model.trim="form.email">
-        <p v-if="$v.form.username.$dirty && !$v.form.email.required" class="invalid-feedback">
-          Обязательное поле
-        </p>
-        <p v-if="$v.form.username.$dirty && !$v.form.email.email" class="invalid-feedback">
-          Неккоректный Email
-        </p>
-      </div>
-
-
-      <div>
-        <input type="username" class="username" :class="$v.form.username.$error ? 'is-invalid' : ''" id="username"
-          placeholder="Логин" v-model.trim="form.username">
-        <p v-if="$v.form.username.$dirty && !$v.form.username.required" class="invalid-feedback">
-          Обязательное поле
-        </p>
-        <p v-if="$v.form.username.$dirty && !$v.form.username.minLength" class="invalid-feedback">
-          Минимальная длина логина 4 символа
-        </p>
-      </div>
-
-
-      <div>
-        <input type="password" class="passwordreg" :class="$v.form.password.$error ? 'is-invalid' : ''" id="password"
-          placeholder="Пароль" v-model.trim="form.password">
-        <p v-if="$v.form.username.$dirty && !$v.form.password.required" class="invalid-feedback">
-          Обязательное поле
-        </p>
-        <p v-if="$v.form.username.$dirty && !$v.form.password.minLength" class="invalid-feedback">
-          Минимальная длина логина 4 символа
-        </p>
-      </div>
-
-
-      <div>
-        <input @blur='$v.confirmPassword.$touch()' type="password" class="passwordConfirm"
-          :class="$v.form.passwordConfirm.$error ? 'is-invalid' : ''" id="passwordConfirm"
-          placeholder="Повторите Ваш пароль" v-model.trim="form.passwordConfirm">
-        <p v-if="$v.form.username.$dirty && !$v.form.passwordConfirm.required" class="invalid-feedback">
-          Обязательное поле
-        </p>
-      </div>
-      <div>
-        <button onclick="submit" type="submit" class="button">Зарегистрироваться</button>
-      </div>
-
-    </div>
-
-
-
-  </form>
+    </form>
+  </div>
 
 
 </template>

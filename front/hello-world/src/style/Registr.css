@@ -1,8 +1,5 @@
 ::placeholder {
 
-
-
-
 	font-family: 'Inter';
 	font-style: normal;
 	font-weight: 400;
@@ -16,16 +13,27 @@
 	flex-grow: 0;
 }
 
+.register-body {
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background:rgba(0,0,0,0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
 .register-container {
 
-	position: relative;
 	display: flex;
 	justify-content: center;
-	width: 450px;
-	height: 700px;
+	max-width: 450px;
+	height: 750px;
 	box-shadow: 0 5px 45px #D5F3EE;
-	margin: 0 auto;
+	margin-right: 0 auto;
 	top: 15px;
 
 	background: #FFFFFF;
@@ -33,13 +41,25 @@
 
 }
 
-.register-title {
-	
-	width: 154px;
-	height: 29px;
+
+.register {
 	display: flex;
 	justify-content: center;
-	top: 50px;
+	flex-direction: column;
+	width: 100%;
+	padding: 60px 50px;
+}
+
+.register-title {
+
+	/* position: absolute; */
+	/* width: 154px;
+	height: 29px; */
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	width: 100%;
+	/* top: 50px; */
 
 
 
@@ -52,30 +72,25 @@
 	color: #000000;
 }
 
-
 .register-field {
+	margin: auto;
+
+}
+
+
+
+/* p {
 
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
 	align-items: center;
-
-	
-}
+	color: red;
 
 
-p {
 
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
-
-	margin-bottom: 17px;
-
-}
+} */
 
 
 input {
@@ -99,8 +114,8 @@ input {
 	margin-bottom: 17px;
 
 
-}
 
+}
 
 .button {
 
@@ -125,6 +140,7 @@ input {
 	border-radius: 30px;
 
 	transition: color .2s linear;
+
 }
 
 .button :hover {

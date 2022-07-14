@@ -1,9 +1,11 @@
 <template>
   <div id="V_Ideas">
-    <div  ></div>
-    <div class="ideas">
-      <button @click="goToCreate" class="btn btn-primary">Создать идею</button>
-      <div class="idea">
+    <H1>Идеи</H1>
+    <div>
+      <div class="ideas">
+        <button @click="goToCreate" class="btn2">Создать идею</button>
+      </div>
+      <div class="idea2">
         <idea v-for="idea in infoIdeas" :key="idea.slug" :idea="idea"> </idea>
       </div>
       <h1>Архив</h1>
@@ -59,17 +61,19 @@ export default {
 #V_Ideas {
   font-family: 'Avenir', Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* -moz-osx-font-smoothing: grayscale; */
   text-align: center;
   color: #2c3e50;
   margin: 60px auto;
   width: 400px;
 }
 
-.idea {
+.idea:nth-child(3n - 1) {
   border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 1rem;
+  border-radius: 30px;
+  box-shadow: 0 5px 45px #d5f3ee;
+  margin-right: 5%;
+  margin-left: 5%;
 }
 /* .projects {
   border: 1px solid #ccc;
@@ -79,7 +83,51 @@ export default {
 
 .arch {
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 30px;
   margin-bottom: 1rem;
+  box-shadow: 0 5px 45px #d5f3ee;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+.ideas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.btn2 {
+  border: none;
+  background: none;
+  box-sizing: border-box;
+  font-family: 'Inter';
+  font-style: normal;
+  font-size: 20px;
+  line-height: 24.2px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 25px;
+  gap: 10px;
+
+  width: 250px;
+  height: 36px;
+
+  background: #d5f3ee;
+  border: 1px solid #000000;
+  border-radius: 30px;
+
+  transition: color 0.2s linear;
+}
+
+.btn3 {
+  padding: 5px;
+  background: #d5f3ee;
+  border: 1px solid #000000;
+  gap: 10px;
+  border-radius: 30px;
+  margin-bottom: 10px;
 }
 </style>

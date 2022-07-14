@@ -1,10 +1,8 @@
 <template>
   <div id="project">
-    <div
-      class="container mt-5 position-absolute top-50 start-50 translate-middle"
-    >
-      <div class="row">
-        <div class="col-sm-3 mx-auto">
+    <div>
+      <div>
+        <div class="CreateProject">
           <form @submit.prevent="submit">
             <div>
               <div class="mb-3">
@@ -55,7 +53,9 @@
                   Минимальная длина содержания 10 символов
                 </p>
               </div>
-              <button onclick="submit" type="submit" class="btn btn-primary">Создать</button>
+              <button onclick="submit" type="submit" class="btn btn-primary">
+                Создать
+              </button>
             </div>
           </form>
         </div>
@@ -94,7 +94,6 @@ export default {
   },
   computed: {
     ...mapState('project', ['info']),
-
   },
   methods: {
     ...mapActions('project', ['createProject']),
@@ -111,4 +110,38 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.CreateProject {
+  display: flex;
+  justify-content: center;
+  max-width: 450px;
+  height: 250px;
+  box-shadow: 0 5px 45px #d5f3ee;
+  margin: 0 auto;
+  top: 15px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  width: 100%;
+  margin-top: 200px;
+  padding: 30px 25px;
+
+  background: #ffffff;
+  border-radius: 30px;
+}
+
+.form-label {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;  
+  line-height: 29px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center ;
+}
+</style>

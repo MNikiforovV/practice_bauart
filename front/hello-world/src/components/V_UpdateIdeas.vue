@@ -1,5 +1,5 @@
 <template>
-  <div id="V_UpdateIdeas">
+  <div class="updateIdea" id="V_UpdateIdeas">
     <form @submit.prevent="submit">
       <div>
         <div>
@@ -126,5 +126,13 @@ export default {
   color: #2c3e50;
   margin: 60px auto;
   width: 400px;
+}
+
+.updateIdea{
+   display: flex;
+  justify-content: center;
+  border-radius: 30px;
+  box-shadow: 0 5px 45px #d5f3ee;
+  padding: 30px;
 }
 </style>

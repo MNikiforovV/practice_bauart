@@ -2,14 +2,14 @@
   <div>
     <div class="idea">
       <p align="left">Название идеи: {{ idea.title }}</p>
-      <button type="button" @click="goInIdea(idea.slug)">Войти</button>
-      <button
+      <button class="btn3"
         v-if="idea.isArchived == false"
         @click="archiveIde(idea.slug)"
         type="button"
       >
         Архивировать
       </button>
+      <button class="btn1" type="button" @click="goInIdea(idea.slug)">Войти</button>
     </div>
   </div>
 </template>

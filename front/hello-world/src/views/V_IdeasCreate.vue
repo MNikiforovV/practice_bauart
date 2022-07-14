@@ -1,5 +1,5 @@
 <template>
-  <div id="V_Idea">
+  <div class="createIdea" id="V_Idea">
     <form @submit.prevent="submit">
       <div>
         <div>
@@ -115,6 +115,19 @@ export default {
   color: #2c3e50;
   margin: 60px auto;
   width: 400px;
+  /* display: flex;
+  justify-content: center;
+  border-radius: 30px;
+  box-shadow: 0 5px 45px #d5f3ee;
+  padding: 30px; */
+}
+
+.createIdea{
+   display: flex;
+  justify-content: center;
+  border-radius: 30px;
+  box-shadow: 0 5px 45px #d5f3ee;
+  padding: 30px;
 }
 
 /* .project {

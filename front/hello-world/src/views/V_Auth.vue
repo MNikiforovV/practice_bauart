@@ -2,42 +2,39 @@
 
 
 
-  <form class="auth-container" @submit.prevent="checkForm">
-    <div class="auth"></div>
-    <h1 class="auth-title">Авторизация</h1>
-    <div class="auth-field">
-      
-
-      <input type="Email" class="email" :class="$v.form.email.$error ? 'is-invalid' : ''" id="email"
-        placeholder="Почта" v-model.trim="form.email" />
-      <p v-if="$v.form.email.$dirty && !$v.form.email.required" class="invalid-feedback">
-        Обязательное поле
-      </p>
-      <p v-if="$v.form.email.$dirty && !$v.form.email.email" class="invalid-feedback">
-        Неверный формат Email
-      </p>
-
-
-
-      <input type="password" class="password" :class="$v.form.password.$error ? 'is-invalid' : ''" id="password"
-        placeholder="Пароль" v-model.trim="form.password" />
-      <p v-if="$v.form.email.$dirty && !$v.form.password.required" class="invalid-feedback">
-        Обязательное поле
-      </p>
-      <p v-if="$v.form.email.$dirty && !$v.form.password.minLength" class="invalid-feedback">
-        Минимальная длина пароля 4 символа
-      </p>
-
-    </div>
+  <div class="auth-body">
+    <form class="auth-container" @submit.prevent="checkForm">
+      <div class="auth">
+        <h1 class="auth-title">Авторизация</h1>
+        <div class="auth-field">
+          <input type="Email" class="email" :class="$v.form.email.$error ? 'is-invalid' : ''" id="email"
+            placeholder="Почта" v-model.trim="form.email" />
+          <p v-if="$v.form.email.$dirty && !$v.form.email.required" class="invalid-feedback">
+            Обязательное поле
+          </p>
+          <p v-if="$v.form.email.$dirty && !$v.form.email.email" class="invalid-feedback">
+            Неверный формат Email
+          </p>
+          <input type="password" class="password" :class="$v.form.password.$error ? 'is-invalid' : ''" id="password"
+            placeholder="Пароль" v-model.trim="form.password" />
+          <p v-if="$v.form.email.$dirty && !$v.form.password.required" class="invalid-feedback">
+            Обязательное поле
+          </p>
+          <p v-if="$v.form.email.$dirty && !$v.form.password.minLength" class="invalid-feedback">
+            Минимальная длина пароля 4 символа
+          </p>
+        </div>
     
+        <button class="form-button">Авторизация</button>
+        <label class="or">ИЛИ</label>
+        <router-link to="/register"><button class="form-button">Зарегистрироваться</button></router-link>
     
-      <button class="form-button">Авторизация</button>
-    
-    
+      </div>
 
 
 
-  </form>
+    </form>
+  </div>
 
 </template>
 
