@@ -4,33 +4,33 @@ import RequestWithUser from 'src/auth/requestWithUser.interface';
 import JwtAuthGuard from 'src/auth/jwt/jwt-auth.guard';
 import { ProjectsService } from 'src/projects/projects.service';
 
-
-const RoleGuard = (role: Role): Type<CanActivate> => {
+const RoleCreatorGuard = (role: Role): Type<CanActivate> => {
   @Injectable()
-  class RoleGuardMixin extends JwtAuthGuard {
-    constructor (private projectsService: ProjectsService){
+  class RoleCreatorGuardMixin extends JwtAuthGuard {
+    constructor(private projectsService: ProjectsService) {
       super();
     }
     async canActivate(context: ExecutionContext) {
       await super.canActivate(context);
 
       const request = context.switchToHttp().getRequest();
-      const requestRequest = context.switchToHttp().getRequest<RequestWithUser>();
+      const requestRequest = context
+        .switchToHttp()
+        .getRequest<RequestWithUser>();
 
-      const slug = request.params.slug
+      const slug = request.params.slug;
       const user = requestRequest.user;
-      const project = await this.projectsService.getProjectBySlug(slug)
-      
+      const project = await this.projectsService.getProjectBySlug(slug);
+
       if (project.author.email == user.email || user?.role.includes(role)) {
-        return true
+        return true;
       } else {
         throw new HttpException('Access forbidden', HttpStatus.FORBIDDEN);
-        // return false;
       }
     }
   }
 
-  return mixin(RoleGuardMixin);
-}
+  return mixin(RoleCreatorGuardMixin);
+};
 
-export default RoleGuard;
+export default RoleCreatorGuard;

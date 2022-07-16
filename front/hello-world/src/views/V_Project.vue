@@ -1,10 +1,8 @@
 <template>
   <div id="project">
-    <div
-      class="container mt-5 position-absolute top-50 start-50 translate-middle"
-    >
-      <div class="row">
-        <div class="col-sm-3 mx-auto">
+    <div>
+      <div>
+        <div class="CreateProject">
           <form @submit.prevent="submit">
             <div>
               <div class="mb-3">
@@ -18,13 +16,13 @@
                   v-model.trim="form.title"
                 />
                 <p
-                  v-if="$v.form.title.$dirty && !$v.form.name.required"
+                  v-if="$v.form.title.$dirty && !$v.form.title.required"
                   class="invalid-feedback"
                 >
                   Обязательное поле
                 </p>
                 <p
-                  v-if="$v.form.title.$dirty && !$v.form.name.minLength"
+                  v-if="$v.form.title.$dirty && !$v.form.title.minLength"
                   class="invalid-feedback"
                 >
                   Минимальная длина названия 5 символов
@@ -55,55 +53,9 @@
                   Минимальная длина содержания 10 символов
                 </p>
               </div>
-
-              <!-- <div class="mb-3">
-                <label for="author" class="form-label">Автор проекта</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  :class="$v.form.author.$error ? 'is-invalid' : ''"
-                  id="author"
-                  placeholder="Введите автора проекта"
-                  v-model.trim="form.author"
-                />
-                <p
-                  v-if="$v.form.author.$dirty && !$v.form.author.required"
-                  class="invalid-feedback"
-                >
-                  Обязательное поле
-                </p>
-                <p
-                  v-if="$v.form.author.$dirty && !$v.form.author.minLength"
-                  class="invalid-feedback"
-                >
-                  Минимальная длина автора 2 символа
-                </p>
-                <p
-                  v-if="$v.form.author.$dirty && !$v.form.author.alpha"
-                  class="invalid-feedback"
-                >
-                  Можно использовать только буквы
-                </p>
-              </div> -->
-
-              <!-- <div class="mb-3">
-                <label for="image" class="form-label">Аватарка проекта</label>
-                <p>
-                  <input
-                    type="file"
-                    name="image"
-                    multiple
-                    accept="image/jpeg, image/png"
-                  />
-                </p>
-                <input
-                  type="image"
-                  class="form-control"
-                  id="email"
-                  placeholder="Вставьте аватар проекта"
-                />
-              </div> -->
-              <button class="btn btn-primary">Создать</button>
+              <button onclick="submit" type="submit" class="btn btn-primary">
+                Создать
+              </button>
             </div>
           </form>
         </div>
@@ -120,13 +72,11 @@ import router from '@/router';
 
 export default {
   mixins: [validationMixin],
-  // props: ['slug'],
   data() {
     return {
       form: {
         title: '',
         content: '',
-        // author: '',
       },
     };
   },
@@ -140,16 +90,10 @@ export default {
         required,
         minLength: minLength(10),
       },
-      // author: {
-      //   required,
-      //   minLength: minLength(2),
-      //   alpha: (val) => /^[а-яё]*$/i.test(val),
-      // },
     },
   },
   computed: {
     ...mapState('project', ['info']),
-
   },
   methods: {
     ...mapActions('project', ['createProject']),
@@ -162,10 +106,42 @@ export default {
         router.push('/');
       }
     },
-    async mounted() { 
-    },
   },
 };
 </script>
 
-<style></style>
+<style>
+.CreateProject {
+  display: flex;
+  justify-content: center;
+  max-width: 450px;
+  height: 250px;
+  box-shadow: 0 5px 45px #d5f3ee;
+  margin: 0 auto;
+  top: 15px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  width: 100%;
+  margin-top: 200px;
+  padding: 30px 25px;
+
+  background: #ffffff;
+  border-radius: 30px;
+}
+
+.form-label {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;  
+  line-height: 29px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center ;
+}
+</style>

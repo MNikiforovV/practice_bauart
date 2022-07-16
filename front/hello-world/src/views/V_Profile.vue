@@ -1,17 +1,29 @@
 <template>
   <div id="V_Profile">
-    <div>
-      <p>Ваши проекты: </p>
-      <div class="project" v-for="(project, key) in authorProjects" :key="key">
+    <div class="projectss">
+      <div class="left">
+        <h3>Ваши проекты:</h3>
+      <div
+        class="authorProject"
+        v-for="(project, key) in authorProjects"
+        :key="key"
+      >
         <p align="left">Название проекта: {{ project.title }}</p>
         <p align="left">Содержание проекта: {{ project.content }}</p>
         <!-- <p align="left">Автор проекта: {{ project.author }}</p> -->
       </div>
-      <p>Проекты на которые вы подписаны:</p> 
-      <div class="project" v-for="(project, key) in subscriberProjects" :key="key">
+      </div>
+      <div class="right">
+        <h3>Проекты на которые вы подписаны:</h3>
+      <div
+        class="subscriberProject"
+        v-for="(project, key) in subscriberProjects"
+        :key="key"
+      >
         <p align="left">Название проекта: {{ project.title }}</p>
         <p align="left">Содержание проекта: {{ project.content }}</p>
         <!-- <p align="left">Автор проекта: {{ project.author }}</p> -->
+      </div>
       </div>
     </div>
   </div>
@@ -22,45 +34,31 @@
 import { mapState, mapActions } from 'vuex';
 export default {
   computed: {
-    ...mapState('project', ['info']),
+    ...mapState('project', ['userProjects']),
     authorProjects() {
-      if (this.info) {
-        return this.info.authorProjects;
+      if (this.userProjects) {
+        return this.userProjects.authorProjects;
       } else {
         return [];
       }
     },
     subscriberProjects() {
-      if (this.info) {
-        return this.info.subscriberProjects;
+      if (this.userProjects) {
+        return this.userProjects.subscriberProjects;
       } else {
         return [];
       }
     },
   },
   methods: {
-    ...mapActions('project', ['getInfo']),
+    ...mapActions('project', ['getUserProjects']),
   },
   async mounted() {
-    await this.getInfo();
+    await this.getUserProjects();
   },
 };
 </script>
 
-<style>
-#V_Profile {
-  font-family: 'Avenir', Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin: 60px auto;
-  width: 400px;
-}
 
-.project {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-}
+<style src=@/style/Profile.css>
 </style>

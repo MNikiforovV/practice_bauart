@@ -6,10 +6,9 @@ import CreateUserDto from './dto/createUser.dto';
 import { encodePassword } from 'src/utils/bcrypt';
 import * as bcrypt from 'bcrypt';
 import Project from 'src/projects/entities/project.entity';
-import Subscriber from 'src/projects/entities/subscriber.entity';
+import Subscriber from 'src/projects/entities/subscribers.entity';
+import Donations from 'src/fundraising/entities/donations.entity';
 
-
-// This should be a real class/interface representing a user entity
 @Injectable()
 export class UsersService {
   constructor(
@@ -20,51 +19,72 @@ export class UsersService {
     private projectsRepository: Repository<Project>,
 
     @InjectRepository(Subscriber)
-    private subscribersRepostory: Repository<Subscriber>
-  ) { }
+    private subscribersRepostory: Repository<Subscriber>,
+
+    @InjectRepository(Donations)
+    private donationsRepository: Repository<Donations>,
+  ) {}
 
   async getByEmail(email: string): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ where: { email: email }, relations: ['subscribed'] })
+    const user = await this.usersRepository.findOne({
+      where: { email: email },
+      relations: ['subscribed'],
+    });
     if (!user) {
-      throw new HttpException('User with this email does not exist', HttpStatus.NOT_FOUND);
-    }
-    return user
-  }
-
-  async getById(id: number) {
-    const user = await this.usersRepository.findOne({ where: { id: id }, relations: ['subscribed'] });
-    if (!user) {
-      throw new HttpException('User with this id does not exist', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'User with this email does not exist',
+        HttpStatus.NOT_FOUND,
+      );
     }
     return user;
   }
 
+  async getById(id: number) {
+    const user = await this.usersRepository.findOne({
+      where: { id: id },
+      relations: ['subscribed'],
+    });
+    if (!user) {
+      throw new HttpException(
+        'User with this id does not exist',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return user;
+  }
+
+  //Нужен для того, чтобы возвращал null вместо Exception.
   async tryGetUser(email: string): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ where: { email: email }, relations: ['subscribed'] })
+    const user = await this.usersRepository.findOne({
+      where: { email: email },
+      relations: ['subscribed'],
+    });
     if (!user) {
       null;
     } else {
-      return user
+      return user;
     }
   }
 
   async createUser(userData: CreateUserDto) {
-    const user = await this.tryGetUser(userData.email)
+    const user = await this.tryGetUser(userData.email);
     if (!user) {
       const password = encodePassword(userData.password);
       const newUser = this.usersRepository.create({ ...userData, password });
       await this.usersRepository.save(newUser);
       return newUser;
-
     } else {
-      throw new HttpException('Username and email must be unique', HttpStatus.NOT_ACCEPTABLE)
+      throw new HttpException(
+        'Username and email must be unique',
+        HttpStatus.NOT_ACCEPTABLE,
+      );
     }
   }
 
   async setCurrentRefreshToken(refreshToken: string, userId: number) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
     await this.usersRepository.update(userId, {
-      currentHashedRefreshToken
+      currentHashedRefreshToken,
     });
   }
 
@@ -73,7 +93,7 @@ export class UsersService {
 
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
-      user.currentHashedRefreshToken
+      user.currentHashedRefreshToken,
     );
 
     if (isRefreshTokenMatching) {
@@ -83,14 +103,17 @@ export class UsersService {
 
   async removeRefreshToken(userId: number) {
     return this.usersRepository.update(userId, {
-      currentHashedRefreshToken: null
+      currentHashedRefreshToken: null,
     });
   }
 
   async getProjectsByUser(user: User) {
-    const userWithProjects = await this.usersRepository.findOne({ where: { id: user.id }, relations: ['projects'] });
+    const userWithProjects = await this.usersRepository.findOne({
+      where: { id: user.id },
+      relations: ['projects'],
+    });
 
-    console.log(userWithProjects)
+    console.log(userWithProjects);
     if (userWithProjects) {
       return userWithProjects.projects;
     }
@@ -99,25 +122,32 @@ export class UsersService {
 
   async getSubscribersProjects(user: User) {
     const subbedProjectsId = await this.subscribersRepostory.find({
+      relations: ['user', 'project'],
       where: {
         user: {
-          id: user.id
-        }
-      }, relations: ["user"]
-    })
+          id: user.id,
+        },
+      },
+    });
 
-    const subbedProjects = []
+    const subbedProjects = [];
     for (var p of subbedProjectsId) {
-      subbedProjects.push(await this.projectsRepository.findOne({
-        where:{
-          subscribers: {
-            id: p.id
-          }
-        }
-      }))
+      subbedProjects.push(p.project);
     }
 
-    return subbedProjects
+    return subbedProjects;
   }
 
+  // Метод для корзины, ищет все донаты конкретного пользователя вместе со сбором средств доната.
+  async getFundraisingsByUser(user: User) {
+    const donations = await this.donationsRepository.find({
+      relations: ['user', 'fundraising'],
+      where: {
+        user: {
+          id: user.id,
+        },
+      },
+    });
+    return donations;
+  }
 }

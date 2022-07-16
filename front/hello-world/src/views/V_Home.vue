@@ -1,92 +1,43 @@
 <template>
   <div id="V_Home">
-    <div></div>
-    <Form @submit.prevent="createbtn">
-      <button class="btn btn-primary">Создать проект</button>
+    <h1>Проекты</h1>
+    <Form class="formBtn" @submit.prevent="createbtn">
+      <button class="btn">Создать проект</button>
     </Form>
-    <div class="project" v-for="project in info" :key="project.slug">
-      <p align="left">Название проекта: {{ project.title }}</p>
-      <p align="left">Описание проекта: {{ project.content }}</p>
-      <p align="left">Автор проекта: {{ project.author.name }}</p>
-
-      <!-- <Form @submit.prevent="deletebtn"> -->
-      <!-- <button class="btn btn-danger">Удалить проект</button> -->
-      <div
-        v-if="
-          project.author.email == UserEmail || UserRole == 'Admin'
-        "
+    <div class="projects">
+      <Project
+        v-for="project in allProjects"
+        :key="project.slug"
+        :project="project"
       >
-        
-        <button type="button" @click="editProject(project.slug)">
-          Изменить проект
-        </button>
-        <!-- <form @submit.prevent="createbtn">
-        <button type="submit">Изменить проект</button>
-      </form> -->
-        <!-- </Form> -->
-      </div>
-      <button v-if="infoUser" type="button" @click="subForProject(project.slug)">
-        Подписаться
-      </button>
-      <button type="button" @click="unSubForProject(infoUser.subscribed.id)">Отписаться</button>
+      </Project>
     </div>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import axios from 'axios';
 import { mapState, mapActions } from 'vuex';
+import Project from '@/components/Project.vue';
 
 export default {
   name: 'V_Home',
+  components: {
+    Project,
+  },
   computed: {
-    ...mapState('project', ['info']),
-    ...mapState('user', ['infoUser']),
-    ...mapState('project', ['infoSub']),
-    ...mapState('project', ['infoUnSub']),
-    
-    UserRole() {
-      if (this.infoUser) {
-        return this.infoUser.role;
-      } else {
-        return [];
-      }
-    },
-    UserEmail() {
-      if (this.infoUser) {
-        return this.infoUser.email;
-      } else {
-        return [];
-      }
-    },
+    ...mapState('project', ['allProjects']),
   },
 
   methods: {
-    ...mapActions('project', ['viewAllProject']),
-    ...mapActions('user', ['getInfoN']),
-    ...mapActions('project', ['subForProject']),
-    ...mapActions('project', ['unSubForProject']),
-
+    ...mapActions('project', ['getAllProject', 'getUserProjects']),
     async createbtn() {
       this.$router.push('/project');
     },
-    async editProject(slug) {
-      this.$router.push('/project/' + slug);
-    },
-    // async deletebtn() {
-    //   await this.deleteProject(this.slug);
-    // },
-    // beforeMount() {
-    //   axios.get(`${server.baseURL}/user/profile`, this.cookie)
-    //     .then((res) => {
-    //       router.push('/')
-    //     })
-    // },
   },
   async mounted() {
-    await this.viewAllProject();
-    await this.getInfoN();
+    await this.getAllProject();
+    await this.getUserProjects();
   },
 };
 </script>
@@ -97,13 +48,49 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin: 60px auto;
-  width: 400px;
+  margin: 0 auto;
+  max-width: 1600px;
+  width: 100%;
+}
+.projects {
+  display: flex;
+  flex-wrap: wrap;
+  /* gap: calc(10% / 3); */
+  /* padding: 5px; */
 }
 
-.project {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 1rem;
+.btn {
+  border: none;
+  background: none;
+  box-sizing: border-box;
+  font-family: 'Inter';
+  font-style: normal;
+  font-size: 20px;
+  line-height: 24.2px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 25px;
+  gap: 10px;
+
+  width: 341px;
+  height: 36px;
+
+  background: #d5f3ee;
+  border: 1px solid #000000;
+  border-radius: 30px;
+
+  transition: color 0.2s linear;
+  margin-bottom: 10px;
 }
+
+.formBtn {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+
+
 </style>

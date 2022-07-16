@@ -9,33 +9,39 @@ import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private readonly configService: ConfigService,
-        private readonly usersService: UsersService,
-        private readonly jwtService: JwtService
-      ) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   public async validateUser(email: string, pass: string) {
     const userCheck = await this.usersService.getByEmail(email);
     if (userCheck) {
-      const matched = comparePasswords(pass, userCheck.password)
+      const matched = comparePasswords(pass, userCheck.password);
       if (matched) {
-        console.log('User Validation Success!')
+        console.log('User Validation Success!');
         return userCheck;
       } else {
-        throw new HttpException('Passwords do not match!', HttpStatus.UNAUTHORIZED);
+        throw new HttpException(
+          'Passwords do not match!',
+          HttpStatus.UNAUTHORIZED,
+        );
       }
     }
     throw new HttpException('User Validation Failed!', HttpStatus.UNAUTHORIZED);
   }
-  
+
   async login(dto: LoginUserDto, res: Response) {
-    const user = await this.validateUser( dto.email, dto.password);
+    const user = await this.validateUser(dto.email, dto.password);
     const accessTokenCookie = await this.getCookieWithJwtAccessToken(user.id);
     const refreshTokenCookie = await this.getCookieWithJwtRefreshToken(user.id);
- 
-    await this.usersService.setCurrentRefreshToken(refreshTokenCookie.token, user.id);
- 
+
+    await this.usersService.setCurrentRefreshToken(
+      refreshTokenCookie.token,
+      user.id,
+    );
+
     res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie.cookie]);
 
     user.password = undefined;
@@ -47,29 +53,36 @@ export class AuthService {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-      expiresIn: `${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s`
+      expiresIn: `${this.configService.get(
+        'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
+      )}s`,
     });
-    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}`;
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+      'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
+    )}`;
   }
- 
+
   public getCookieWithJwtRefreshToken(userId: number) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
-      expiresIn: `${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}s`
+      expiresIn: `${this.configService.get(
+        'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
+      )}s`,
     });
-    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}`;
+    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+      'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
+    )}`;
     return {
       cookie,
-      token
-    }
+      token,
+    };
   }
 
   public getCookieForLogOut() {
     return [
       'Authentication=; HttpOnly; Path=/; Max-Age=0',
-      'Refresh=; HttpOnly; Path=/; Max-Age=0'
+      'Refresh=; HttpOnly; Path=/; Max-Age=0',
     ];
   }
-
 }

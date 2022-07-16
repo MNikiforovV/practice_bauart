@@ -3,54 +3,34 @@ import instance from '@/components/Instance.js';
 export default {
   namespaced: true,
   state: {
-    info: null,
-    isLoggedIn: localStorage.getItem('isLoggedIn') || false,
-    infoUser: null,
+    userInfo: null,
   },
   actions: {
-    async getInfoN({ commit }) {
+    async getUserInfo({ commit }) {
       const { data } = await instance.get('user/user/');
-      commit('infoUser', data);
-    },
-    async getInfo({ commit }) {
-      const { data } = await instance.get('user/profile/');
-      commit('updateInfo', data);
+      commit('updateUserInfo', data);
     },
     async logoutUser({ commit }) {
       await instance.post('auth/logout');
-      commit('clearInfo');
-      localStorage.removeItem('isLoggedIn');
+      commit('clearUserInfo');
     },
     async loginUser({ commit }, form) {
       const { data } = await instance.post('auth/login', form);
-      commit('updateInfo', data);
-      localStorage.setItem('isLoggedIn', true);
+      commit('updateUserInfo', data);
     },
   },
   mutations: {
-    updateInfo(state, info) {
-      state.info = info;
+    clearUserInfo(state) {
+      state.userInfo = null;
     },
-    clearInfo(state) {
-      state.info = null;
-    },
-    infoUser(state, infoUser) {
-      state.infoUser = infoUser;
+    updateUserInfo(state, userInfo) {
+      state.userInfo = userInfo;
     },
   },
 
   getters: {
-    allInfo(state) {
-      return state.info;
-    },
     isLoggedIn(state) {
-      return !!state.info;
+      return !!state.userInfo;
     },
-    infoUser(state) {
-      return state.infoUser;
-    },
-    // usersCount(state) {
-    //     return state.users.length
-    // }
   },
 };

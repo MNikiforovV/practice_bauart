@@ -27,13 +27,23 @@ import { ProjectsService } from 'src/projects/projects.service';
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get('JWT_ACCESS_TOKEN_SECRET'),
         signOptions: {
-          expiresIn: `${configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s`,
+          expiresIn: `${configService.get(
+            'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
+          )}s`,
         },
       }),
     }),
-    TypeOrmModule.forFeature([User])
+    TypeOrmModule.forFeature([User]),
   ],
-  controllers:[AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, UsersService, ConfigService, JwtRefreshTokenStrategy, ProjectsService],
+  controllers: [AuthController],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    UsersService,
+    ConfigService,
+    JwtRefreshTokenStrategy,
+    ProjectsService,
+  ],
 })
 export class AuthModule {}
